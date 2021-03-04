@@ -42,4 +42,5 @@ dependencies {
     implementation project(path: ':base')
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
     implementation project(path: ':user_api')
+
 }

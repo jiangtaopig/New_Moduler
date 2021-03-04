@@ -55,15 +55,5 @@ dependencies {
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-
-    // RxJava
-    implementation "io.reactivex.rxjava3:rxjava:3.0.7"
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-
-    // jetpack
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
 }

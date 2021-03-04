@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.zjt.router.RouteHub;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
@@ -26,6 +28,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTv;
+    private TextView mToUserTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mTv = findViewById(R.id.txt_rx);
+        mToUserTxt = findViewById(R.id.txt_user);
         mTv.setOnClickListener(v -> {
 //                test1();
 //            test2();
@@ -44,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
 
             JetPackActivity.enter(this);
+        });
+
+        mToUserTxt.setOnClickListener(v -> {
+            ARouter.getInstance().build(RouteHub.User.USER_MAIN_PATH)
+                    .navigation(this);
         });
 
     }
