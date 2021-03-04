@@ -37,10 +37,13 @@ public class MainActivity extends AppCompatActivity {
         mTv.setOnClickListener(v -> {
 //                test1();
 //            test2();
-//            JetPackActivity.enter(this);
+
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
             Log.e("zjt", "name = " + userInfo.getName()+" , age = "+userInfo.getAge());
+
+
+            JetPackActivity.enter(this);
         });
 
     }

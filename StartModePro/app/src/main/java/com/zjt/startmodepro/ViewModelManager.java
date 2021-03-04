@@ -3,6 +3,7 @@ package com.zjt.startmodepro;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.zjt.startmodepro.viewmodel.MyViewModel;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 
 public
@@ -30,5 +31,9 @@ class ViewModelManager {
 
     public NameViewModel getNameModel(AppCompatActivity context) {
         return  new ViewModelProvider(context).get(NameViewModel.class);
+    }
+
+    public MyViewModel getMyViewModel(AppCompatActivity context){
+        return new ViewModelProvider(context).get(MyViewModel.class);
     }
 }
