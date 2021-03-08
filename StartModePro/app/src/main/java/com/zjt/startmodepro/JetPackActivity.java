@@ -60,12 +60,9 @@ public class JetPackActivity extends AppCompatActivity {
 //        mNameViewModel.getCurrentName().observe(this, mNameObserver);
 
         // 数据转换
-        Transformations.map(mNameViewModel.getCurrentName(), new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                Log.e("zjt", "input = " + input);
-                return input + " zcy is a good boy";
-            }
+        Transformations.map(mNameViewModel.getCurrentName(), input -> {
+            Log.e("zjt", "input = " + input);
+            return input + " zcy is a good boy";
         }).observe(this, mNameObserver);
 
         // LifeCycle 的使用

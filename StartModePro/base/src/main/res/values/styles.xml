@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BaseThemeWelcome" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/baseColorAccent</item>
+        <item name="colorPrimaryDark">#DCDCDC</item>
+        <item name="colorAccent">@color/baseColorAccent</item>
+        <item name="android:windowBackground">@color/baseColorWhite</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:buttonStyle">@android:style/Widget.Button.Small</item>
+    </style>
+</resources>
