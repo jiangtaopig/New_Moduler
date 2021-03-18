@@ -28,7 +28,9 @@ class KtFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mTitleTv = view.findViewById(R.id.txt_me_kt)
-
+        // 直接修改服务器代码
+         var a = "123
+        var b = 22
 
         mMeViewModel.apply {
             mMeViewModel.mData.observe(viewLifecycleOwner, object : Observer<String>{
