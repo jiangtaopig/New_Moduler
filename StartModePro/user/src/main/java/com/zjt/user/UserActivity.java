@@ -35,7 +35,7 @@ public class UserActivity extends AppCompatActivity {
         mMeTxt = findViewById(R.id.txt_me);
         mSettingTxt = findViewById(R.id.txt_setting);
 
-        mMeFragment = new MeFragment();
+        mMeFragment = new KtFragment();
         switchFragment(mMeFragment);
 
         mMeTxt.setOnClickListener(v -> {

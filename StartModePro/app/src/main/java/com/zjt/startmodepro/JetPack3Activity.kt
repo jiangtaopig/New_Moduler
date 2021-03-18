@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.zjt.startmodepro.my_kotlin.MyKotlinManager
 import com.zjt.startmodepro.viewmodel.JetPack3ViewModel
 
 class JetPack3Activity : AppCompatActivity() {
@@ -45,6 +47,14 @@ class JetPack3Activity : AppCompatActivity() {
 
 
         mShowBtn.setOnClickListener {
+
+            var a : String? = null
+            val b = a?: "zz" // 表示如果 a 为 null 的话，那么 b的值等于后面的 "zz"
+            Log.e("zjt", "b = $b, a length = ${a?.length}")
+
+            val myKotlinManager = MyKotlinManager("zjt", 32)
+            myKotlinManager.showTops()
+
             mViewModel.getStudentInfo()
         }
 

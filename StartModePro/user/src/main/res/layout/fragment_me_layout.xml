@@ -4,12 +4,13 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/txt_me_kt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="18sp"
         android:padding="16dp"
-        android:text="me fragment"
+        android:text="kt me fragment"
         android:background="#51D1EF"/>
 
 </RelativeLayout>
