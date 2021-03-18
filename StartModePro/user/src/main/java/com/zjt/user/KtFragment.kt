@@ -29,7 +29,7 @@ class KtFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mTitleTv = view.findViewById(R.id.txt_me_kt)
         // 直接修改服务器代码
-         var a = "123
+         var a = "12332243
         var b = 22
 
         mMeViewModel.apply {
