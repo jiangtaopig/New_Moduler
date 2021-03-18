@@ -27,6 +27,7 @@
 
         <activity android:name=".JetPackActivity"/>
         <activity android:name=".JetPack2Activity"/>
+        <activity android:name=".JetPack3Activity"/>
 
     </application>
 

@@ -30,6 +30,7 @@ class JetPack2Activity extends AppCompatActivity {
     private NameViewModel mNameViewModel;
     private MyViewModel mMyViewModel;
     private Button mGetBtn;
+    private Button mJump2JetPack3ActivityBtn;
 
     public static void enter(Context context) {
         Intent intent = new Intent(context, JetPack2Activity.class);
@@ -47,6 +48,16 @@ class JetPack2Activity extends AppCompatActivity {
         mButton = findViewById(R.id.btn_refresh);
         mProgressBar = findViewById(R.id.progressbar);
         mGetBtn = findViewById(R.id.btn_data);
+
+        mJump2JetPack3ActivityBtn = findViewById(R.id.btn_2_jetpack3Activity);
+
+        mJump2JetPack3ActivityBtn.setOnClickListener(v -> {
+            JetPack3Activity.Companion.enter(this);
+//            Intent intent = new Intent(this, JetPack3Activity.class);
+//            startActivity(intent);
+//            MyKotlinManager kotlinManager = new MyKotlinManager("zhujiangtao");
+//            kotlinManager.showTops();
+        });
 
         mNameViewModel = ViewModelManager.getInstance().getNameModel(this);
         Observer<String> observer = new Observer<String>() {

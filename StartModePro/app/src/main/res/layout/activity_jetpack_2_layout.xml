@@ -32,4 +32,10 @@
         android:layout_height="wrap_content"
         android:text="get data"/>
 
+    <Button
+        android:id="@+id/btn_2_jetpack3Activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="jump 2 jetpack3Activity"/>
+
 </LinearLayout>
