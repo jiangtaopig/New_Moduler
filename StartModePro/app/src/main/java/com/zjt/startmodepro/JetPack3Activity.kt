@@ -10,7 +10,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zjt.startmodepro.my_kotlin.MyKotlinManager
+import com.zjt.startmodepro.my_kotlin.OnSuccessListener
 import com.zjt.startmodepro.viewmodel.JetPack3ViewModel
 
 class JetPack3Activity : AppCompatActivity() {
@@ -26,8 +29,10 @@ class JetPack3Activity : AppCompatActivity() {
 
     private lateinit var mDataChangeTv : TextView
     private lateinit var mShowBtn : Button
+    private lateinit var mRecycleView : RecyclerView
 
     lateinit var mViewModel : JetPack3ViewModel
+    private lateinit var mMyAdapter : MyAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +42,11 @@ class JetPack3Activity : AppCompatActivity() {
 
         mDataChangeTv = findViewById(R.id.txt_title)
         mShowBtn = findViewById(R.id.btn_change_data)
+        mRecycleView = findViewById(R.id.recycle_view)
 
+        mRecycleView.layoutManager = LinearLayoutManager(this)
+        mMyAdapter = MyAdapter()
+        mRecycleView.adapter = mMyAdapter
 
 
         mViewModel = ViewModelProvider(this).get(JetPack3ViewModel::class.java)
@@ -54,10 +63,23 @@ class JetPack3Activity : AppCompatActivity() {
 
             val myKotlinManager = MyKotlinManager("zjt", 32)
             myKotlinManager.showTops()
+            myKotlinManager.setOnSuccessListener(object : OnSuccessListener{
+                override fun onSuccess(msg: String) {
+                    Log.e("zjt", "------ msg = $msg ------")
+                }
+            })
 
+            myKotlinManager.doInterface()
             mViewModel.getStudentInfo()
-        }
 
+
+            val list = mutableListOf<String>()
+            for (i in 1 .. 10){
+                list.add("数据--$i")
+            }
+
+            mMyAdapter.setDataList(list)
+        }
 
     }
 
