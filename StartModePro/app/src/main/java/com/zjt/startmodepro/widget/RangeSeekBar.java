@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -39,18 +40,17 @@ public class RangeSeekBar extends View {
      */
     int max = 100;
     boolean isMinMode = true;//选择最小值模式
-    //弹出控件的x,y坐标
-    int toastViewX = 0;
-    int toastViewY = 0;
     int[] point = new int[2];
-    int toastView1X = 0;
-    int toastView1Y = 0;
     private int viewWidth;//控件宽
     private int bgHeight = dp2px(4);//进度条宽度
     //最小值的百分比
     private int minValue = 0;
     //最大值的百分比
     private int maxValue = 100;
+
+    // 设置seekbar 左/右上角 起始文字时，整个 seekbar 的高度计算， height = drawUnitRatio * 两端图片的高度
+    private final static double drawUnitRatio = 1.5;
+    private final static double notDrawUnitRatio = 1.2;
 
     public RangeSeekBar(Context context) {
         this(context, null);
@@ -144,8 +144,8 @@ public class RangeSeekBar extends View {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         // 得到新的图片.
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
-        return newbm;
+        Bitmap newBm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+        return newBm;
     }
 
     @Override
@@ -155,7 +155,7 @@ public class RangeSeekBar extends View {
         drawBg(canvas);
         drawValue(canvas);
         drawButton(canvas);
-        calculationToastIndex();
+//        calculationToastIndex();
     }
 
     /**
@@ -190,11 +190,17 @@ public class RangeSeekBar extends View {
         float maxx = seekWidth * maxValue / max;
         float m2 = maxx + buttonWidth / 2;
 
-        canvas.drawRoundRect(new RectF(m1, buttonHeight - bgHeight / 2, m2, buttonHeight + bgHeight / 2),
-                bgHeight / 2,
-                bgHeight / 2
-                , valuePaint);
-
+        if (isDrawUnit()){
+            canvas.drawRoundRect(new RectF(m1, buttonHeight - bgHeight / 2, m2, buttonHeight + bgHeight / 2),
+                    bgHeight / 2,
+                    bgHeight / 2
+                    , valuePaint);
+        } else {
+            canvas.drawRoundRect(new RectF(m1, buttonHeight/2 - bgHeight / 2, m2, buttonHeight/2 + bgHeight / 2),
+                    bgHeight / 2,
+                    bgHeight / 2
+                    , valuePaint);
+        }
     }
 
     @Override
@@ -309,12 +315,15 @@ public class RangeSeekBar extends View {
     }
 
     private void drawButton(Canvas canvas) {
+        float top = (float) (buttonHeight * (notDrawUnitRatio - 1) / 2);
+        if (isDrawUnit())
+            top = buttonHeight / 2;
         if (isMinMode) {
-            canvas.drawBitmap(buttonImg, seekWidth * maxValue / max, buttonHeight / 2, textPaint);
-            canvas.drawBitmap(buttonImg, seekWidth * minValue / max, buttonHeight / 2, textPaint);
+            canvas.drawBitmap(buttonImg, seekWidth * maxValue / max, top, textPaint);
+            canvas.drawBitmap(buttonImg, seekWidth * minValue / max, top, textPaint);
         } else {
-            canvas.drawBitmap(buttonImg, seekWidth * minValue / max, buttonHeight / 2, textPaint);
-            canvas.drawBitmap(buttonImg, seekWidth * maxValue / max, buttonHeight / 2, textPaint);
+            canvas.drawBitmap(buttonImg, seekWidth * minValue / max, top, textPaint);
+            canvas.drawBitmap(buttonImg, seekWidth * maxValue / max, top, textPaint);
         }
     }
 
@@ -327,29 +336,33 @@ public class RangeSeekBar extends View {
 
     @Override
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-
         super.onVisibilityChanged(changedView, visibility);
     }
 
-    private void hideToastView(View view) {
-        if (view == null)
-            return;
-        view.setVisibility(GONE); // 防闪烁
-    }
-
     private void drawBg(Canvas canvas) {
+        if (isDrawUnit()){
+            canvas.drawRoundRect(new RectF(buttonWidth / 2, buttonHeight - bgHeight / 2, viewWidth - buttonWidth / 2, buttonHeight + bgHeight / 2),
+                    bgHeight / 2,
+                    bgHeight / 2
+                    , bgPaint);
+        }else {
+            canvas.drawRoundRect(new RectF(buttonWidth / 2, buttonHeight/2 - bgHeight / 2, viewWidth - buttonWidth / 2, buttonHeight/2 + bgHeight / 2),
+                    bgHeight / 2,
+                    bgHeight / 2
+                    , bgPaint);
+        }
 
-        canvas.drawRoundRect(new RectF(buttonWidth / 2, buttonHeight - bgHeight / 2, viewWidth - buttonWidth / 2, buttonHeight + bgHeight / 2),
-                bgHeight / 2,
-                bgHeight / 2
-                , bgPaint);
     }
 
     private void drawUnit(Canvas canvas) {
+        if (isDrawUnit()){
+            drawText(canvas, buttonWidth / 2, unitTextSize, unitStr1);
+            drawText(canvas, viewWidth - buttonWidth / 2, unitTextSize, unitStr2);
+        }
+    }
 
-        drawText(canvas, buttonWidth / 2, unitTextSize, unitStr1);
-        drawText(canvas, viewWidth - buttonWidth / 2, unitTextSize, unitStr2);
-
+    private boolean isDrawUnit(){
+        return !TextUtils.isEmpty(unitStr1) && !TextUtils.isEmpty(unitStr2);
     }
 
 
@@ -381,7 +394,11 @@ public class RangeSeekBar extends View {
             default:
                 break;
         }
-        setMeasuredDimension(viewWidth, (int) (buttonHeight * 1.5f));
+        int viewHeight = (int) (buttonHeight * notDrawUnitRatio);
+        if (isDrawUnit()){
+            viewHeight = (int) (buttonHeight * drawUnitRatio);
+        }
+        setMeasuredDimension(viewWidth, viewHeight);
 
     }
 

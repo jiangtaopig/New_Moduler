@@ -25,6 +25,7 @@
 
     <com.zjt.startmodepro.widget.RangeSeekBar
         android:id="@+id/range_seek_bar"
+        android:background="#881122"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -32,7 +33,7 @@
         app:button_img="@drawable/seek_button"
         app:button_height="40dp"
         app:button_width="40dp"
-        app:bg_color="#999"
+        app:bg_color="#666666"
         app:value_color="#e97051"
         app:seek_height="6dp"
         />

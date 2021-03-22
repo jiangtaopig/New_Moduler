@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         mRangeSeekBar = findViewById(R.id.range_seek_bar);
         // 在seekbar 的左上角显示0， 右上角现实 100
-        mRangeSeekBar.setUnit("0", "100");
+//        mRangeSeekBar.setUnit("0", "100");
         // 设置 seekbar 开始时的最小位置
         mRangeSeekBar.setMinValue(10);
         // 设置seekbar 开始时的 最大位置
