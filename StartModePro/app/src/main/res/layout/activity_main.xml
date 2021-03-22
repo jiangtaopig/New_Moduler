@@ -22,4 +22,19 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"/>
 
+
+    <com.zjt.startmodepro.widget.RangeSeekBar
+        android:id="@+id/range_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:text_color="#1B97F7"
+        app:button_img="@drawable/seek_button"
+        app:button_height="40dp"
+        app:button_width="40dp"
+        app:bg_color="#999"
+        app:value_color="#e97051"
+        app:seek_height="6dp"
+        />
+
 </LinearLayout>

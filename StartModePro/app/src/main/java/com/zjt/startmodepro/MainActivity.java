@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
+import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTv;
     private TextView mToUserTxt;
+    private RangeSeekBar mRangeSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
-            Log.e("zjt", "name = " + userInfo.getName()+" , age = "+userInfo.getAge());
+            Log.e("zjt", "name = " + userInfo.getName() + " , age = " + userInfo.getAge());
 
 
             JetPackActivity.enter(this);
@@ -53,6 +55,22 @@ public class MainActivity extends AppCompatActivity {
         mToUserTxt.setOnClickListener(v -> {
             ARouter.getInstance().build(RouteHub.User.USER_MAIN_PATH)
                     .navigation(this);
+        });
+
+        mRangeSeekBar = findViewById(R.id.range_seek_bar);
+        // 在seekbar 的左上角显示0， 右上角现实 100
+        mRangeSeekBar.setUnit("0", "100");
+        // 设置 seekbar 开始时的最小位置
+        mRangeSeekBar.setMinValue(10);
+        // 设置seekbar 开始时的 最大位置
+        mRangeSeekBar.setMaxValue(100);
+
+        mRangeSeekBar.setCallBack(new RangeSeekBar.DhdBarCallBack() {
+            @Override
+            public void onEndTouch(float minPercentage, float maxPercentage) {
+                super.onEndTouch(minPercentage, maxPercentage);
+                Log.e("seekbar", "minPercentage = " + minPercentage + " , maxPercentage = " + maxPercentage);
+            }
         });
 
     }
