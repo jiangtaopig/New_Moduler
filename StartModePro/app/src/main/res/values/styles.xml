@@ -1,20 +1,38 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+
+
+
+
+
+    <style name="SimpleDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="AppThemeWelcome" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">#DCDCDC</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorWhite</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:buttonStyle">@android:style/Widget.Button.Small</item>
+    <style name="SimpleDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+
+
+    </style>
+
+    <style parent="ThemeOverlay.AppCompat.Dark.ActionBar" name="AppTheme.AppBarOverlay"/>
+    <style parent="ThemeOverlay.AppCompat.Light" name="AppTheme.PopupOverlay"/>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -23,11 +41,303 @@
         <item name="android:buttonStyle">@android:style/Widget.Button.Small</item>
     </style>
 
-    <style name="AppTheme2" parent="BaseTheme">
-        <item name="colorPrimary">#249FE6</item>
-        <item name="colorPrimaryDark">#DCDCDC</item>
-        <item name="colorAccent">#249FE6</item>
-        <item name="android:windowBackground">#ffffff</item>
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="colorPrimary">@color/color_249fe6</item>
+        <item name="colorPrimaryDark">@color/light_gray</item>
+        <item name="colorAccent">@color/color_249fe6</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
+
+    <style name="AppThemeWelcome" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/color_249fe6</item>
+        <item name="colorPrimaryDark">@color/light_gray</item>
+        <item name="colorAccent">@color/color_249fe6</item>
+        <item name="android:windowBackground">@drawable/a2</item>
+    </style>
+
+    <style name="font_15dp_black">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MyTranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="font_15dp_black_bold">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_60sp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_60sp</item>
+    </style>
+
+    <style name="font_84dp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_84dp</item>
+    </style>
+
+    <style name="font_40dp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_40dp</item>
+    </style>
+
+    <style name="font_40dp_white">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/dimen_40dp</item>
+    </style>
+
+    <style name="font_48sp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">38sp</item>
+    </style>
+
+    <style name="font_15dp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
+    </style>
+
+    <style name="font_15dp_666666">
+        <item name="android:textColor">@color/color_666666</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
+    </style>
+
+    <style name="font_18dp_666666">
+        <item name="android:textColor">@color/color_666666</item>
+        <item name="android:textSize">@dimen/dimen_18dp</item>
+    </style>
+
+    <style name="font_18dp_1c9eea">
+        <item name="android:textColor">@color/color_1c9eea</item>
+        <item name="android:textSize">@dimen/dimen_18dp</item>
+    </style>
+
+    <style name="font_18dp_black_bold">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimen_18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_25dp_black_bold">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimen_25dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_15dp_249fe6_bold">
+        <item name="android:textColor">@color/color_249fe6</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_15dp_249fe6">
+        <item name="android:textColor">@color/color_249fe6</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
+    </style>
+
+    <style name="font_15dp_c83f53">
+        <item name="android:textColor">@color/color_c83f53</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
+    </style>
+
+    <style name="font_16sp_249fe6">
+        <item name="android:textColor">@color/color_249fe6</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="font_17sp_249fe6">
+        <item name="android:textColor">@color/color_249fe6</item>
+        <item name="android:textSize">@dimen/dimen_17sp</item>
+    </style>
+
+    <style name="font_17dp_black_bold">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimen_17dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_16dp_white">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/dimen_16dp</item>
+    </style>
+
+    <style name="font_16sp_white">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_16dp_white_bold">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/dimen_16dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_16dp_black">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/dimen_16dp</item>
+        <item name="android:textColorHint">@color/color_cccccc</item>
+    </style>
+
+    <style name="font_16dp_999999">
+        <item name="android:textColor">@color/color_999999</item>
+        <item name="android:textSize">@dimen/dimen_16dp</item>
+    </style>
+
+    <style name="font_16sp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_16sp_666666">
+        <item name="android:textColor">@color/color_666666</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_16sp_cccccc">
+        <item name="android:textColor">@color/color_cccccc</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_16sp_999999">
+        <item name="android:textColor">@color/color_999999</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_16sp_ff6600">
+        <item name="android:textColor">@color/color_ff6600</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_19sp_ff6600">
+        <item name="android:textColor">@color/color_ff6600</item>
+        <item name="android:textSize">@dimen/dimen_19sp</item>
+    </style>
+
+    <style name="font_16sp_ff5060">
+        <item name="android:textColor">@color/color_ff5060</item>
+        <item name="android:textSize">@dimen/dimen_16sp</item>
+    </style>
+
+    <style name="font_14sp_white">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/dimen_14sp</item>
+    </style>
+
+    <style name="font_14sp_7fffffff">
+        <item name="android:textColor">@color/color_7fffffff</item>
+        <item name="android:textSize">@dimen/dimen_14sp</item>
+    </style>
+
+    <style name="font_14sp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_14sp</item>
+    </style>
+
+    <style name="font_14sp_999999">
+        <item name="android:textColor">@color/color_999999</item>
+        <item name="android:textSize">@dimen/dimen_14sp</item>
+    </style>
+
+    <style name="font_12sp_666666">
+        <item name="android:textColor">@color/color_666666</item>
+        <item name="android:textSize">@dimen/dimen_12sp</item>
+    </style>
+
+    <style name="font_18sp_333333">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/dimen_18sp</item>
+    </style>
+
+    <style name="LiveBottomDialogTheme" parent="BottomDialogTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="BottomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowAnimationStyle">@style/dialogPushUpInAnimation</item>
+    </style>
+
+    <!-- 底部菜单对话框动画 -->
+    <style name="dialogPushUpInAnimation">
+        <item name="android:windowEnterAnimation">@anim/hw_push_up_in</item>
+        <item name="android:windowExitAnimation">@anim/hw_push_up_out</item>
+    </style>
+
+
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!-- Application theme. -->
+    <style name="MyAppTheme" parent="@style/AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <declare-styleable name="CustomCancelView">
+        <attr name="view_radius" format="dimension" />
+        <attr name="view_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseTagFlowLayout">
+        <attr name="base_max_select" format="integer"></attr>
+        <attr name="base_tag_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="RangeBar">
+        <attr name="solidBackgroundColor" format="color"/><!--solid background color. 固定未选中的进度条颜色。-->
+        <attr name="rangeColor" format="color"/><!-- selected range background color. 选中的范围颜色。-->
+        <attr name="textColor" format="color"/><!--top text color. 控件中文字颜色 -->
+        <attr name="sliderDrawable" format="reference"/><!--slider drawable resource id. 滑块资源id，左右两边相同。-->
+        <attr name="rangeHeight" format="dimension"/><!-- range bar height. 进度条高度-->
+        <attr name="textSize" format="dimension"/><!--text size . 文本大小-->
+        <attr name="verticalLineHeight" format="dimension"/><!-- vertical line height. 竖直的线的高度-->
+        <attr name="verticalPadding" format="dimension"/><!-- vertical content padding. 竖直方向的 内边距-->
+        <attr name="textArray" format="reference"/><!-- draw text in top . 顶部显示的文本数组-->
+
+    </declare-styleable>
+
+
+
+    <style name="CalendarStyle">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+
+
+    <declare-styleable name="TestView2">
+        <attr name="android:text"/>
+        <attr name="android:textSize"/>
+    </declare-styleable>
+
+    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog" >
+
+        <!-- 进入和退出时动画-->
+        <item name="android:windowAnimationStyle">@style/dialogPushUpInAnimation</item>
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
+
+        <!-- 点击空白区域是否消失  API Level>=11-->
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+
+
 
 </resources>

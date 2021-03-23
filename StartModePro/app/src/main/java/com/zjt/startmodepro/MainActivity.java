@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv;
     private TextView mToUserTxt;
     private RangeSeekBar mRangeSeekBar;
+    private TextView mShowDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         mTv = findViewById(R.id.txt_rx);
         mToUserTxt = findViewById(R.id.txt_user);
+        mShowDialog = findViewById(R.id.txt_show_dialog);
         mTv.setOnClickListener(v -> {
 //                test1();
 //            test2();
@@ -69,8 +71,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEndTouch(float minPercentage, float maxPercentage) {
                 super.onEndTouch(minPercentage, maxPercentage);
-//                Log.e("seekbar", "minPercentage = " + minPercentage + " , maxPercentage = " + maxPercentage);
+                Log.e("seekbar", "minPercentage = " + minPercentage + " , maxPercentage = " + maxPercentage);
             }
+        });
+
+
+        mShowDialog.setOnClickListener(v -> {
+//            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
+//            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
+
+            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("haha");
+            myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
     }
