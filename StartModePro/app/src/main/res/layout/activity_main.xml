@@ -31,11 +31,17 @@
         android:layout_margin="10dp"
         app:text_color="#1B97F7"
         app:button_img="@drawable/seek_button"
-        app:button_height="40dp"
-        app:button_width="40dp"
-        app:bg_color="#666666"
-        app:value_color="#e97051"
-        app:seek_height="6dp"
+        app:button_height="10dp"
+        app:button_width="10dp"
+        app:bg_color="#ffffff"
+        app:value_color="#fb7299"
+        app:seek_height="2dp"
         />
+
+    <com.zjt.startmodepro.widget.BitmapView
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#666666"/>
 
 </LinearLayout>

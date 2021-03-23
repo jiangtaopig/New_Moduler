@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEndTouch(float minPercentage, float maxPercentage) {
                 super.onEndTouch(minPercentage, maxPercentage);
-                Log.e("seekbar", "minPercentage = " + minPercentage + " , maxPercentage = " + maxPercentage);
+//                Log.e("seekbar", "minPercentage = " + minPercentage + " , maxPercentage = " + maxPercentage);
             }
         });
 

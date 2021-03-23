@@ -1,6 +1,7 @@
 package com.zjt.startmodepro;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
@@ -14,11 +15,13 @@ public
  *on 2021/3/1
  */
 class MyApplication extends Application {
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationObserver());
-
+        mContext = getApplicationContext();
         initARouter();
     }
 
@@ -30,6 +33,10 @@ class MyApplication extends Application {
         }
         ARouter.init(this);
         Log.e("time----", "MyApplication initARouter time --- "+System.currentTimeMillis());
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 
     public boolean isDebug() {
