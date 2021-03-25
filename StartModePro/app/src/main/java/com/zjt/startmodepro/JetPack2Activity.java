@@ -49,6 +49,8 @@ class JetPack2Activity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progressbar);
         mGetBtn = findViewById(R.id.btn_data);
 
+        // 我修改了  JetPack2Activity 类
+
         mJump2JetPack3ActivityBtn = findViewById(R.id.btn_2_jetpack3Activity);
 
         mJump2JetPack3ActivityBtn.setOnClickListener(v -> {
