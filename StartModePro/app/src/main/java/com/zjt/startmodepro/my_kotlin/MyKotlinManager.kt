@@ -16,6 +16,7 @@ class MyKotlinManager(val name: String) { // 主构造器
 
     constructor(name: String, age: Int) : this(name) { // 次构造器
         this.age = age
+        list.clear()
     }
 
     fun showTops() {

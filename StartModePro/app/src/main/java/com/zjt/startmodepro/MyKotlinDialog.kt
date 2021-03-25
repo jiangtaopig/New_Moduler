@@ -33,9 +33,13 @@ class MyKotlinDialog : DialogFragment() , DialogInterface {
         super.onStart()
         val window = dialog?.window
         var params : WindowManager.LayoutParams = window?.attributes!!
-        params.gravity = Gravity.BOTTOM
+        params.gravity = Gravity.BOTTOM // BUTTON 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
+
+//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+//        return inflater.inflate(R.layout.dialog_my_kotlin_layout, container, false)
+//    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(activity!!, R.style.BottomDialogTheme)

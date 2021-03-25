@@ -1,13 +1,22 @@
 package com.zjt.startmodepro;
 
+import android.Manifest;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
+import com.zjt.startmodepro.utils.FileUtil;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -26,31 +35,42 @@ import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTv;
     private TextView mToUserTxt;
     private RangeSeekBar mRangeSeekBar;
     private TextView mShowDialog;
+    private Button mJump2FileActivity;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
 
         mTv = findViewById(R.id.txt_rx);
         mToUserTxt = findViewById(R.id.txt_user);
         mShowDialog = findViewById(R.id.txt_show_dialog);
+        mJump2FileActivity = findViewById(R.id.jump_2_file_activity);
+
+        mJump2FileActivity.setOnClickListener(v -> {
+            FileActivity.Companion.enter(this);
+        });
+
+
         mTv.setOnClickListener(v -> {
-//                test1();
+//            test1();
 //            test2();
 
+            // 测试 ARouter 的 Provider 的使用
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
             Log.e("zjt", "name = " + userInfo.getName() + " , age = " + userInfo.getAge());
-
-
             JetPackActivity.enter(this);
         });
 
@@ -79,11 +99,21 @@ public class MainActivity extends AppCompatActivity {
         mShowDialog.setOnClickListener(v -> {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
 //            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
-
             MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("haha");
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
+        requestPermission();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestPermission() {
+        if (this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void test2() {

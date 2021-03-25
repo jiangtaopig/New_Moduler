@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <TextView
@@ -55,5 +56,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#666666"/>
+
+    <Button
+        android:id="@+id/jump_2_file_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dimen_20sp"
+        android:text="jump 2 FileActivity"
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/color_333333"
+        android:hint="请输入文本"/>
 
 </LinearLayout>
