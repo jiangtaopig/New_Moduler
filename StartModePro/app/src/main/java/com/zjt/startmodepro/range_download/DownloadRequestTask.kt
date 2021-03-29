@@ -127,7 +127,6 @@ class DownloadRequestTask(private val task: DownloadRequest, private val _listen
          *  2.确保连接可行
          */
         log("handleStateNew")
-
         Observable.just(task.url)
                 .map {
                     try {

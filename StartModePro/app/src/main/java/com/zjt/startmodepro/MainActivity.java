@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
+        findViewById(R.id.btn_bitmap_clip).setOnClickListener(v -> {
+            BitmapClipActivity.Companion.enter(this);
+        });
+
         requestPermission();
 
     }

@@ -23,7 +23,7 @@ class JetPack3Activity : AppCompatActivity() {
     companion object {
         fun enter(context: Context) {
             var intent = Intent(context, JetPack3Activity::class.java)
-            if (!(context is Activity))
+            if (context !is Activity)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }

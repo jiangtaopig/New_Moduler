@@ -17,14 +17,10 @@ import androidx.lifecycle.Observer;
 
 import com.bilibili.bilibililive.virtuallive.downloader.DownloadRequestTask;
 import com.bilibili.bilibililive.virtuallive.downloader.IRequestDownloadCallback;
-import com.zjt.startmodepro.range_download.DownloadListener;
 import com.zjt.startmodepro.range_download.DownloadRequest;
-import com.zjt.startmodepro.range_download.DownloadTask;
 import com.zjt.startmodepro.utils.FileUtil;
 import com.zjt.startmodepro.viewmodel.MyViewModel;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
-
-import okhttp3.OkHttpClient;
 
 public
 /**
