@@ -249,6 +249,10 @@ public class FileUtil {
         return cacheDir.getAbsolutePath() + pathDiv + fileName;
     }
 
+    public static String getCachePath(){
+        return cacheDir.getAbsolutePath();
+    }
+
     /**
      * 判断缓存文件是否存在
      */
