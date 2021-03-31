@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mShowDialog;
     private Button mJump2FileActivity;
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
             Log.e("zjt", "name = " + userInfo.getName() + " , age = " + userInfo.getAge());
+
+
+            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
+            userProvider.getUserInfo();
+            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
             JetPackActivity.enter(this);
         });
 
@@ -105,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_bitmap_clip).setOnClickListener(v -> {
             BitmapClipActivity.Companion.enter(this);
+        });
+
+        findViewById(R.id.btn_2_http).setOnClickListener(v -> {
+            HttpActivity.Companion.enter(this);
         });
 
         requestPermission();

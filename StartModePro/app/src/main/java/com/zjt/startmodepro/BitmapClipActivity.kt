@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.zjt.startmodepro.bean.Student
 import com.zjt.startmodepro.utils.BitmapUtils
+import okhttp3.OkHttpClient
 
 /**
 
@@ -34,6 +36,7 @@ class BitmapClipActivity : AppCompatActivity() {
 
     private lateinit var clippedImg: ImageView
     private lateinit var clipBitmapBtn: Button
+    private val student = Student("zjt", 20)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +48,13 @@ class BitmapClipActivity : AppCompatActivity() {
         initView()
     }
 
+    var cnt = 1;
+
     private fun initView() {
+
         clipBitmapBtn.setOnClickListener {
+            cnt++
+            student.id += "_$cnt"
 
             val bitmap = BitmapFactory.decodeResource(resources, R.drawable.test2)
             val bm = BitmapUtils.scaleBitmap(bitmap, 100f, 120f)

@@ -44,6 +44,7 @@
         <activity android:name=".JetPack3Activity" />
         <activity android:name=".FileActivity" />
         <activity android:name=".BitmapClipActivity"/>
+        <activity android:name=".HttpActivity"/>
 
     </application>
 
