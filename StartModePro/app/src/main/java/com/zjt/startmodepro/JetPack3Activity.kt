@@ -50,6 +50,10 @@ class JetPack3Activity : AppCompatActivity() {
         mMyAdapter = MyAdapter()
         mRecycleView.adapter = mMyAdapter
 
+        mRecycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+        })
+
 
         mViewModel = ViewModelProvider(this).get(JetPack3ViewModel::class.java)
         mViewModel.mStudent.observe(this, Observer {

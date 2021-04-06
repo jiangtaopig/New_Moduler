@@ -20,6 +20,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.zjt.startmodepro.lifecycle.MyObserver;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+
 /**
  * Creaeted by ${za.zhu.jiangtao}
  * on 2021/3/1
@@ -76,6 +80,11 @@ public class JetPackActivity extends AppCompatActivity {
             JetPack2Activity.enter(this);
         });
 
+        String s = "";
+
+        AndroidSchedulers.mainThread().createWorker().schedule(() -> {
+
+        }, 200, TimeUnit.MICROSECONDS);
     }
 
     @Override
