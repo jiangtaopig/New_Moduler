@@ -43,7 +43,7 @@ public class UserActivity extends AppCompatActivity {
         });
 
         mSettingTxt.setOnClickListener(v -> {
-            mSettingFragment = new SettingFragment();
+            mSettingFragment = new MyFloatFragment();
             switchFragment(mSettingFragment);
         });
     }

@@ -46,6 +46,8 @@
         <activity android:name=".BitmapClipActivity"/>
         <activity android:name=".HttpActivity"/>
 
+        <activity android:name=".MyKotlinActivity"/>
+
     </application>
 
 </manifest>

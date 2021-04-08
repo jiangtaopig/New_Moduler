@@ -92,6 +92,21 @@
                 android:text="HttpActivity"
                 android:textSize="@dimen/dimen_18sp" />
 
+            <Button
+                android:id="@+id/btn_2_kotlin_package"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MyKotlinActivity"
+                android:textSize="@dimen/dimen_18sp" />
+
+            <Button
+                android:id="@+id/btn_test_handler_sync_barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试 Handler 的 同步屏障"
+                android:textSize="@dimen/dimen_18sp" />
+
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -1,3 +1,4 @@
+include ':lib'
 include ':user_api'
 include ':user'
 include ':base'

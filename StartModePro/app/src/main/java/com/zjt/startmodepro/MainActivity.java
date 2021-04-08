@@ -1,13 +1,13 @@
 package com.zjt.startmodepro;
 
 import android.Manifest;
-import android.graphics.Rect;
+import android.icu.util.TimeUnit;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
-import com.zjt.startmodepro.utils.FileUtil;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -116,6 +115,40 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_2_http).setOnClickListener(v -> {
             HttpActivity.Companion.enter(this);
         });
+
+        findViewById(R.id.btn_2_kotlin_package)
+                .setOnClickListener(v -> {
+                    MyKotlinActivity.Companion.enter(this);
+                    ZhuJtUtils.test();
+                });
+
+
+
+        findViewById(R.id.btn_test_handler_sync_barrier).
+                setOnClickListener(
+                        v -> {
+                            Handler handler = new Handler();
+                            handler.post(() -> {
+                                Log.e("zjt", "runnable 1 start");
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.e("zjt", "runnable 1 end");
+                            });
+
+                            handler.post(() -> {
+                                Log.e("zjt", "runnable 2 start");
+                            });
+
+                            handler.postAtFrontOfQueue(() ->{
+                                Log.e("zjt", "runnable 3 start");
+                            });
+
+                        }
+                );
+
 
         requestPermission();
 
