@@ -8,6 +8,8 @@ public class MyClass {
 
         StringBuilder sb = new StringBuilder();
         sb.append(1);
+        System.out.printf("sss");
+
 
     }
 }

@@ -1,11 +1,9 @@
 package com.zjt.startmodepro;
 
 import android.Manifest;
-import android.icu.util.TimeUnit;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_2_kotlin_package)
                 .setOnClickListener(v -> {
-                    MyKotlinActivity.Companion.enter(this);
+                    TestRefactorActivity.Companion.enter(this);
                     ZhuJtUtils.test();
                 });
 

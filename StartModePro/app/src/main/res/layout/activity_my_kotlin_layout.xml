@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6f6f6f">
+    android:background="#6f6f6f"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_10dp"
+        android:background="@drawable/bg_ffffff_9_round_rect"
         android:gravity="center"
-        android:textSize="@dimen/dimen_18sp"
-        android:textColor="@color/color_333333"
+        android:padding="@dimen/dimen_10dp"
         android:text="我是 src 目录下 kotlin 目录中的文件"
-        android:background="@drawable/bg_ffffff_9_round_rect"/>
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dimen_18sp" />
+
+    <Button
+        android:id="@+id/btn_refactor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="重构之道"
+        android:textSize="@dimen/dimen_18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_camera_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="相机开播" />
+
+        <Button
+            android:id="@+id/btn_voice_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="语音开播" />
+
+    </LinearLayout>
 
 </LinearLayout>
