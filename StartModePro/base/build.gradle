@@ -52,4 +52,7 @@ dependencies {
 
     api "androidx.recyclerview:recyclerview:1.1.0"
 
+    // okhttp
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
+
 }

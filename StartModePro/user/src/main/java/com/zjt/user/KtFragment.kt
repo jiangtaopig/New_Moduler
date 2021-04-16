@@ -1,6 +1,7 @@
 package com.zjt.user
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +29,6 @@ class KtFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mTitleTv = view.findViewById(R.id.txt_me_kt)
-        // 直接修改服务器代码
-         var a = "231"
-        var b = 22
 
         mMeViewModel.apply {
             mMeViewModel.mData.observe(viewLifecycleOwner, object : Observer<String>{
@@ -43,6 +41,9 @@ class KtFragment : Fragment() {
 
         mTitleTv.setOnClickListener {
             mMeViewModel.doSth()
+            val intent = Intent(activity, TestFloatActivity::class.java)
+            activity?.startActivity(intent)
+
         }
 
     }

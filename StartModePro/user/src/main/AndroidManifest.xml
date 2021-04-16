@@ -4,5 +4,6 @@
 
     <application>
         <activity android:name=".UserActivity" />
+        <activity android:name=".TestFloatActivity"/>
     </application>
 </manifest>

@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+
+def isNeedZhujt = true
+
 android {
     compileSdkVersion 29
 
@@ -31,6 +34,23 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    sourceSets{
+        main{
+            java.srcDirs "src/main/java"
+            java.srcDirs "src/main/kotlin"
+            res.srcDirs "src/main/res"
+            if (isNeedZhujt){
+                java.srcDirs "src/zhujt/java" // 新建一个跟 main 平行的目录
+                res.srcDirs "src/zhujt/res"
+            }
+        }
     }
 }
 

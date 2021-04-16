@@ -23,7 +23,7 @@ class JetPack3Activity : AppCompatActivity() {
     companion object {
         fun enter(context: Context) {
             var intent = Intent(context, JetPack3Activity::class.java)
-            if (!(context is Activity))
+            if (context !is Activity)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
@@ -49,6 +49,10 @@ class JetPack3Activity : AppCompatActivity() {
         mRecycleView.layoutManager = LinearLayoutManager(this)
         mMyAdapter = MyAdapter()
         mRecycleView.adapter = mMyAdapter
+
+        mRecycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+        })
 
 
         mViewModel = ViewModelProvider(this).get(JetPack3ViewModel::class.java)

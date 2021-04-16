@@ -4,8 +4,10 @@
     package="com.zjt.startmodepro">
 
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -15,12 +17,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeWelcome">
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+        android:theme="@style/AppThemeWelcome"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,16 +33,22 @@
         </activity>
 
         <activity android:name=".B1Activity">
-            <intent-filter >
-                <action android:name="android.intent.action.VIEW"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
 
         </activity>
 
-        <activity android:name=".JetPackActivity"/>
-        <activity android:name=".JetPack2Activity"/>
-        <activity android:name=".JetPack3Activity"/>
-        <activity android:name=".FileActivity"/>
+        <activity android:name=".JetPackActivity" />
+        <activity android:name=".JetPack2Activity" />
+        <activity android:name=".JetPack3Activity" />
+        <activity android:name=".FileActivity" />
+        <activity android:name=".BitmapClipActivity"/>
+        <activity android:name=".HttpActivity"/>
+
+        <activity android:name=".TestRefactorActivity"/>
+        <activity android:name=".concurrent.TestThreadPoolActivity"/>
+        <activity android:name=".TestExceptionActivity"/>
 
     </application>
 

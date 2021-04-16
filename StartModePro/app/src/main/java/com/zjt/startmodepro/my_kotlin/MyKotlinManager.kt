@@ -8,8 +8,8 @@ class MyKotlinManager(val name: String) { // 主构造器
         val TAG = "MyKotlinManager"
     }
 
-    var list  = ArrayList<Int>()
-    var  map = HashMap<Int, String>()
+    var list = ArrayList<Int>()
+    var map = HashMap<Int, String>()
 
     var age: Int = 0
     lateinit var listener: OnSuccessListener
@@ -47,59 +47,69 @@ class MyKotlinManager(val name: String) { // 主构造器
     }
 
     // 调用 sth 的方法2
-    fun ff2(){
+    fun ff2() {
         // sth 的最后一个入参是 函数类型，则可以移到参数列表的括号外面
         sth(3, 5) { x, y -> x + y }
     }
 
-    fun sth2(opt : (Int , Int) -> Int) :Int{
+    fun sth2(opt: (Int, Int) -> Int): Int {
         // opt(3, 7) 等价于 opt.invoke(3, 7)
         return opt.invoke(3, 7)
     }
 
     // 调用 sth2 的方法
-    fun ff3() : Int{
+    fun ff3(): Int {
         // 如果函数的入参只有一个且是函数类型，那么连入参的括号也可省略
-        return sth2 {x, y -> x*y}
+        return sth2 { x, y -> x * y }
     }
 
 
     // 函数类型的赋值方式1 ： 利用 lambda 表达式来赋值
-    val ss :(Int, Int) -> Int = {x :Int, y:Int -> x+y}
+    val ss: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
+
     // ss 的函数类型可省略 即 val ss = {x :Int, y:Int -> x+y}
+    val ss1: (Int, Int) -> Int = { x, y -> x + y } // 后面的 lambda 表达式的参数类型可省略，因为 可以从 ss1 的声明中推断
 
     // 函数类型的变量赋值方式2 ： 直接使用在一个函数面前加上 ：：
-    val ss2 : (Int, Int) -> Int = ::sum
+    val ss2: (Int, Int) -> Int = ::sum
 
-    fun fff(){
+    fun fff() {
         val s = ss(2, 3)
         Log.e("fff", "s = $s")
+        ff(3){
+            Log.e("fff", "------------vvvvvvvv---------")
+        }
+    }
+
+    fun ff(a : Int, opt : () -> Unit){
+        Log.e("ff", "a = $a")
+        opt()
     }
 
 
-    fun testWhen(){
+
+    fun testWhen() {
         var a = -10
         when {
-           isPositiveNumber(a) -> {
-               Log.e(TAG, "a is positive , a = $a")
-           }
+            isPositiveNumber(a) -> {
+                Log.e(TAG, "a is positive , a = $a")
+            }
             isChinese("zjt") -> {
                 Log.e(TAG, "is chinese !!!")
             }
         }
     }
 
-    private fun isPositiveNumber(x : Int) : Boolean = x > 0
-    private fun isChinese(name : String)  = !name.isNullOrBlank()
+    private fun isPositiveNumber(x: Int): Boolean = x > 0
+    private fun isChinese(name: String) = !name.isNullOrBlank()
 
-    fun <T> doPrintln(content : T) {
+    fun <T> doPrintln(content: T) {
         when (content) {
             is Int -> Log.e("zjt", "整型数字为 $content")
             is String -> Log.e("zjt", "字符串为 $content")
             else -> Log.e("zjt", "既不是整型也不是字符串类型 $content")
         }
     }
-
 
 
 }

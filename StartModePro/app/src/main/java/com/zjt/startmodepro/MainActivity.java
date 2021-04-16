@@ -1,13 +1,12 @@
 package com.zjt.startmodepro;
 
 import android.Manifest;
-import android.graphics.Rect;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
-import com.zjt.startmodepro.utils.FileUtil;
+import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -45,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView mShowDialog;
     private Button mJump2FileActivity;
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
 
         mTv = findViewById(R.id.txt_rx);
         mToUserTxt = findViewById(R.id.txt_user);
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
             FileActivity.Companion.enter(this);
         });
 
-
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
@@ -71,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
             Log.e("zjt", "name = " + userInfo.getName() + " , age = " + userInfo.getAge());
+
+
+            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
+            userProvider.getUserInfo();
+            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
             JetPackActivity.enter(this);
         });
 
@@ -103,8 +106,62 @@ public class MainActivity extends AppCompatActivity {
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
-        requestPermission();
+        findViewById(R.id.btn_bitmap_clip).setOnClickListener(v -> {
+            BitmapClipActivity.Companion.enter(this);
+        });
 
+        findViewById(R.id.btn_2_http).setOnClickListener(v -> {
+            HttpActivity.Companion.enter(this);
+        });
+
+        findViewById(R.id.btn_2_kotlin_package)
+                .setOnClickListener(v -> {
+                    TestRefactorActivity.Companion.enter(this);
+                    ZhuJtUtils.test();
+                });
+
+        findViewById(R.id.btn_test_handler_sync_barrier).
+                setOnClickListener(
+                        v -> {
+                            Integer.valueOf("这种");
+                            Handler handler = new Handler();
+                            handler.post(() -> {
+                                Log.e("zjt", "runnable 1 start");
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.e("zjt", "runnable 1 end");
+                            });
+
+                            handler.post(() -> {
+                                Log.e("zjt", "runnable 2 start");
+                            });
+
+                            handler.postAtFrontOfQueue(() -> {
+                                Log.e("zjt", "runnable 3 start");
+                            });
+
+                            new Handler().postDelayed(() -> {
+
+                            }, 300);
+                        }
+                );
+
+        findViewById(R.id.btn_thread_pool)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestThreadPoolActivity.class);
+                    startActivity(intent);
+                });
+        findViewById(R.id.btn_exception)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestExceptionActivity.class);
+                    startActivity(intent);
+                });
+
+
+        requestPermission();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -1,10 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-
-
-
-
-
 
     <style name="SimpleDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -24,11 +19,11 @@
         <item name="android:windowNoTitle">true</item>
 
 
-
     </style>
 
-    <style parent="ThemeOverlay.AppCompat.Dark.ActionBar" name="AppTheme.AppBarOverlay"/>
-    <style parent="ThemeOverlay.AppCompat.Light" name="AppTheme.PopupOverlay"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -259,11 +254,24 @@
     </style>
 
     <style name="BottomDialogTheme" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--Dialog的windowFrame框为无-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--是否显示title-->
         <item name="android:windowNoTitle">true</item>
+        <!--设置dialog的背景，（#00000000）-->
+        <item name="android:background">@android:color/transparent</item>
+        <!--显示区域背景是否透明，（#00000000）-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5-->
+        <item name="android:backgroundDimAmount">0.2</item>
+        <!--显示区域以外是否使用黑色半透明背景-->
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowAnimationStyle">@style/dialogPushUpInAnimation</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:windowAnimationStyle">@style/dialog_fragment_bottom_animation</item>
     </style>
 
     <!-- 底部菜单对话框动画 -->
@@ -297,18 +305,17 @@
     </declare-styleable>
 
     <declare-styleable name="RangeBar">
-        <attr name="solidBackgroundColor" format="color"/><!--solid background color. 固定未选中的进度条颜色。-->
-        <attr name="rangeColor" format="color"/><!-- selected range background color. 选中的范围颜色。-->
-        <attr name="textColor" format="color"/><!--top text color. 控件中文字颜色 -->
-        <attr name="sliderDrawable" format="reference"/><!--slider drawable resource id. 滑块资源id，左右两边相同。-->
-        <attr name="rangeHeight" format="dimension"/><!-- range bar height. 进度条高度-->
-        <attr name="textSize" format="dimension"/><!--text size . 文本大小-->
-        <attr name="verticalLineHeight" format="dimension"/><!-- vertical line height. 竖直的线的高度-->
-        <attr name="verticalPadding" format="dimension"/><!-- vertical content padding. 竖直方向的 内边距-->
-        <attr name="textArray" format="reference"/><!-- draw text in top . 顶部显示的文本数组-->
+        <attr name="solidBackgroundColor" format="color" /><!--solid background color. 固定未选中的进度条颜色。-->
+        <attr name="rangeColor" format="color" /><!-- selected range background color. 选中的范围颜色。-->
+        <attr name="textColor" format="color" /><!--top text color. 控件中文字颜色 -->
+        <attr name="sliderDrawable" format="reference" /><!--slider drawable resource id. 滑块资源id，左右两边相同。-->
+        <attr name="rangeHeight" format="dimension" /><!-- range bar height. 进度条高度-->
+        <attr name="textSize" format="dimension" /><!--text size . 文本大小-->
+        <attr name="verticalLineHeight" format="dimension" /><!-- vertical line height. 竖直的线的高度-->
+        <attr name="verticalPadding" format="dimension" /><!-- vertical content padding. 竖直方向的 内边距-->
+        <attr name="textArray" format="reference" /><!-- draw text in top . 顶部显示的文本数组-->
 
     </declare-styleable>
-
 
 
     <style name="CalendarStyle">
@@ -316,13 +323,12 @@
     </style>
 
 
-
     <declare-styleable name="TestView2">
-        <attr name="android:text"/>
-        <attr name="android:textSize"/>
+        <attr name="android:text" />
+        <attr name="android:textSize" />
     </declare-styleable>
 
-    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog" >
+    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog">
 
         <!-- 进入和退出时动画-->
         <item name="android:windowAnimationStyle">@style/dialogPushUpInAnimation</item>
@@ -338,6 +344,10 @@
     </style>
 
 
+    <style name="dialog_fragment_bottom_animation">
+        <item name="android:windowEnterAnimation">@anim/anim_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_bottom_out</item>
+    </style>
 
 
 </resources>

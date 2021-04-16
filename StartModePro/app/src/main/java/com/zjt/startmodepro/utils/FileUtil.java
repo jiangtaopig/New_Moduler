@@ -218,6 +218,19 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Delete a directory and all its contents
+     */
+    public static void deleteDirectory(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteDirectory(child);
+
+        fileOrDirectory.delete();
+    }
+
+
+
     public static File getInnerCacheDir() {
         return MyApplication.getContext().getFilesDir();
     }
@@ -247,6 +260,10 @@ public class FileUtil {
     public static String getCacheFilePath(String fileName) {
 //        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + fileName;
         return cacheDir.getAbsolutePath() + pathDiv + fileName;
+    }
+
+    public static String getCachePath(){
+        return cacheDir.getAbsolutePath();
     }
 
     /**

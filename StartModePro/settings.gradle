@@ -1,6 +1,8 @@
+include ':lib'
 include ':user_api'
 include ':user'
 include ':base'
 include ':router'
 include ':app'
 rootProject.name = "StartModePro"
+
