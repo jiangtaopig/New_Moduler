@@ -58,14 +58,14 @@ class JetPack2Activity extends AppCompatActivity {
 
         mJump2JetPack3ActivityBtn = findViewById(R.id.btn_2_jetpack3Activity);
 
+        // 为了测试 git 的 cherry-pick id 功能
+
         mJump2JetPack3ActivityBtn.setOnClickListener(v -> {
             JetPack3Activity.Companion.enter(this);
             Intent intent = new Intent(this, JetPack3Activity.class);
             startActivity(intent);
 //            MyKotlinManager kotlinManager = new MyKotlinManager("zhujiangtao");
 //            kotlinManager.showTops();
-
-
 //            download();
         });
 
