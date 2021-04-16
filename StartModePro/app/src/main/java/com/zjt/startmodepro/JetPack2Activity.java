@@ -62,52 +62,14 @@ class JetPack2Activity extends AppCompatActivity {
         mJump2JetPack3ActivityBtn = findViewById(R.id.btn_2_jetpack3Activity);
 
         mJump2JetPack3ActivityBtn.setOnClickListener(v -> {
-//            JetPack3Activity.Companion.enter(this);
-//            Intent intent = new Intent(this, JetPack3Activity.class);
-//            startActivity(intent);
+            JetPack3Activity.Companion.enter(this);
+            Intent intent = new Intent(this, JetPack3Activity.class);
+            startActivity(intent);
 //            MyKotlinManager kotlinManager = new MyKotlinManager("zhujiangtao");
 //            kotlinManager.showTops();
 
 
-            DownloadRequest request = new DownloadRequest();
-            request.setUrl("http://gdown.baidu.com/data/wisegame/df65a597122796a4/weixin_821.apk");
-            request.setLocalPath(FileUtil.getCachePath()+"/zjt/weixin_821.apk");
-
-
-            downloadRequestTask = new DownloadRequestTask(request, new IRequestDownloadCallback() {
-
-                @Override
-                public void onTerminated(int reqId) {
-
-                }
-
-                @Override
-                public void onDownloaded(int reqId) {
-
-                }
-
-                @Override
-                public void onDownloadFailed(int reqId) {
-
-                }
-
-                @Override
-                public void onDownloadProgress(int reqId, double percent, long downloadedByteLength) {
-                    Log.e("xxxxxx", "onDownloadProgress percent = " + percent);
-                }
-
-                @Override
-                public void onDownloadPause(int reqId) {
-
-                }
-
-                @Override
-                public void onDownloadStarted(int reqId) {
-
-                }
-            });
-            downloadRequestTask.run();
-
+//            download();
         });
 
         mNameViewModel = ViewModelManager.getInstance().getNameModel(this);
@@ -141,9 +103,49 @@ class JetPack2Activity extends AppCompatActivity {
         });
 
 
+    }
 
-        new Handler().postDelayed(() ->{
+    /**
+     * 断点下载
+     */
+    private void download(){
+        DownloadRequest request = new DownloadRequest();
+        request.setUrl("http://gdown.baidu.com/data/wisegame/df65a597122796a4/weixin_821.apk");
+        request.setLocalPath(FileUtil.getCachePath()+"/zjt/weixin_821.apk");
 
-        }, 200);
+
+        downloadRequestTask = new DownloadRequestTask(request, new IRequestDownloadCallback() {
+
+            @Override
+            public void onTerminated(int reqId) {
+
+            }
+
+            @Override
+            public void onDownloaded(int reqId) {
+
+            }
+
+            @Override
+            public void onDownloadFailed(int reqId) {
+
+            }
+
+            @Override
+            public void onDownloadProgress(int reqId, double percent, long downloadedByteLength) {
+                Log.e("xxxxxx", "onDownloadProgress percent = " + percent);
+            }
+
+            @Override
+            public void onDownloadPause(int reqId) {
+
+            }
+
+            @Override
+            public void onDownloadStarted(int reqId) {
+
+            }
+        });
+        downloadRequestTask.run();
     }
 }

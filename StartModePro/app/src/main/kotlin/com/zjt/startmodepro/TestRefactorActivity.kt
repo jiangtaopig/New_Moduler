@@ -48,7 +48,7 @@ class TestRefactorActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_voice_preview)
                 .setOnClickListener {
-                    mPushClientManager.startVoicePreview()
+                    mPushClientManager.startVoicePreview(this)
                     mPushClientManager.startPush()
                     mPushClientManager.onDestroy()
                 }

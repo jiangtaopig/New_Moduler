@@ -1,7 +1,7 @@
 package com.zjt.startmodepro.refactor.impl
 
 import android.util.Log
-import com.zjt.startmodepro.refactor.ILifeCycleService
+import com.zjt.startmodepro.refactor.IRoomPushClientService
 
 /**
 
@@ -14,7 +14,7 @@ import com.zjt.startmodepro.refactor.ILifeCycleService
  */
 
 
-abstract class AbstractLifeCycleService : ILifeCycleService {
+abstract class AbstractLifeCycleService : IRoomPushClientService.ILifeCycleService {
     override fun onStart() {
         Log.e("xxx", "--- onStart ---")
     }

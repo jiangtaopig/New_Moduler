@@ -3,6 +3,7 @@ package com.zjt.startmodepro
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
@@ -56,6 +57,30 @@ class MyKotlinDialog : DialogFragment() , DialogInterface {
             mTitle = getString(TITLE_KEY)
         }
         mTitleTv.text = mTitle
+        mTitleTv.setOnClickListener {
+            val myTask = MyTask()
+            myTask.setOnDelayTaskListener {
+                it -> it+"xxx"
+                Log.e("MyKotlinDialog", "dialog isDetached $isDetached , value = $it , mTitleTv txt = ${mTitleTv.text}")
+                mTitleTv.text = it
+            }
+            myTask.delay()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("xxx", "onDestroy $isDetached")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.e("xxx", "onDetach $isDetached")
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        Log.e("xxx", "dismiss isDetach $isDetached")
     }
 
     private fun initView(dialog: Dialog) {

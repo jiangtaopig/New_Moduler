@@ -16,7 +16,7 @@ import android.util.Log
 
 class VoicePushClient : AbstractLiveRoomClient(Constants.LifeCycle.VOICE_TYPE){
     override fun setLivePush(livePush: LivePush) {
-        Log.e("xxx", "VoicePushClient setLivePush")
+        Log.e("xxx", " ---- VoicePushClient  thread name = -----"+Thread.currentThread().name)
 //        val videoSession = livePush.createVideoSession()
 //        videoSession.setSceneSource(config.getDefaultSceneSource(livePush.getAVContext()))
 //        videoSession.videoSessionID = LiveConstants.MAIN_SOURCE

@@ -15,9 +15,13 @@ import android.util.Log
 
 class CameraPushClient() : AbstractLiveRoomClient(Constants.LifeCycle.CAMERA_TYPE) {
 
+    companion object {
+        const val TAG = "CameraPushClient"
+    }
+
 
     override fun setLivePush(livePush: LivePush) {
-        Log.e("xxx", " ---- setLivePush -----")
+        Log.e("xxx", " ---- CameraPushClient setLivePush  thread name = -----" + Thread.currentThread().name)
         livePush.let {
 //            this.getAVContext().resourcePath = config.getResourcePath(activity)
 //            val videoSession = this.createVideoSession()

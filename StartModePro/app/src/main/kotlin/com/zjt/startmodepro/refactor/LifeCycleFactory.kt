@@ -17,7 +17,7 @@ import com.zjt.startmodepro.refactor.impl.VoiceLifeCycle
 class LifeCycleFactory {
 
     companion object {
-        fun getLifeCycle(type: String): ILifeCycleService {
+        fun getLifeCycle(type: String): IRoomPushClientService.ILifeCycleService {
             return when (type) {
                 Constants.LifeCycle.CAMERA_TYPE -> {
                     CameraLifeCycle()

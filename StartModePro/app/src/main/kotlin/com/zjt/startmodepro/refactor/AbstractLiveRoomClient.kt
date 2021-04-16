@@ -1,6 +1,8 @@
 package com.zjt.startmodepro.refactor
 
 import android.app.Activity
+import android.os.Handler
+import android.os.HandlerThread
 import com.zjt.startmodepro.refactor.impl.BgmServiceImpl
 
 /**
@@ -14,18 +16,21 @@ import com.zjt.startmodepro.refactor.impl.BgmServiceImpl
  */
 
 
-abstract class AbstractLiveRoomClient(val type: String) : IPushService, IBgmService, ILifeCycleService {
+abstract class AbstractLiveRoomClient(val type: String) : IRoomPushClientService.IPushService, IRoomPushClientService.IBgmService, IRoomPushClientService.ILifeCycleService {
 
-
+    private val mRenderThread = HandlerThread(type)
+    private var mRenderHandler: Handler
     private lateinit var mPusher: LivePush
 
     private val mBmgService by lazy {
         BgmServiceImpl()
     }
 
-    private var mLifeCycleService: ILifeCycleService? = null
+    private var mLifeCycleService: IRoomPushClientService.ILifeCycleService? = null
 
     init {
+        mRenderThread.start()
+        mRenderHandler = Handler(mRenderThread.looper)
         mLifeCycleService = LifeCycleFactory.getLifeCycle(type)
     }
 
@@ -33,8 +38,11 @@ abstract class AbstractLiveRoomClient(val type: String) : IPushService, IBgmServ
     // ----------------------- push 相关 start ---------------------------------------------
 
     override fun initLivePush(activity: Activity) {
-        mPusher = LivePush()
-        setLivePush(mPusher)
+        runOnBackground(Runnable {
+            mPusher = LivePush()
+            setLivePush(mPusher)
+        })
+
     }
 
     abstract fun setLivePush(livePush: LivePush)
@@ -45,14 +53,24 @@ abstract class AbstractLiveRoomClient(val type: String) : IPushService, IBgmServ
 
     override fun startPush() {
         // 相同的部分可以写在这里, 不同的方法 可以再定义一个抽象方法
+        runOnBackground(Runnable {
+
+        })
     }
 
     override fun stopPush() {
         // 相同的部分可以写在这里, 不同的方法 可以再定义一个抽象方法
+        runOnBackground(Runnable {
+
+        })
+
     }
 
     override fun stopPushAndGenerateHistory() {
         // 相同的部分可以写在这里, 不同的方法 可以再定义一个抽象方法
+        runOnBackground(Runnable {
+
+        })
     }
 
 
@@ -78,6 +96,11 @@ abstract class AbstractLiveRoomClient(val type: String) : IPushService, IBgmServ
 
     override fun onDestroy() {
         mLifeCycleService?.onDestroy()
+        mRenderThread.quitSafely()
+    }
+
+    private fun runOnBackground(runnable: Runnable){
+        mRenderHandler.post(runnable)
     }
 
 }

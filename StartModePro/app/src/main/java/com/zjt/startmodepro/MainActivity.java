@@ -1,6 +1,7 @@
 package com.zjt.startmodepro;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
+import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
         mTv = findViewById(R.id.txt_rx);
         mToUserTxt = findViewById(R.id.txt_user);
         mShowDialog = findViewById(R.id.txt_show_dialog);
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         mJump2FileActivity.setOnClickListener(v -> {
             FileActivity.Companion.enter(this);
         });
-
 
         mTv.setOnClickListener(v -> {
 //            test1();
@@ -120,11 +120,10 @@ public class MainActivity extends AppCompatActivity {
                     ZhuJtUtils.test();
                 });
 
-
-
         findViewById(R.id.btn_test_handler_sync_barrier).
                 setOnClickListener(
                         v -> {
+                            Integer.valueOf("这种");
                             Handler handler = new Handler();
                             handler.post(() -> {
                                 Log.e("zjt", "runnable 1 start");
@@ -140,16 +139,29 @@ public class MainActivity extends AppCompatActivity {
                                 Log.e("zjt", "runnable 2 start");
                             });
 
-                            handler.postAtFrontOfQueue(() ->{
+                            handler.postAtFrontOfQueue(() -> {
                                 Log.e("zjt", "runnable 3 start");
                             });
 
+                            new Handler().postDelayed(() -> {
+
+                            }, 300);
                         }
                 );
 
+        findViewById(R.id.btn_thread_pool)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestThreadPoolActivity.class);
+                    startActivity(intent);
+                });
+        findViewById(R.id.btn_exception)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestExceptionActivity.class);
+                    startActivity(intent);
+                });
+
 
         requestPermission();
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

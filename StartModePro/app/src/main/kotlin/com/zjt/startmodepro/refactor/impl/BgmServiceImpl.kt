@@ -1,7 +1,7 @@
 package com.zjt.startmodepro.refactor.impl
 
 import android.util.Log
-import com.zjt.startmodepro.refactor.IBgmService
+import com.zjt.startmodepro.refactor.IRoomPushClientService
 
 /**
 
@@ -14,7 +14,7 @@ import com.zjt.startmodepro.refactor.IBgmService
  */
 
 
-class BgmServiceImpl : IBgmService {
+class BgmServiceImpl : IRoomPushClientService.IBgmService {
     override fun startPlayBgm(url: String) {
         Log.e("xxx", "开始播放 bgm")
     }

@@ -33,9 +33,11 @@ class PushClientManager {
         mCurPushClient = mCameraPushClient
     }
 
-    fun startVoicePreview() {
+    fun startVoicePreview(activity: Activity) {
         if (mVoicePushClient == null) {
-            mVoicePushClient = VoicePushClient()
+            mVoicePushClient = VoicePushClient().apply {
+                initLivePush(activity)
+            }
         }
         mCurPushClient = mVoicePushClient
     }
