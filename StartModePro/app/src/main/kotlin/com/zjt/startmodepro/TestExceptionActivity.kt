@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import java.io.FileInputStream
+import java.io.FileNotFoundException
 
 /**
 
@@ -52,5 +54,14 @@ class TestExceptionActivity : AppCompatActivity() {
     @Throws(NullPointerException::class)
     private fun nullPointerException(value: String) : String {
         return "$value .... "
+    }
+
+    private fun readFromFile(filePath: String) {
+        try {
+            val input = FileInputStream(filePath)
+        }catch (ex: FileNotFoundException) {
+
+        }
+
     }
 }

@@ -1,5 +1,8 @@
 package com.example.lib;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 public class MyClass {
@@ -35,9 +38,17 @@ public class MyClass {
      * @param filePath
      * @throws IOException
      */
-    public static void testThrow(String filePath) throws IOException {
+    private static void testThrow(String filePath) throws IOException {
         if (filePath == null) {
             throw new IOException();//运行时异常不需要在方法上申明
+        }
+    }
+
+    private static void readFromFile(String filePath) {
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
