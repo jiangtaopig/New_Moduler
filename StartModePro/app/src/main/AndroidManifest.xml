@@ -49,6 +49,7 @@
         <activity android:name=".TestRefactorActivity"/>
         <activity android:name=".concurrent.TestThreadPoolActivity"/>
         <activity android:name=".TestExceptionActivity"/>
+        <activity android:name=".TestCoroutineActivity"/>
 
     </application>
 

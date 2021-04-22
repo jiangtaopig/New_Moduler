@@ -28,20 +28,39 @@ class TestExceptionActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-
+        delay()
         findViewById<Button>(R.id.btn_generate_exception)
                 .setOnClickListener {
                     try {
                         val b = 0
 //                        var a = 23 / b
-                        Integer.valueOf("这种")
+//                        Integer.valueOf("这种")
+                        testDelay()
                     } catch (e: ArithmeticException) {
                         Log.e("TestExceptionActivity", "e >>> ${e.message}")
                     }
                 }
     }
 
-    private fun testException(){
+    private fun testDelay() {
+        Thread() {
+            kotlin.run {
+                Log.e("TestExceptionActivity", "testDelay start")
+                Thread.sleep(550)
+                Log.e("TestExceptionActivity", "testDelay end")
+            }
+        }.start()
+
+
+    }
+
+    private fun delay() {
+        Log.e("TestExceptionActivity", "testDelay start")
+        Thread.sleep(200)
+        Log.e("TestExceptionActivity", "testDelay end")
+    }
+
+    private fun testException() {
 //        arithmeticException(2, 3)
         nullPointerException("vv")
     }
@@ -52,14 +71,14 @@ class TestExceptionActivity : AppCompatActivity() {
     }
 
     @Throws(NullPointerException::class)
-    private fun nullPointerException(value: String) : String {
+    private fun nullPointerException(value: String): String {
         return "$value .... "
     }
 
     private fun readFromFile(filePath: String) {
         try {
             val input = FileInputStream(filePath)
-        }catch (ex: FileNotFoundException) {
+        } catch (ex: FileNotFoundException) {
 
         }
 

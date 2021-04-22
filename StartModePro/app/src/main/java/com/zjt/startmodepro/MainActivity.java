@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         mShowDialog = findViewById(R.id.txt_show_dialog);
         mJump2FileActivity = findViewById(R.id.jump_2_file_activity);
 
+        requestPermission();
+
         mJump2FileActivity.setOnClickListener(v -> {
             FileActivity.Companion.enter(this);
         });
@@ -154,14 +156,19 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, TestThreadPoolActivity.class);
                     startActivity(intent);
                 });
+
         findViewById(R.id.btn_exception)
                 .setOnClickListener(v -> {
                     Intent intent = new Intent(this, TestExceptionActivity.class);
                     startActivity(intent);
                 });
 
+        findViewById(R.id.btn_coroutine)
+                .setOnClickListener(v -> {
+                    TestCoroutineActivity.Companion.enter(this);
+                });
 
-        requestPermission();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
