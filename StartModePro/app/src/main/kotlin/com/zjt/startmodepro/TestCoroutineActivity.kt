@@ -67,6 +67,10 @@ class TestCoroutineActivity : AppCompatActivity() {
                     }
                     Log.e("TestCoroutineActivity", "... thread = ${Thread.currentThread().name}")
                 }
+
+
+        //1111
+
     }
 
 }
