@@ -65,4 +65,7 @@ dependencies {
     // okhttp
     api 'com.squareup.okhttp3:okhttp:3.10.0'
 
+    // mmkv
+    api 'com.tencent:mmkv-static:1.2.7'
+
 }

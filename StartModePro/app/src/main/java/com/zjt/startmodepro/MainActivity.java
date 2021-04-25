@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mShowDialog = findViewById(R.id.txt_show_dialog);
         mJump2FileActivity = findViewById(R.id.jump_2_file_activity);
 
-        requestPermission();
+//        requestPermission();
 
         mJump2FileActivity.setOnClickListener(v -> {
             FileActivity.Companion.enter(this);
@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(v -> {
                     Intent intent = new Intent(this, TestPermissionActivity.class);
                     startActivity(intent);
+//                    requestCamera();
                 });
 
 
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestPermission() {
 //        requestStorage();
-//        requestCamera();
+        requestCamera();
 //
 //        else {
 //            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
@@ -208,8 +209,10 @@ public class MainActivity extends AppCompatActivity {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
                     //选择禁止/拒绝
 //                    request();
+                    int a = 1;
                 } else {
                     //选择拒绝并不再询问
+                    int b = 2;
 //                    jump2Setting();
                 }
             }

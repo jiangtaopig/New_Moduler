@@ -79,6 +79,14 @@ class PermissionDialog : DialogFragment() {
         }
     }
 
+    fun setCameraOpen(){
+        mCameraTxt.text = "相机权限已开启"
+    }
+
+    fun setStorageOpen() {
+        mStorageTxt.text = "存储权限已开启"
+    }
+
     fun setOnPermissionClickListener(listener: OnPermissionClickListener) {
         onPermissionClickListener = listener
     }

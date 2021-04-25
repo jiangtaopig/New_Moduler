@@ -10,10 +10,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.tencent.mmkv.MMKV
 
 /**
 
@@ -29,15 +30,20 @@ import androidx.core.content.ContextCompat
 class TestPermissionActivity : AppCompatActivity() {
 
     private var mDialog: AlertDialog? = null
+    private lateinit var mMmkv: MMKV
+    private val mPermissionDialog: PermissionDialog by lazy {
+        PermissionDialog.getInstance("xxx")
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission_layout)
         initView()
 
+        mMmkv = MMKV.mmkvWithID("z_aron")!!
 
         showPermissionDialog()
-//        requestAll()
     }
 
     @SuppressLint("NewApi")
@@ -46,60 +52,68 @@ class TestPermissionActivity : AppCompatActivity() {
                 .setOnClickListener {
                     requestCameraAndCheckNotReminder()
                     requestStorageAndCheckNotReminder()
+                    val mmkv = MMKV.mmkvWithID("zhujt")
+                    mmkv!!.encode("zjt", "zhujangtao")
+                    Log.e("mmkv", "val = ${mmkv.decodeString("zjt", "xxxx00")}")
                 }
     }
 
     private fun showPermissionDialog() {
-        val permissionDialog = PermissionDialog.getInstance("xxx")
-        permissionDialog.setOnPermissionClickListener(object : PermissionDialog.OnPermissionClickListener {
+//        val permissionDialog = PermissionDialog.getInstance("xxx")
+        mPermissionDialog.setOnPermissionClickListener(object : PermissionDialog.OnPermissionClickListener {
             override fun onPermissionClick(type: Int) {
                 when (type) {
-                    PermissionDialog.CAMERA_TYPE -> requestCamera()
-                    PermissionDialog.STORAGE_TYPE -> requestStorage()
+                    PermissionDialog.CAMERA_TYPE -> requestCameraAndCheckNotReminder()
+                    PermissionDialog.STORAGE_TYPE -> requestStorageAndCheckNotReminder()
                     PermissionDialog.ALL_TYPE -> requestAll()
                 }
             }
 
         })
-        permissionDialog.show(supportFragmentManager, "PERMISSION_DIALOG")
+        mPermissionDialog.show(supportFragmentManager, "PERMISSION_DIALOG")
     }
 
     @SuppressLint("NewApi")
     private fun requestCamera() {
-        if (ContextCompat.checkSelfPermission(this!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
+        if (!hasPermission(Manifest.permission.CAMERA)) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
         }
     }
 
     @SuppressLint("NewApi")
     private fun requestCameraAndCheckNotReminder() {
-        if (ContextCompat.checkSelfPermission(this!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // 第一次申请权限时 返回false
-            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                requestCamera()
+        if (!hasPermission(Manifest.permission.CAMERA)) {
+            if (mMmkv.decodeBool(CAMERA_APPLIED, false) && !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                jump2Setting("相机", CAMERA_REQUEST_CODE)
+
             } else {
-                jump2Setting("相机")
+                requestCamera()
             }
         }
     }
 
     private fun requestStorage() {
-        if (ContextCompat.checkSelfPermission(this!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_REQUEST_CODE)
             }
         }
     }
 
     @SuppressLint("NewApi")
     private fun requestStorageAndCheckNotReminder() {
-        if (ContextCompat.checkSelfPermission(this!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                requestStorage()
+        if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            // 之前申请权限时如果是拒绝且不再提醒，那么跳转到系统的权限界面; 拒绝且不再提醒 shouldShowRequestPermissionRationale 返回false
+            if (mMmkv.decodeBool(STORAGE_APPLIED, false) && !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                jump2Setting("存储", STORAGE_REQUEST_CODE)
             } else {
-                jump2Setting("存储")
+                requestStorage()
             }
         }
+    }
+
+    private fun hasPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     @SuppressLint("NewApi")
@@ -107,7 +121,7 @@ class TestPermissionActivity : AppCompatActivity() {
         requestPermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
     }
 
-    private fun jump2Setting(permission: String) {
+    private fun jump2Setting(permission: String, requestCode: Int) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("授权 $permission")
         builder.setMessage("需要允许授权才可使用")
@@ -119,7 +133,7 @@ class TestPermissionActivity : AppCompatActivity() {
             val uri = Uri.fromParts("package", this.packageName, null)
             intent.data = uri
             //调起应用设置页面
-            startActivityForResult(intent, 2)
+            startActivityForResult(intent, requestCode)
         }
         mDialog = builder.create()
         mDialog!!.setCanceledOnTouchOutside(false)
@@ -128,20 +142,45 @@ class TestPermissionActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == 1) {
-            for (i in permissions.indices) {
-                //已授权
-                if (grantResults[i] == 0) {
-                    continue
+        when (requestCode) {
+            CAMERA_REQUEST_CODE -> {
+                mMmkv.encode(CAMERA_APPLIED, true)
+                if (grantResults[0] == 0) {// 表示用户同意授权
+                    mPermissionDialog.setCameraOpen()
+                    mMmkv.encode(CAMERA_APPLIED, false)
                 }
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
-                    //选择禁止/拒绝
-                } else {
-                    //选择拒绝并不再询问
+            }
+            STORAGE_REQUEST_CODE -> {
+                mMmkv.encode(STORAGE_APPLIED, true)
+                if (grantResults[0] == 0) {
+                    mPermissionDialog.setStorageOpen()
+                    mMmkv.encode(STORAGE_APPLIED, false)
                 }
             }
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CAMERA_REQUEST_CODE -> {
+                if (hasPermission(Manifest.permission.CAMERA)) {// 表示用户同意授权
+                    mMmkv.encode(CAMERA_APPLIED, false)
+                }
+            }
+            STORAGE_REQUEST_CODE -> {
+                if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    mMmkv.encode(STORAGE_APPLIED, false)
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val CAMERA_REQUEST_CODE = 1
+        private const val STORAGE_REQUEST_CODE = CAMERA_REQUEST_CODE + 1
+
+        private const val CAMERA_APPLIED = "camera_applied"
+        private const val STORAGE_APPLIED = "storage_applied"
+    }
 }
