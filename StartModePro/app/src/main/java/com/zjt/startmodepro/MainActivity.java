@@ -1,17 +1,22 @@
 package com.zjt.startmodepro;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
@@ -20,6 +25,8 @@ import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private RangeSeekBar mRangeSeekBar;
     private TextView mShowDialog;
     private Button mJump2FileActivity;
+    private AlertDialog mDialog;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -168,15 +176,111 @@ public class MainActivity extends AppCompatActivity {
                     TestCoroutineActivity.Companion.enter(this);
                 });
 
+        findViewById(R.id.btn_permission)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestPermissionActivity.class);
+                    startActivity(intent);
+                });
+
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestPermission() {
+//        requestStorage();
+//        requestCamera();
+//
+//        else {
+//            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @androidx.annotation.NonNull @NotNull String[] permissions, @androidx.annotation.NonNull @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                //已授权
+                if (grantResults[i] == 0) {
+                    continue;
+                }
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                    //选择禁止/拒绝
+//                    request();
+                } else {
+                    //选择拒绝并不再询问
+//                    jump2Setting();
+                }
+            }
+        }
+    }
+
+    private void request(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("授权");
+        builder.setMessage("需要允许授权才可使用");
+        builder.setPositiveButton("去允许", (dialog, id) -> {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        });
+        mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+    }
+
+    private void jump2Setting(String txt){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("授权" + ": "+txt);
+        builder.setMessage("需要允许授权才可使用");
+        builder.setPositiveButton("去授权", (dialog, id) -> {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            intent.setData(uri);
+            //调起应用设置页面
+            startActivityForResult(intent, 2);
+        });
+        mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2){
+
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestCamera() {
+        if (this.checkSelfPermission(Manifest.permission.CAMERA) != PERMISSION_GRANTED) {
+            // 从来没申请过权限的时候返回false
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                this.requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
+            }else {
+                jump2Setting("相机权限");
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestStorage() {
         if (this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
-            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        } else {
-            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }else {
+                jump2Setting("读写SD卡权限");
+            }
+
         }
     }
 

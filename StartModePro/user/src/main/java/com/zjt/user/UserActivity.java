@@ -42,6 +42,8 @@ public class UserActivity extends AppCompatActivity {
             switchFragment(mMeFragment);
         });
 
+
+
         mSettingTxt.setOnClickListener(v -> {
             mSettingFragment = new MyFloatFragment();
             switchFragment(mSettingFragment);
