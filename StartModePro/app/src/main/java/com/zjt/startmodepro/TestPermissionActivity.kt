@@ -6,6 +6,8 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -31,8 +33,9 @@ class TestPermissionActivity : AppCompatActivity() {
 
     private var mDialog: AlertDialog? = null
     private lateinit var mMmkv: MMKV
+    private var mOrientation: Int = -1
     private val mPermissionDialog: PermissionDialog by lazy {
-        PermissionDialog.getInstance("xxx")
+        PermissionDialog.getInstance(mOrientation)
     }
 
 
@@ -43,23 +46,24 @@ class TestPermissionActivity : AppCompatActivity() {
 
         mMmkv = MMKV.mmkvWithID("z_aron")!!
 
-        showPermissionDialog()
+//        showPermissionDialog()
     }
 
     @SuppressLint("NewApi")
     private fun initView() {
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
-                    requestCameraAndCheckNotReminder()
-                    requestStorageAndCheckNotReminder()
-                    val mmkv = MMKV.mmkvWithID("zhujt")
-                    mmkv!!.encode("zjt", "zhujangtao")
-                    Log.e("mmkv", "val = ${mmkv.decodeString("zjt", "xxxx00")}")
+//                    requestCameraAndCheckNotReminder()
+//                    requestStorageAndCheckNotReminder()
+                    showPermissionDialog()
                 }
     }
 
     private fun showPermissionDialog() {
-//        val permissionDialog = PermissionDialog.getInstance("xxx")
+        val mConfiguration: Configuration = this.resources.configuration
+        mOrientation = mConfiguration.orientation
+        Log.e("permission", "mOrientation = $mOrientation , landscape = ${Configuration.ORIENTATION_LANDSCAPE}")
+
         mPermissionDialog.setOnPermissionClickListener(object : PermissionDialog.OnPermissionClickListener {
             override fun onPermissionClick(type: Int) {
                 when (type) {
