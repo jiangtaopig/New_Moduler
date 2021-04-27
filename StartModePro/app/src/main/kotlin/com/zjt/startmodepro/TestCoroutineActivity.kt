@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.zjt.startmodepro.viewmodel.ArticleViewModel
 
 /**
 
@@ -42,35 +40,18 @@ class TestCoroutineActivity : AppCompatActivity() {
 
     private fun initView() {
 
+        val viewModel = ViewModelProvider(this).get(ArticleViewModel::class.java)
+        viewModel.articleList.observe(this, Observer {
+            if (it != null) {
+
+            }
+        })
+
         findViewById<Button>(R.id.btn_coroutine_1)
                 .setOnClickListener {
-//                    GlobalScope.launch {
-//                        Log.e("TestCoroutineActivity", "thread = ${Thread.currentThread().name}")
-//                        delay(1000)
-//                        Log.e("TestCoroutineActivity", "--- end ---")
-//                    }
-//                    Log.e("TestCoroutineActivity", "... thread = ${Thread.currentThread().name}")
-
-                    runBlocking {
-
-                        launch {
-                            Log.e("TestCoroutineActivity", "thread = ${Thread.currentThread().name}")
-                            delay(1000)
-                            Log.e("TestCoroutineActivity", "--- end ---")
-                        }
-
-                        coroutineScope {
-                            delay(500)
-                            Log.e("TestCoroutineActivity", "coroutineScope thread = ${Thread.currentThread().name}")
-                        }
-                        Log.e("TestCoroutineActivity", "runBlock thread = ${Thread.currentThread().name}")
-                    }
-                    Log.e("TestCoroutineActivity", "... thread = ${Thread.currentThread().name}")
+//                    viewModel.loadData()
+                    viewModel.getStudentAndCarInfo()
                 }
-
-
-        //1111
-
     }
 
 }

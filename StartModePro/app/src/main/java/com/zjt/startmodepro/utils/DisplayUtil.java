@@ -3,7 +3,10 @@ package com.zjt.startmodepro.utils;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.zjt.startmodepro.MyApplication;
 
@@ -49,6 +52,29 @@ public class DisplayUtil {
 
     public static int dip2px(float dip) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, MyApplication.getContext().getResources().getDisplayMetrics());
+    }
+
+    public static void hideSoftInput(View view) {
+        if(view!=null) {
+            Context mContext = view.getContext();
+            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm!=null&&imm.isActive()) {
+                imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+            }
+        }
+    }
+
+    public static void showSoftInput(EditText editText) {
+        showSoftInput(editText.getContext(), editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void showSoftInput(Context context, View view, int flags) {
+        InputMethodManager manager = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (manager == null)
+            return;
+
+        manager.showSoftInput(view, flags);
     }
 
 }

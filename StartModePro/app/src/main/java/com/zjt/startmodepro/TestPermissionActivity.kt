@@ -7,16 +7,21 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tencent.mmkv.MMKV
+import com.zjt.startmodepro.utils.DisplayUtil
 
 /**
 
@@ -31,6 +36,7 @@ import com.tencent.mmkv.MMKV
 
 class TestPermissionActivity : AppCompatActivity() {
 
+    private lateinit var mTitleEditText: EditText
     private var mDialog: AlertDialog? = null
     private lateinit var mMmkv: MMKV
     private var mOrientation: Int = -1
@@ -51,12 +57,63 @@ class TestPermissionActivity : AppCompatActivity() {
 
     @SuppressLint("NewApi")
     private fun initView() {
+        mTitleEditText = findViewById(R.id.edit_tv)
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
 //                    requestCameraAndCheckNotReminder()
 //                    requestStorageAndCheckNotReminder()
                     showPermissionDialog()
                 }
+
+        mTitleEditText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE || event?.keyCode == KeyEvent.KEYCODE_ENTER) {
+                    v?.text.toString().let {
+                        if (it.isEmpty()) {
+                            Toast.makeText(this@TestPermissionActivity, "请输入标题", Toast.LENGTH_LONG).show()
+                            return false;
+                        }
+                        clearTitleFocus()
+                        DisplayUtil.hideSoftInput(mTitleEditText)
+                        // todo ... 调接口更新标题
+                    }
+                    return true
+                }
+                return false
+            }
+        })
+
+
+        mTitleEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                mTitleEditText.let {
+                    it.isSingleLine = false
+                    it.maxLines = 2
+                    requestFocus()
+                }
+
+            } else {
+                mTitleEditText.let {
+                    it.maxLines = 1
+                    it.isSingleLine = true
+                }
+            }
+        }
+    }
+
+    private fun clearTitleFocus() {
+        mTitleEditText?.clearFocus()
+    }
+
+    private fun requestFocus() {
+        val content = mTitleEditText?.text.toString()
+        mTitleEditText?.isFocusable = true
+        mTitleEditText?.isFocusableInTouchMode = true
+        mTitleEditText?.requestFocus()
+        mTitleEditText?.postDelayed({
+            mTitleEditText?.setSelection(content.length)
+        }, 300)
+        DisplayUtil.showSoftInput(mTitleEditText)
     }
 
     private fun showPermissionDialog() {

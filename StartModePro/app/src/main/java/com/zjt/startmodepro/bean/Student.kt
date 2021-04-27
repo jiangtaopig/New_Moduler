@@ -9,4 +9,5 @@ data class Student(var name :String, var age : Int) {
     fun showStudent(){
         Log.e("zjt", "name = $name, age = $$age")
     }
+
 }
