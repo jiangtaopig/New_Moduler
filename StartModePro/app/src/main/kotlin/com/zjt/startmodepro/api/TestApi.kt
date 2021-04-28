@@ -24,9 +24,8 @@ class TestApi {
     }
 
 
-    fun getArticleData(type: Int, num: Int): Deferred<DataBase?>? {
+    fun getArticleDataAsync(type: Int, num: Int): Deferred<DataBase?>? {
         return service!!.getArticleData(type, num)
     }
-
 
 }

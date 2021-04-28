@@ -52,6 +52,7 @@
         <activity android:name=".TestExceptionActivity"/>
         <activity android:name=".TestCoroutineActivity"/>
         <activity android:name=".TestPermissionActivity"/>
+        <activity android:name=".TestEditActivity"/>
 
     </application>
 

@@ -23,10 +23,13 @@ import com.zjt.startmodepro.utils.DisplayUtil
 
 class PermissionDialog : DialogFragment() {
 
-    private lateinit var onPermissionClickListener: OnPermissionClickListener
-    private lateinit var mCameraTxt: TextView
-    private lateinit var mStorageTxt: TextView
-    private lateinit var mAllTxt: TextView
+    private var onPermissionClickListener: OnPermissionClickListener? = null
+    private var mCameraTxt: TextView? = null
+    private var mStorageTxt: TextView? = null
+    private var mAllTxt: TextView? = null
+
+    private var mHasCameraPermission: Boolean = false
+    private var mHasStoragePermission: Boolean = false
 
 
     companion object {
@@ -83,7 +86,7 @@ class PermissionDialog : DialogFragment() {
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true) //触摸对话框外面的区域，对话框消失
         initView(dialog)
-//        initData()
+        initData()
         return dialog
     }
 
@@ -92,25 +95,45 @@ class PermissionDialog : DialogFragment() {
         mStorageTxt = dialog.findViewById(R.id.txt_storage)
         mAllTxt = dialog.findViewById(R.id.txt_all)
 
-        mCameraTxt.setOnClickListener {
-            if (onPermissionClickListener != null) onPermissionClickListener.onPermissionClick(CAMERA_TYPE)
+        mAllTxt?.setOnClickListener {
+            onPermissionClickListener?.onPermissionClick(ALL_TYPE)
+        }
+    }
+
+    private fun initData() {
+        if (mHasCameraPermission) {
+            mCameraTxt?.text = "相机权限已开启"
+            mCameraTxt?.setOnClickListener { }
+        } else {
+            mCameraTxt?.setOnClickListener {
+                onPermissionClickListener?.onPermissionClick(CAMERA_TYPE)
+            }
         }
 
-        mStorageTxt.setOnClickListener {
-            if (onPermissionClickListener != null) onPermissionClickListener.onPermissionClick(STORAGE_TYPE)
-        }
-
-        mAllTxt.setOnClickListener {
-            if (onPermissionClickListener != null) onPermissionClickListener.onPermissionClick(ALL_TYPE)
+        if (mHasStoragePermission) {
+            mStorageTxt?.text = "存储权限已开启"
+            mStorageTxt?.setOnClickListener { }
+        } else {
+            mStorageTxt?.setOnClickListener {
+                onPermissionClickListener?.onPermissionClick(STORAGE_TYPE)
+            }
         }
     }
 
     fun setCameraOpen() {
-        mCameraTxt.text = "相机权限已开启"
+        mCameraTxt?.text = "相机权限已开启"
     }
 
     fun setStorageOpen() {
-        mStorageTxt.text = "存储权限已开启"
+        mStorageTxt?.text = "存储权限已开启"
+    }
+
+    fun setHasCameraPermission(hasPermission: Boolean) {
+        mHasCameraPermission = hasPermission
+    }
+
+    fun setStoragePermission(hasPermission: Boolean) {
+        mHasStoragePermission = hasPermission
     }
 
     fun setOnPermissionClickListener(listener: OnPermissionClickListener) {

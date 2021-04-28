@@ -17,6 +17,11 @@
         android:textColor="@color/color_333333"
         android:textSize="@dimen/dimen_18sp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:background="#e5e5e5" />
+
     <TextView
         android:id="@+id/txt_storage"
         android:layout_width="match_parent"
@@ -26,6 +31,11 @@
         android:text="sd卡权限"
         android:textColor="@color/color_333333"
         android:textSize="@dimen/dimen_18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:background="#e5e5e5" />
 
     <TextView
         android:id="@+id/txt_all"

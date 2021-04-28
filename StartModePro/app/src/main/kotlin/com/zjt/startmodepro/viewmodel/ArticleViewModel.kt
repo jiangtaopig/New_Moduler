@@ -85,6 +85,7 @@ class ArticleViewModel : ViewModel() {
                 val result = withContext(Dispatchers.IO) {
                     // 这样是同步执行的，先获取 one()的返回值作为 two 的参数
                     Log.e("ArticleViewModel", "getStudentAndCarInfo thread = ${Thread.currentThread().name}")
+                    // async 表示去执行异步操作a
                     val student = async { articleRepository.getStudentInfo() }
                     val car = async { articleRepository.getCarInfo() }
                     MergeInfo(student.await(), car.await())

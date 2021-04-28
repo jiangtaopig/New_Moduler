@@ -11,34 +11,6 @@
         android:layout_height="wrap_content"
         android:text="申请权限"/>
 
-    <EditText
-        android:id="@+id/edit_tv"
-        android:layout_width="wrap_content"
-        android:maxWidth="@dimen/dimen_120dp"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/dimen_16sp"
-        android:background="@color/cal_blue_light"
-        android:textStyle="bold"
-        android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:text="输入标题更吸引粉丝额"
-        android:singleLine="true"
-        />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:background="@color/cal_blue_light"
-        android:maxWidth="@dimen/dimen_120dp"
-        android:lines="1"
-        android:singleLine="true"
-        android:gravity="center_vertical"
-        android:text="输入标题更吸引粉丝额"
-        android:textSize="@dimen/dimen_16sp"
-        android:textStyle="bold" />
 
 </LinearLayout>

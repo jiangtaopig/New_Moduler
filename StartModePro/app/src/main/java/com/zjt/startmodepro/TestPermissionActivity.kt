@@ -12,16 +12,11 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.KeyEvent
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tencent.mmkv.MMKV
-import com.zjt.startmodepro.utils.DisplayUtil
 
 /**
 
@@ -36,14 +31,12 @@ import com.zjt.startmodepro.utils.DisplayUtil
 
 class TestPermissionActivity : AppCompatActivity() {
 
-    private lateinit var mTitleEditText: EditText
     private var mDialog: AlertDialog? = null
     private lateinit var mMmkv: MMKV
     private var mOrientation: Int = -1
     private val mPermissionDialog: PermissionDialog by lazy {
         PermissionDialog.getInstance(mOrientation)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,74 +45,35 @@ class TestPermissionActivity : AppCompatActivity() {
 
         mMmkv = MMKV.mmkvWithID("z_aron")!!
 
-//        showPermissionDialog()
+        showPermissionDialog()
+//        requestCameraAndCheckNotReminder()
     }
 
     @SuppressLint("NewApi")
     private fun initView() {
-        mTitleEditText = findViewById(R.id.edit_tv)
+
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
 //                    requestCameraAndCheckNotReminder()
 //                    requestStorageAndCheckNotReminder()
                     showPermissionDialog()
                 }
-
-        mTitleEditText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_DONE || event?.keyCode == KeyEvent.KEYCODE_ENTER) {
-                    v?.text.toString().let {
-                        if (it.isEmpty()) {
-                            Toast.makeText(this@TestPermissionActivity, "请输入标题", Toast.LENGTH_LONG).show()
-                            return false;
-                        }
-                        clearTitleFocus()
-                        DisplayUtil.hideSoftInput(mTitleEditText)
-                        // todo ... 调接口更新标题
-                    }
-                    return true
-                }
-                return false
-            }
-        })
-
-
-        mTitleEditText.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                mTitleEditText.let {
-                    it.isSingleLine = false
-                    it.maxLines = 2
-                    requestFocus()
-                }
-
-            } else {
-                mTitleEditText.let {
-                    it.maxLines = 1
-                    it.isSingleLine = true
-                }
-            }
-        }
     }
 
-    private fun clearTitleFocus() {
-        mTitleEditText?.clearFocus()
-    }
-
-    private fun requestFocus() {
-        val content = mTitleEditText?.text.toString()
-        mTitleEditText?.isFocusable = true
-        mTitleEditText?.isFocusableInTouchMode = true
-        mTitleEditText?.requestFocus()
-        mTitleEditText?.postDelayed({
-            mTitleEditText?.setSelection(content.length)
-        }, 300)
-        DisplayUtil.showSoftInput(mTitleEditText)
-    }
 
     private fun showPermissionDialog() {
         val mConfiguration: Configuration = this.resources.configuration
         mOrientation = mConfiguration.orientation
         Log.e("permission", "mOrientation = $mOrientation , landscape = ${Configuration.ORIENTATION_LANDSCAPE}")
+
+        val grantedCamera = hasPermission(Manifest.permission.CAMERA)
+        val grantedStorage = hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        // 如果所有权限都已开启，则不弹出 Dialog
+        if (grantedCamera && grantedStorage) {
+            Toast.makeText(this, "相机和读写权限均已开启", Toast.LENGTH_LONG).show()
+            return
+        }
 
         mPermissionDialog.setOnPermissionClickListener(object : PermissionDialog.OnPermissionClickListener {
             override fun onPermissionClick(type: Int) {
@@ -131,6 +85,8 @@ class TestPermissionActivity : AppCompatActivity() {
             }
 
         })
+        mPermissionDialog.setHasCameraPermission(grantedCamera)
+        mPermissionDialog.setStoragePermission(grantedStorage)
         mPermissionDialog.show(supportFragmentManager, "PERMISSION_DIALOG")
     }
 

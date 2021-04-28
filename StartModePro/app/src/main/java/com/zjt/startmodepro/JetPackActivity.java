@@ -90,6 +90,6 @@ public class JetPackActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mNameViewModel.getCurrentName().removeObserver(mNameObserver);
+//        mNameViewModel.getCurrentName().removeObserver(mNameObserver);
     }
 }

@@ -24,7 +24,7 @@ class ArticleRepository {
     }
 
     suspend fun fetchData(): DataBase {
-        return mApi.getArticleData(2, 4)?.await()!!
+        return mApi.getArticleDataAsync(2, 4)?.await()!!
     }
 
     suspend fun one(): Int {

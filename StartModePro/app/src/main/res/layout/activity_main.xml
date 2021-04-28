@@ -134,6 +134,13 @@
                 android:text="测试权限"
                 android:textSize="@dimen/dimen_18sp" />
 
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试动态修改EditText的大小"
+                android:textSize="@dimen/dimen_18sp" />
+
 
         </LinearLayout>
 
