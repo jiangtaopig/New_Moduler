@@ -9,7 +9,7 @@
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MyApplication"
@@ -44,15 +44,31 @@
         <activity android:name=".JetPack2Activity" />
         <activity android:name=".JetPack3Activity" />
         <activity android:name=".FileActivity" />
-        <activity android:name=".BitmapClipActivity"/>
-        <activity android:name=".HttpActivity"/>
+        <activity android:name=".BitmapClipActivity" />
+        <activity android:name=".HttpActivity" />
 
-        <activity android:name=".TestRefactorActivity"/>
-        <activity android:name=".concurrent.TestThreadPoolActivity"/>
-        <activity android:name=".TestExceptionActivity"/>
-        <activity android:name=".TestCoroutineActivity"/>
-        <activity android:name=".TestPermissionActivity"/>
-        <activity android:name=".TestEditActivity"/>
+        <activity android:name=".TestRefactorActivity" />
+        <activity android:name=".concurrent.TestThreadPoolActivity" />
+        <activity android:name=".TestExceptionActivity" />
+        <activity android:name=".TestCoroutineActivity" />
+        <activity android:name=".TestPermissionActivity" />
+        <activity android:name=".TestEditActivity" />
+
+        <activity
+            android:name=".DispatchActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="zjt"
+                    android:port="8888"
+                    android:scheme="aron" />
+            </intent-filter>
+        </activity>
 
     </application>
 

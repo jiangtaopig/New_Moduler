@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +26,14 @@ import com.zjt.user.viewmodel.MeViewModel
 class KtFragment : Fragment() {
 
     lateinit var mTitleTv: TextView
-    lateinit var mMeViewModel: MeViewModel
+    private var mMeViewModel: MeViewModel? = null
     private var mDialog: AlertDialog? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mMeViewModel = ViewModelProvider(this).get(MeViewModel::class.java)
+        mMeViewModel = activity?.let {
+            ViewModelProvider(it).get(MeViewModel::class.java)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,20 +46,17 @@ class KtFragment : Fragment() {
         mTitleTv = view.findViewById(R.id.txt_me_kt)
 
         mMeViewModel.apply {
-            mMeViewModel.mData.observe(viewLifecycleOwner, object : Observer<String> {
-                override fun onChanged(t: String?) {
-                    mTitleTv.text = t
-                }
-
-            })
+            mMeViewModel?.mData?.observe(viewLifecycleOwner, Observer<String> { t -> mTitleTv.text = t })
         }
 
+        Log.e("KtFragment", "mMeViewModel = $mMeViewModel")
+
         mTitleTv.setOnClickListener {
-            mMeViewModel.doSth()
+            mMeViewModel?.doSth()
 //            val intent = Intent(activity, TestFloatActivity::class.java)
 //            activity?.startActivity(intent)
 
-            requestCamera()
+//            requestCamera()
 
         }
 

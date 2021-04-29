@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
+import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mShowDialog;
     private Button mJump2FileActivity;
     private AlertDialog mDialog;
+    private NameViewModel mNameViewModel;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -55,10 +58,13 @@ public class MainActivity extends AppCompatActivity {
         mShowDialog = findViewById(R.id.txt_show_dialog);
         mJump2FileActivity = findViewById(R.id.jump_2_file_activity);
 
-//        requestPermission();
-
         mJump2FileActivity.setOnClickListener(v -> {
             FileActivity.Companion.enter(this);
+        });
+
+        mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
+        mNameViewModel.getCurrentName().observe(this, data -> {
+            Log.e("MainActivity", "data ==== > " + data);
         });
 
         mTv.setOnClickListener(v -> {
@@ -74,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
             UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
             userProvider.getUserInfo();
             Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
-            JetPackActivity.enter(this);
+//            JetPackActivity.enter(this);
+
+            mNameViewModel.setCurrentName("测试ViewModel页面服用");
+
         });
 
         mToUserTxt.setOnClickListener(v -> {
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         mShowDialog.setOnClickListener(v -> {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
 //            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
-            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("haha");
+            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("编辑对话框");
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
@@ -123,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_test_handler_sync_barrier).
                 setOnClickListener(
                         v -> {
-                            Integer.valueOf("这种");
                             Handler handler = new Handler();
                             handler.post(() -> {
                                 Log.e("zjt", "runnable 1 start");
@@ -142,10 +150,6 @@ public class MainActivity extends AppCompatActivity {
                             handler.postAtFrontOfQueue(() -> {
                                 Log.e("zjt", "runnable 3 start");
                             });
-
-                            new Handler().postDelayed(() -> {
-
-                            }, 300);
                         }
                 );
 
@@ -285,5 +289,23 @@ public class MainActivity extends AppCompatActivity {
         };
 
         flatMapOb.subscribe(observer);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("MainActivity", " ----- onPause --------");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("MainActivity", " ----- onStop --------");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("MainActivity", " ----- onDestroy --------");
     }
 }

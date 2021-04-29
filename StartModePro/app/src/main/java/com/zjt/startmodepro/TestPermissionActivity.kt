@@ -45,8 +45,9 @@ class TestPermissionActivity : AppCompatActivity() {
 
         mMmkv = MMKV.mmkvWithID("z_aron")!!
 
-        showPermissionDialog()
+//        showPermissionDialog()
 //        requestCameraAndCheckNotReminder()
+        requestAll()
     }
 
     @SuppressLint("NewApi")
@@ -59,7 +60,6 @@ class TestPermissionActivity : AppCompatActivity() {
                     showPermissionDialog()
                 }
     }
-
 
     private fun showPermissionDialog() {
         val mConfiguration: Configuration = this.resources.configuration
@@ -135,7 +135,7 @@ class TestPermissionActivity : AppCompatActivity() {
 
     @SuppressLint("NewApi")
     private fun requestAll() {
-        requestPermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        requestPermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), ALL_REQUEST_CODE)
     }
 
     private fun jump2Setting(permission: String, requestCode: Int) {
@@ -174,6 +174,9 @@ class TestPermissionActivity : AppCompatActivity() {
                     mMmkv.encode(STORAGE_APPLIED, false)
                 }
             }
+            ALL_REQUEST_CODE -> {
+                Log.e("ALL_REQUEST_CODE", "------")
+            }
         }
     }
 
@@ -196,6 +199,7 @@ class TestPermissionActivity : AppCompatActivity() {
     companion object {
         private const val CAMERA_REQUEST_CODE = 1
         private const val STORAGE_REQUEST_CODE = CAMERA_REQUEST_CODE + 1
+        private const val ALL_REQUEST_CODE = STORAGE_REQUEST_CODE + 1
 
         private const val CAMERA_APPLIED = "camera_applied"
         private const val STORAGE_APPLIED = "storage_applied"
