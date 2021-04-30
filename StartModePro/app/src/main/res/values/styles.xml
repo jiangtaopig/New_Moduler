@@ -329,7 +329,6 @@
     </declare-styleable>
 
     <style name="MyDialogStyleBottom">
-
         <!-- 进入和退出时动画-->
         <item name="android:windowAnimationStyle">@style/dialog_fragment_bottom_animation</item>
 

@@ -206,11 +206,14 @@ public class RangeSeekBar extends View {
         }
     }
 
+    private boolean mCanMove;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                mCanMove = true;
                 performClick();
                 getParent().requestDisallowInterceptTouchEvent(true);
                 if (!isTouchSeek(event)) {
@@ -221,11 +224,12 @@ public class RangeSeekBar extends View {
                 int a = minValue;
                 int b = maxValue;
                 getTouchSeekValue(event);
-                if (a == minValue && b == maxValue) {
-
-                } else {
-                    invalidate();
-                }
+                Log.e(TAG, "minValue = " + minValue + " , maxValue = " + maxValue);
+                invalidate();
+//                if (minValue + 5 >= maxValue) {
+//                } else {
+//                    invalidate();
+//                }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
@@ -234,36 +238,28 @@ public class RangeSeekBar extends View {
                 }
                 break;
         }
-
         return true;
     }
 
-
     private void getTouchSeekValue(MotionEvent event) {
-        int x = (int) event.getX();
-        x = (int) (x - buttonWidth / 2);
-        int t = (int) (max * x / seekWidth);
-        if (isMinMode) {
+        if (mCanMove) {
+            int x = (int) event.getX();
+            x = (int) (x - buttonWidth / 2);
+            int t = (int) (max * x / seekWidth);
+            if (isMinMode) {
+//                if (t + 5 > maxValue) return; // 保持左右两端不会重合
+                if (t < 0) {
+                    minValue = 0;
+                } else minValue = Math.min(t, maxValue);
 
-            if (t < 0) {
-                minValue = 0;
-            } else if (t > maxValue) {
-                minValue = maxValue;
             } else {
-                minValue = t;
-            }
-
-        } else {
-            if (t < minValue) {
-                maxValue = minValue;
-            } else if (t > max) {
-                maxValue = max;
-            } else {
-                maxValue = t;
+//                if (t -5 <= minValue) return; // 保持左右两端不会重合
+                if (t < minValue) {
+                    maxValue = minValue;
+                } else maxValue = Math.min(t, max);
             }
         }
     }
-
 
     /**
      * 时候触摸在控件内
@@ -286,7 +282,7 @@ public class RangeSeekBar extends View {
         float maxx = seekWidth * maxValue / max;
         float m2 = maxx + buttonWidth / 2;
 
-        Log.e(TAG, "x = " + x + ", seekWidth = " + seekWidth + ", minValue = " + minValue + ", maxValue = " + maxValue + ", m1 = " + m1 + ", m2 = " + m2);
+//        Log.e(TAG, "x = " + x + ", seekWidth = " + seekWidth + ", minValue = " + minValue + ", maxValue = " + maxValue + ", m1 = " + m1 + ", m2 = " + m2);
 
         if (isMinMode) {
             if (x > m1 - buttonWidth * 2 && x < m1 + buttonWidth * 2) {
@@ -334,7 +330,6 @@ public class RangeSeekBar extends View {
                             buttonHeight / 2 + bgHeight / 2 + mPaddingTop),
                     bgHeight / 2, bgHeight / 2, bgPaint);
         }
-
     }
 
     private void drawUnit(Canvas canvas) {
@@ -347,7 +342,6 @@ public class RangeSeekBar extends View {
     private boolean isDrawUnit() {
         return !TextUtils.isEmpty(unitStr1) && !TextUtils.isEmpty(unitStr2);
     }
-
 
     private void drawText(Canvas canvas, float x, float y, String str) {
         //居中对齐
@@ -382,7 +376,6 @@ public class RangeSeekBar extends View {
             viewHeight = (int) (buttonHeight * drawUnitRatio);
         }
         setMeasuredDimension(viewWidth, viewHeight);
-
     }
 
     int dp2px(int dp) {

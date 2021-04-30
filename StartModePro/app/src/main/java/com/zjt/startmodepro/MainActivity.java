@@ -80,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
             UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
             userProvider.getUserInfo();
             Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
-//            JetPackActivity.enter(this);
 
             mNameViewModel.setCurrentName("测试ViewModel页面服用");
 
+            JetPackActivity.enter(this);
         });
 
         mToUserTxt.setOnClickListener(v -> {
@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("seekbar", "minPercentage = " + minPercentage + " , maxPercentage = " + maxPercentage);
             }
         });
-
 
         mShowDialog.setOnClickListener(v -> {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
