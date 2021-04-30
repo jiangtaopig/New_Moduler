@@ -32,9 +32,6 @@ class TestExceptionActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_generate_exception)
                 .setOnClickListener {
                     try {
-                        val b = 0
-//                        var a = 23 / b
-//                        Integer.valueOf("这种")
                         testDelay()
                     } catch (e: ArithmeticException) {
                         Log.e("TestExceptionActivity", "e >>> ${e.message}")
@@ -50,8 +47,6 @@ class TestExceptionActivity : AppCompatActivity() {
                 Log.e("TestExceptionActivity", "testDelay end")
             }
         }.start()
-
-
     }
 
     private fun delay() {
@@ -81,6 +76,5 @@ class TestExceptionActivity : AppCompatActivity() {
         } catch (ex: FileNotFoundException) {
 
         }
-
     }
 }
