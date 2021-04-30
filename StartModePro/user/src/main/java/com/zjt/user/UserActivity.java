@@ -2,16 +2,12 @@ package com.zjt.user;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
-import com.zjt.user.viewmodel.MeViewModel;
 
 /**
  * Creaeted by ${za.zhu.jiangtao}
@@ -19,7 +15,7 @@ import com.zjt.user.viewmodel.MeViewModel;
  */
 
 @Route(path = RouteHub.User.USER_MAIN_PATH)
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends BaseActivity {
 
     private TextView mMeTxt;
     private TextView mSettingTxt;
@@ -45,12 +41,10 @@ public class UserActivity extends AppCompatActivity {
         });
 
 
-
         mSettingTxt.setOnClickListener(v -> {
             mSettingFragment = new MyFloatFragment();
             switchFragment(mSettingFragment);
         });
-
     }
 
     private void switchFragment(Fragment targetFragment) {

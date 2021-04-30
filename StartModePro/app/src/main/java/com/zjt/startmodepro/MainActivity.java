@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
@@ -35,7 +35,7 @@ import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView mTv;
     private TextView mToUserTxt;
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
+        Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
         mNameViewModel.getCurrentName().observe(this, data -> {
             Log.e("MainActivity", "data ==== > " + data);
         });
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             mNameViewModel.setCurrentName("测试ViewModel页面服用");
 
-            JetPackActivity.enter(this);
+//            JetPackActivity.enter(this);
         });
 
         mToUserTxt.setOnClickListener(v -> {

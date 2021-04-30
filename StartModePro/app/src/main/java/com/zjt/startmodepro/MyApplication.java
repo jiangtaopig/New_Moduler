@@ -8,6 +8,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.tencent.mmkv.MMKV;
+import com.zjt.base.BaseApplication;
 import com.zjt.startmodepro.lifecycle.ApplicationObserver;
 
 public
@@ -15,7 +16,7 @@ public
  *Creaeted by ${za.zhu.jiangtao}
  *on 2021/3/1
  */
-class MyApplication extends Application {
+class MyApplication extends BaseApplication {
     private static Context mContext;
 
     @Override

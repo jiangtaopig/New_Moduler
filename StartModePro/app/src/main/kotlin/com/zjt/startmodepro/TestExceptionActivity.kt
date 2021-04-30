@@ -3,7 +3,9 @@ package com.zjt.startmodepro
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.zjt.base.BaseActivity
+import com.zjt.startmodepro.viewmodel.NameViewModel
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 
@@ -18,24 +20,29 @@ import java.io.FileNotFoundException
  */
 
 
-class TestExceptionActivity : AppCompatActivity() {
+class TestExceptionActivity : BaseActivity() {
+
+    private var nameViewModel: NameViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exception_layout)
 
+        nameViewModel = getApplicationScopeViewModel(NameViewModel::class.java)
         initView()
         /// 我修改了 dev/develop 的分之，然后将master cherry-pick 过来会造成冲突
     }
 
     private fun initView() {
-        delay()
+        nameViewModel?.currentName?.observe(this, Observer {
+            Log.e("TestExceptionActivity", "data ==>> $it")
+        })
+        Log.e("TestExceptionActivity", "nameViewModel ==>> $nameViewModel")
+//        delay()
         findViewById<Button>(R.id.btn_generate_exception)
                 .setOnClickListener {
-                    try {
-                        testDelay()
-                    } catch (e: ArithmeticException) {
-                        Log.e("TestExceptionActivity", "e >>> ${e.message}")
+                    nameViewModel?.apply {
+                        currentName.value = "我是 ExceptionActivity 中的livedata 数据"
                     }
                 }
     }
