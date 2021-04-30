@@ -328,25 +328,27 @@
         <attr name="android:textSize" />
     </declare-styleable>
 
-    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog">
-
+    <style name="MyDialogStyleBottom">
         <!-- 进入和退出时动画-->
-        <item name="android:windowAnimationStyle">@style/dialogPushUpInAnimation</item>
-        <item name="android:windowFrame">@null</item><!--边框-->
-        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
-        <item name="android:windowIsTranslucent">true</item><!--半透明-->
-        <item name="android:windowNoTitle">true</item><!--无标题-->
-        <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
-        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
+        <item name="android:windowAnimationStyle">@style/dialog_fragment_bottom_animation</item>
 
-        <!-- 点击空白区域是否消失  API Level>=11-->
-        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="MyDialogStyleRight">
+        <!-- 进入和退出时动画-->
+        <item name="android:windowAnimationStyle">@style/dialog_fragment_right_animation</item>
+
     </style>
 
 
     <style name="dialog_fragment_bottom_animation">
         <item name="android:windowEnterAnimation">@anim/anim_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/anim_bottom_out</item>
+    </style>
+
+    <style name="dialog_fragment_right_animation">
+        <item name="android:windowEnterAnimation">@anim/anim_right_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_right_out</item>
     </style>
 
 

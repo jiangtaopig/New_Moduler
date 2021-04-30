@@ -7,9 +7,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zjt.router.RouteHub;
+import com.zjt.user.viewmodel.MeViewModel;
 
 /**
  * Creaeted by ${za.zhu.jiangtao}
@@ -42,10 +44,13 @@ public class UserActivity extends AppCompatActivity {
             switchFragment(mMeFragment);
         });
 
+
+
         mSettingTxt.setOnClickListener(v -> {
             mSettingFragment = new MyFloatFragment();
             switchFragment(mSettingFragment);
         });
+
     }
 
     private void switchFragment(Fragment targetFragment) {

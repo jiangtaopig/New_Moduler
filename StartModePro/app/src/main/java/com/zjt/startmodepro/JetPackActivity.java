@@ -5,24 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.zjt.startmodepro.lifecycle.MyObserver;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 /**
  * Creaeted by ${za.zhu.jiangtao}
@@ -54,14 +47,8 @@ public class JetPackActivity extends AppCompatActivity {
         mRefreshDataBtn = findViewById(R.id.btn_refresh_data);
         mJumpBtn = findViewById(R.id.btn_jump);
 
-        mNameViewModel = ViewModelManager.getInstance().getNameModel(this);
-        mNameObserver = new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mTitleTv.setText(s);
-            }
-        };
-//        mNameViewModel.getCurrentName().observe(this, mNameObserver);
+        mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
+        mNameObserver = s -> mTitleTv.setText(s);
 
         // 数据转换
         Transformations.map(mNameViewModel.getCurrentName(), input -> {
@@ -79,17 +66,11 @@ public class JetPackActivity extends AppCompatActivity {
         mJumpBtn.setOnClickListener(v -> {
             JetPack2Activity.enter(this);
         });
-
-        String s = "";
-
-        AndroidSchedulers.mainThread().createWorker().schedule(() -> {
-
-        }, 200, TimeUnit.MICROSECONDS);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mNameViewModel.getCurrentName().removeObserver(mNameObserver);
+//        mNameViewModel.getCurrentName().removeObserver(mNameObserver);
     }
 }

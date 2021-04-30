@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,19 +70,17 @@ class JetPack2Activity extends AppCompatActivity {
 //            download();
         });
 
-        mNameViewModel = ViewModelManager.getInstance().getNameModel(this);
-        Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e("zjt", "s = " + s);
-                mTv.setText(s);
-            }
-        };
+        Message message = new Message();
+        new Handler().sendMessage(message);
 
-        mNameViewModel.getCurrentName().observe(this, observer);
+        mNameViewModel = ViewModelManager.getInstance().getNameModel(this);
+        mNameViewModel.getCurrentName().observe(this, s -> {
+            Log.e("zjt", "s = " + s);
+            mTv.setText(s);
+        });
 
         mButton.setOnClickListener(v -> {
-            mNameViewModel.getCurrentName().postValue("xxxx");
+            mNameViewModel.getCurrentName().setValue("xxxx");
         });
 
         mMyViewModel = ViewModelManager.getInstance().getMyViewModel(this);
@@ -98,17 +97,15 @@ class JetPack2Activity extends AppCompatActivity {
             mMyViewModel.getUserInfo();
             downloadRequestTask.pause();
         });
-
-
     }
 
     /**
      * 断点下载
      */
-    private void download(){
+    private void download() {
         DownloadRequest request = new DownloadRequest();
         request.setUrl("http://gdown.baidu.com/data/wisegame/df65a597122796a4/weixin_821.apk");
-        request.setLocalPath(FileUtil.getCachePath()+"/zjt/weixin_821.apk");
+        request.setLocalPath(FileUtil.getCachePath() + "/zjt/weixin_821.apk");
 
 
         downloadRequestTask = new DownloadRequestTask(request, new IRequestDownloadCallback() {

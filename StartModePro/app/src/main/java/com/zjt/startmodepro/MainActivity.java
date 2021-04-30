@@ -1,6 +1,6 @@
 package com.zjt.startmodepro;
 
-import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,14 +8,15 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
+import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -34,8 +35,6 @@ import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTv;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private RangeSeekBar mRangeSeekBar;
     private TextView mShowDialog;
     private Button mJump2FileActivity;
+    private AlertDialog mDialog;
+    private NameViewModel mNameViewModel;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -61,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
             FileActivity.Companion.enter(this);
         });
 
+        mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
+        mNameViewModel.getCurrentName().observe(this, data -> {
+            Log.e("MainActivity", "data ==== > " + data);
+        });
+
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
@@ -74,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
             userProvider.getUserInfo();
             Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
+
+            mNameViewModel.setCurrentName("测试ViewModel页面服用");
+
             JetPackActivity.enter(this);
         });
 
@@ -98,11 +107,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         mShowDialog.setOnClickListener(v -> {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
 //            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
-            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("haha");
+            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("编辑对话框");
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
@@ -123,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_test_handler_sync_barrier).
                 setOnClickListener(
                         v -> {
-                            Integer.valueOf("这种");
                             Handler handler = new Handler();
                             handler.post(() -> {
                                 Log.e("zjt", "runnable 1 start");
@@ -142,10 +149,6 @@ public class MainActivity extends AppCompatActivity {
                             handler.postAtFrontOfQueue(() -> {
                                 Log.e("zjt", "runnable 3 start");
                             });
-
-                            new Handler().postDelayed(() -> {
-
-                            }, 300);
                         }
                 );
 
@@ -154,23 +157,29 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, TestThreadPoolActivity.class);
                     startActivity(intent);
                 });
+
         findViewById(R.id.btn_exception)
                 .setOnClickListener(v -> {
                     Intent intent = new Intent(this, TestExceptionActivity.class);
                     startActivity(intent);
                 });
 
+        findViewById(R.id.btn_coroutine)
+                .setOnClickListener(v -> {
+                    TestCoroutineActivity.Companion.enter(this);
+                });
 
-        requestPermission();
-    }
+        findViewById(R.id.btn_permission)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestPermissionActivity.class);
+                    startActivity(intent);
+                });
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestPermission() {
-        if (this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
-            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        } else {
-            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
-        }
+        findViewById(R.id.btn_edit)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestEditActivity.class);
+                    startActivity(intent);
+                });
     }
 
     private void test2() {
@@ -279,5 +288,23 @@ public class MainActivity extends AppCompatActivity {
         };
 
         flatMapOb.subscribe(observer);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("MainActivity", " ----- onPause --------");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("MainActivity", " ----- onStop --------");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("MainActivity", " ----- onDestroy --------");
     }
 }

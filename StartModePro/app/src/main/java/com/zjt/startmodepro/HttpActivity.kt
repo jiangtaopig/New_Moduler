@@ -63,7 +63,6 @@ class HttpActivity : AppCompatActivity() {
                 val data = response.body()?.string()
                 Log.e("HttpActivity", "onResponse >> data = $data")
             }
-
         })
     }
 }

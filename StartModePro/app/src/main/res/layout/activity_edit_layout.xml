@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试 EditText"
+        android:textSize="@dimen/dimen_16sp" />
+
+    <EditText
+        android:id="@+id/edit_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@color/cal_blue_light"
+        android:imeOptions="actionDone"
+        android:maxWidth="@dimen/dimen_120dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="输入标题更吸引粉丝额"
+        android:textSize="@dimen/dimen_16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:background="@color/cal_blue_light"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:maxWidth="@dimen/dimen_120dp"
+        android:singleLine="true"
+        android:text="输入标题更吸引粉丝额"
+        android:textSize="@dimen/dimen_16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

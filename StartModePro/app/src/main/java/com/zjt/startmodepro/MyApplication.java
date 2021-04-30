@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.tencent.mmkv.MMKV;
 import com.zjt.startmodepro.lifecycle.ApplicationObserver;
 
 public
@@ -23,16 +24,19 @@ class MyApplication extends Application {
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationObserver());
         mContext = getApplicationContext();
         initARouter();
+
+        String rootDir = MMKV.initialize(this);
+        Log.e("mmkv", "rootDir = " + rootDir);
     }
 
     private void initARouter() {
-        Log.e("time----", "MyApplication initARouter time --- "+System.currentTimeMillis());
-        if(isDebug()) {
+        Log.e("time----", "MyApplication initARouter time --- " + System.currentTimeMillis());
+        if (isDebug()) {
             ARouter.openLog();
             ARouter.openDebug();
         }
         ARouter.init(this);
-        Log.e("time----", "MyApplication initARouter time --- "+System.currentTimeMillis());
+        Log.e("time----", "MyApplication initARouter time --- " + System.currentTimeMillis());
     }
 
     public static Context getContext() {

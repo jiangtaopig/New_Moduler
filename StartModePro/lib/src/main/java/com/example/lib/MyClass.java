@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyClass {
     public static void main(String[] args) {
@@ -16,6 +18,7 @@ public class MyClass {
         System.out.printf("sss------");
 
         testException("");
+        reSize(3);
 
     }
 
@@ -50,6 +53,34 @@ public class MyClass {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void testList() {
+        Student student = null;
+        List<Student> studentList = new ArrayList<>(3);
+        for (int i = 0; i < 3; i++) {
+            student = new Student();
+            student.name = "zjt" + "_" + i;
+            student.age = i;
+            studentList.add(student);
+        }
+
+        int size = studentList.size();
+    }
+
+    /**
+     * 返回大于cap的 2 的幂次方
+     * @param cap
+     * @return
+     */
+    private static int reSize(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : n + 1;
     }
 
 }

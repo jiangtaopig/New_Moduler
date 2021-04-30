@@ -15,4 +15,8 @@ public class NameViewModel extends ViewModel {
             currentName = new MutableLiveData<>();
         return currentName;
     }
+
+    public void setCurrentName(String name) {
+        currentName.setValue(name);
+    }
 }

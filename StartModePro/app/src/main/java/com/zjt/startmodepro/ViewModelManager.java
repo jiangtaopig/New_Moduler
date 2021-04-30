@@ -30,7 +30,7 @@ class ViewModelManager {
     }
 
     public NameViewModel getNameModel(AppCompatActivity context) {
-        return  new ViewModelProvider(context).get(NameViewModel.class);
+        return new ViewModelProvider(context).get(NameViewModel.class);
     }
 
     public MyViewModel getMyViewModel(AppCompatActivity context){

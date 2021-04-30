@@ -54,15 +54,12 @@ class JetPack3Activity : AppCompatActivity() {
 
         })
 
-
         mViewModel = ViewModelProvider(this).get(JetPack3ViewModel::class.java)
         mViewModel.mStudent.observe(this, Observer {
             mDataChangeTv.text = "name = ${it.name}, age = ${it.age}"
         })
 
-
         mShowBtn.setOnClickListener {
-
             var a: String? = null
             val b = a ?: "zz" // 表示如果 a 为 null 的话，那么 b的值等于后面的 "zz"
             Log.e("zjt", "b = $b, a length = ${a?.length}")
@@ -82,7 +79,7 @@ class JetPack3Activity : AppCompatActivity() {
             myKotlinManager.testWhen()
             myKotlinManager.doPrintln("1234")
 
-            var isPositiveNum = KotlinHelper.isPositiveNum(x=3)
+            var isPositiveNum = KotlinHelper.isPositiveNum(x = 3)
             Log.e("zjt", "isPositiveNum = $isPositiveNum")
 
             var isKotlinHelper = KotlinHelper.isInstanceOf<KotlinHelper>()
