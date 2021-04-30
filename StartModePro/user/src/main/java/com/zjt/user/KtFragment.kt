@@ -21,9 +21,10 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.zjt.base.BaseFragment
 import com.zjt.user.viewmodel.MeViewModel
 
-class KtFragment : Fragment() {
+class KtFragment : BaseFragment() {
 
     lateinit var mTitleTv: TextView
     private var mMeViewModel: MeViewModel? = null

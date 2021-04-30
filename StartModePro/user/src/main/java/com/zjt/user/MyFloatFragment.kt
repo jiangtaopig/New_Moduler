@@ -8,6 +8,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.zjt.base.BaseFragment
 import com.zjt.user.viewmodel.MeViewModel
 
 /**
@@ -21,7 +22,7 @@ import com.zjt.user.viewmodel.MeViewModel
  */
 
 
-class MyFloatFragment : Fragment() {
+class MyFloatFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_my_float, container, false)
@@ -43,7 +44,6 @@ class MyFloatFragment : Fragment() {
     }
 
     private fun initView() {
-
         // 持有 activity 引用的 ViewModel 可以让多个 Fragment 数据共享
         val meViewModel = activity?.let { ViewModelProvider(it) }?.get(MeViewModel::class.java)
         meViewModel?.mData?.observe(viewLifecycleOwner, Observer {
@@ -52,7 +52,7 @@ class MyFloatFragment : Fragment() {
         Log.e("MyFloatFragment", "meViewModel = $meViewModel")
     }
 
-    fun dp2px(context: Context?, dp: Float): Int {
+    private fun dp2px(context: Context?, dp: Float): Int {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context?.resources?.displayMetrics).toInt()
     }
 }
