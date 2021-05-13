@@ -3,9 +3,11 @@ package com.zjt.startmodepro
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+
 import androidx.lifecycle.Observer
 import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.viewmodel.NameViewModel
+
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 
@@ -80,8 +82,9 @@ class TestExceptionActivity : BaseActivity() {
     private fun readFromFile(filePath: String) {
         try {
             val input = FileInputStream(filePath)
-        } catch (ex: FileNotFoundException) {
+        }catch (ex: FileNotFoundException) {
 
         }
+
     }
 }
