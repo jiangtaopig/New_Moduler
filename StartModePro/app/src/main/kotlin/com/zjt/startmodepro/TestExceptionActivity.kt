@@ -25,6 +25,7 @@ class TestExceptionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_exception_layout)
 
         initView()
+        /// 我修改了 dev/develop 的分之，然后将master cherry-pick 过来会造成冲突
     }
 
     private fun initView() {
