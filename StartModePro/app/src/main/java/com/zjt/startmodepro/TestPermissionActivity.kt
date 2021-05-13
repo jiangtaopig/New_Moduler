@@ -14,9 +14,16 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import bolts.Continuation
+import bolts.Task
+import bolts.Task.UI_THREAD_EXECUTOR
+import bolts.Task.create
 import com.tencent.mmkv.MMKV
+import com.zjt.startmodepro.utils.PermissionsChecker
+import com.zjt.startmodepro.utils.PermissionsHelper
 
 /**
 
@@ -47,7 +54,7 @@ class TestPermissionActivity : AppCompatActivity() {
 
 //        showPermissionDialog()
 //        requestCameraAndCheckNotReminder()
-        requestAll()
+//        requestAll()
     }
 
     @SuppressLint("NewApi")
@@ -57,7 +64,15 @@ class TestPermissionActivity : AppCompatActivity() {
                 .setOnClickListener {
 //                    requestCameraAndCheckNotReminder()
 //                    requestStorageAndCheckNotReminder()
-                    showPermissionDialog()
+//                    showPermissionDialog()
+//                    requestAlbum()
+//                    getPermission()
+//                    requestAllPermission()
+//                    grantStorage()
+//                    grantAudio()
+//                    requestAllPermission2()
+                    requestAll()
+
                 }
     }
 
@@ -100,11 +115,14 @@ class TestPermissionActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     private fun requestCameraAndCheckNotReminder() {
         if (!hasPermission(Manifest.permission.CAMERA)) {
-            if (mMmkv.decodeBool(CAMERA_APPLIED, false) && !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                jump2Setting("相机", CAMERA_REQUEST_CODE)
-
-            } else {
+            if (!mMmkv.decodeBool(CAMERA_APPLIED, false)) {
                 requestCamera()
+            } else {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    jump2Setting("相机", CAMERA_REQUEST_CODE)
+                } else {
+                    requestCamera()
+                }
             }
         }
     }
@@ -121,10 +139,15 @@ class TestPermissionActivity : AppCompatActivity() {
     private fun requestStorageAndCheckNotReminder() {
         if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // 之前申请权限时如果是拒绝且不再提醒，那么跳转到系统的权限界面; 拒绝且不再提醒 shouldShowRequestPermissionRationale 返回false
-            if (mMmkv.decodeBool(STORAGE_APPLIED, false) && !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                jump2Setting("存储", STORAGE_REQUEST_CODE)
-            } else {
+            // 如果之前未申请过该权限 shouldShowRequestPermissionRationale 也返回 false
+            if (!mMmkv.decodeBool(STORAGE_APPLIED, false)) { // 表示第一次申请该权限
                 requestStorage()
+            } else {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    jump2Setting("存储", STORAGE_REQUEST_CODE)
+                } else {
+                    requestStorage()
+                }
             }
         }
     }
@@ -136,6 +159,111 @@ class TestPermissionActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     private fun requestAll() {
         requestPermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), ALL_REQUEST_CODE)
+    }
+
+    private fun grantStorage() {
+        PermissionsHelper.grantExternalPermissions(this) // 相册
+                .continueWith(Continuation<Void, Void> { albumTask ->
+                    if (albumTask.isFaulted || albumTask.isCancelled) {
+                        if (albumTask.isCancelled) {
+                            Toast.makeText(this, "未打开读写权限", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    null
+                }, Task.UI_THREAD_EXECUTOR)
+    }
+
+    private fun grantCamera() {
+        PermissionsHelper.grantCameraPermission(this) // 相册
+                .continueWith(Continuation<Void, Void> { albumTask ->
+                    if (albumTask.isFaulted || albumTask.isCancelled) {
+                        if (albumTask.isCancelled) {
+                            Toast.makeText(this, "未打开读写权限", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    null
+                }, Task.UI_THREAD_EXECUTOR)
+    }
+
+    private fun grantAudio() {
+        PermissionsHelper.grantAudioPermission(this) // 相册
+                .continueWith(Continuation<Void, Void> { albumTask ->
+                    if (albumTask.isFaulted || albumTask.isCancelled) {
+                        if (albumTask.isCancelled) {
+                            Toast.makeText(this, "未打开读写权限", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    null
+                }, Task.UI_THREAD_EXECUTOR)
+    }
+
+    private fun requestAllPermission() {
+        PermissionsChecker.grantCameraPermission(this) // 相机
+                .continueWith(Continuation<Void, Void> { cameraTask ->
+                    if (cameraTask.isFaulted || cameraTask.isCancelled) { //未获取到权限
+                        if (cameraTask.isCancelled) {
+                            Toast.makeText(this, "未打开相机权限", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    PermissionsChecker.grantAudioPermission(this) // 相册
+                            .continueWith(Continuation<Void, Void> { albumTask ->
+                                if (albumTask.isFaulted || albumTask.isCancelled) { //未获取到权限
+                                    if (albumTask.isCancelled) {
+                                        Toast.makeText(this, "未打开麦克风权限", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                PermissionsChecker.grantExternalPermissions(this) // 相册
+                                        .continueWith(Continuation<Void, Void> { albumTask ->
+                                            if (albumTask.isFaulted || albumTask.isCancelled) {
+                                                if (albumTask.isCancelled) {
+                                                    Toast.makeText(this, "未打开读写权限", Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                            null
+                                        }, Task.UI_THREAD_EXECUTOR)
+                                null
+                            }, Task.UI_THREAD_EXECUTOR)
+                    null
+                }, Task.UI_THREAD_EXECUTOR)
+    }
+
+    private fun requestAllPermission2() {
+        PermissionsHelper.grantCameraPermission(this) // 相机
+                .continueWith(Continuation<Void, Void> { cameraTask ->
+                    if (cameraTask.isFaulted || cameraTask.isCancelled) { //未获取到权限
+                        if (cameraTask.isCancelled) {
+                            Toast.makeText(this, "未打开相机权限", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    PermissionsHelper.grantAudioPermission(this) // 相册
+                            .continueWith(Continuation<Void, Void> { albumTask ->
+                                if (albumTask.isFaulted || albumTask.isCancelled) { //未获取到权限
+                                    if (albumTask.isCancelled) {
+                                        Toast.makeText(this, "未打开麦克风权限", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                PermissionsHelper.grantExternalPermissions(this) // 相册
+                                        .continueWith(Continuation<Void, Void> { albumTask ->
+                                            if (albumTask.isFaulted || albumTask.isCancelled) {
+                                                if (albumTask.isCancelled) {
+                                                    Toast.makeText(this, "未打开读写权限", Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                            null
+                                        }, Task.UI_THREAD_EXECUTOR)
+                                null
+                            }, Task.UI_THREAD_EXECUTOR)
+                    null
+                }, Task.UI_THREAD_EXECUTOR)
+    }
+
+
+    private fun requestAudio() {
+        if (!hasPermission(Manifest.permission.RECORD_AUDIO)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), AUDIO_REQUEST_CODE)
+            }
+        }
     }
 
     private fun jump2Setting(permission: String, requestCode: Int) {
@@ -157,11 +285,41 @@ class TestPermissionActivity : AppCompatActivity() {
         mDialog!!.show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getPermission() {
+        val tsk = create<Void>()
+        if (!hasPermission(Manifest.permission.CAMERA)) {
+            if (!mMmkv.decodeBool(CAMERA_APPLIED, false)) {
+                requestCamera()
+            } else {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    jump2Setting("相机", CAMERA_REQUEST_CODE)
+                } else {
+                    requestCamera()
+                }
+            }
+        } else {
+            tsk.trySetResult(null)
+        }
+        tsk.task.continueWith(Continuation<Void, Void> { albumTask ->
+            if (albumTask.isFaulted || albumTask.isCancelled) { //未获取到权限
+                if (albumTask.isCancelled) {
+                    val a = "123"
+                }
+            }
+            null
+        }, UI_THREAD_EXECUTOR)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionsChecker.onPermissionResult(requestCode, permissions, grantResults)
+        PermissionsHelper.onPermissionResult(requestCode, permissions, grantResults)
         when (requestCode) {
             CAMERA_REQUEST_CODE -> {
                 mMmkv.encode(CAMERA_APPLIED, true)
+                val show = shouldShowRequestPermissionRationale(permissions[0])
                 if (grantResults[0] == 0) {// 表示用户同意授权
                     mPermissionDialog.setCameraOpen()
                     mMmkv.encode(CAMERA_APPLIED, false)
@@ -178,6 +336,7 @@ class TestPermissionActivity : AppCompatActivity() {
                 Log.e("ALL_REQUEST_CODE", "------")
             }
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -185,12 +344,12 @@ class TestPermissionActivity : AppCompatActivity() {
         when (requestCode) {
             CAMERA_REQUEST_CODE -> {
                 if (hasPermission(Manifest.permission.CAMERA)) {// 表示用户同意授权
-                    mMmkv.encode(CAMERA_APPLIED, false)
+//                    mMmkv.encode(CAMERA_APPLIED, false)
                 }
             }
             STORAGE_REQUEST_CODE -> {
                 if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    mMmkv.encode(STORAGE_APPLIED, false)
+//                    mMmkv.encode(STORAGE_APPLIED, false)
                 }
             }
         }
@@ -199,7 +358,8 @@ class TestPermissionActivity : AppCompatActivity() {
     companion object {
         private const val CAMERA_REQUEST_CODE = 1
         private const val STORAGE_REQUEST_CODE = CAMERA_REQUEST_CODE + 1
-        private const val ALL_REQUEST_CODE = STORAGE_REQUEST_CODE + 1
+        private const val AUDIO_REQUEST_CODE = STORAGE_REQUEST_CODE + 1
+        private const val ALL_REQUEST_CODE = AUDIO_REQUEST_CODE + 1
 
         private const val CAMERA_APPLIED = "camera_applied"
         private const val STORAGE_APPLIED = "storage_applied"

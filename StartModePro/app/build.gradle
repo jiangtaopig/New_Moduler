@@ -76,6 +76,7 @@ dependencies {
     implementation project(path: ':user_api')
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+    implementation 'com.parse.bolts:bolts-tasks:1.4.0'
 
 
 }
