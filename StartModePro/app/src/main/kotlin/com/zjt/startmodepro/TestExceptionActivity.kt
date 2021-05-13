@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 
+
 import androidx.lifecycle.Observer
 import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.viewmodel.NameViewModel
@@ -86,6 +87,5 @@ class TestExceptionActivity : BaseActivity() {
         }catch (ex: FileNotFoundException) {
 
         }
-
     }
 }

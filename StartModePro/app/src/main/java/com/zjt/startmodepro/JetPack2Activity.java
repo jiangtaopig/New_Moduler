@@ -57,9 +57,6 @@ class JetPack2Activity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progressbar);
         mGetBtn = findViewById(R.id.btn_data);
 
-
-        // 我修改了  JetPack2Activity 类
-
         mJump2JetPack3ActivityBtn = findViewById(R.id.btn_2_jetpack3Activity);
 
         // 为了测试 git 的 cherry-pick id 功能
