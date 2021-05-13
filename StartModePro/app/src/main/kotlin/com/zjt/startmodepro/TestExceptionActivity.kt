@@ -32,6 +32,7 @@ class TestExceptionActivity : BaseActivity() {
 
         nameViewModel = getApplicationScopeViewModel(NameViewModel::class.java)
         initView()
+        /// 我修改了 dev/develop 的分之，然后将master cherry-pick 过来会造成冲突
     }
 
     private fun initView() {
