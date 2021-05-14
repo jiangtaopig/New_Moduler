@@ -44,7 +44,6 @@ class JetPack2Activity extends AppCompatActivity {
         if (!(context instanceof Activity))
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-
     }
 
     @Override
@@ -100,6 +99,10 @@ class JetPack2Activity extends AppCompatActivity {
             mMyViewModel.getUserInfo();
             downloadRequestTask.pause();
         });
+
+        ThreadLocal<String> threadLocal = new ThreadLocal<>();
+        threadLocal.set("a");
+        int i , j= 0;
     }
 
     /**
