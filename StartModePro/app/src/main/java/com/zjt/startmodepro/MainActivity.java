@@ -181,6 +181,12 @@ public class MainActivity extends BaseActivity {
                     Intent intent = new Intent(this, TestEditActivity.class);
                     startActivity(intent);
                 });
+
+        findViewById(R.id.btn_thread_local)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestThreadLocalActivity.class);
+                    startActivity(intent);
+                });
     }
 
     private void test2() {
