@@ -72,6 +72,8 @@ class JetPack2Activity extends AppCompatActivity {
 //            download();
         });
 
+        // 测试 git rebase master
+
         Message message = new Message();
         new Handler().sendMessage(message);
 
