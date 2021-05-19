@@ -53,11 +53,6 @@ class KtFragment : BaseFragment() {
 
         mTitleTv.setOnClickListener {
             mMeViewModel?.doSth()
-//            val intent = Intent(activity, TestFloatActivity::class.java)
-//            activity?.startActivity(intent)
-
-//            requestCamera()
-
         }
 
     }
