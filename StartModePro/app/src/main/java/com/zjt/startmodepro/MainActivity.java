@@ -22,6 +22,10 @@ import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -68,6 +72,17 @@ public class MainActivity extends BaseActivity {
             Log.e("MainActivity", "data ==== > " + data);
         });
 
+        ReentrantLock reentrantLock = new ReentrantLock();
+        reentrantLock.lock();
+
+        LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>(4);
+        try {
+            linkedBlockingQueue.put("a");
+            linkedBlockingQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
@@ -88,8 +103,13 @@ public class MainActivity extends BaseActivity {
         });
 
         mToUserTxt.setOnClickListener(v -> {
-            ARouter.getInstance().build(RouteHub.User.USER_MAIN_PATH)
+            ARouter.getInstance()
+                    .build(RouteHub.User.USER_MAIN_PATH)
                     .navigation(this);
+
+//            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
+//            UserInfo userInfo = userProvider.getUserInfo();
+//            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
         });
 
         mRangeSeekBar = findViewById(R.id.range_seek_bar);

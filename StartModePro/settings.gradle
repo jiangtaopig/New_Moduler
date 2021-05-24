@@ -1,3 +1,4 @@
+include ':gradle_plugin'
 include ':lib'
 include ':user_api'
 include ':user'
