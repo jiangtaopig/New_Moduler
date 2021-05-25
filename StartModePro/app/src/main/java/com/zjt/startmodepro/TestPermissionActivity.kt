@@ -62,7 +62,7 @@ class TestPermissionActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
-//                    requestCameraAndCheckNotReminder()
+                    requestCameraAndCheckNotReminder()
 //                    requestStorageAndCheckNotReminder()
 //                    showPermissionDialog()
 //                    requestAlbum()
@@ -71,7 +71,7 @@ class TestPermissionActivity : AppCompatActivity() {
 //                    grantStorage()
 //                    grantAudio()
 //                    requestAllPermission2()
-                    requestAll()
+//                    requestAll()
 
                 }
     }
