@@ -9,7 +9,6 @@ public class TestLockSupportPark {
             @Override
             public void run() {
                 super.run();
-
                 System.out.println("start ------ time = " + System.currentTimeMillis());
                 LockSupport.park(); // 中断此线程后会立即返回，即不再阻塞该线程
                 System.out.println("end -------- time = " + System.currentTimeMillis());

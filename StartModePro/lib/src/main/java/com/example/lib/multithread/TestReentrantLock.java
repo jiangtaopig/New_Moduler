@@ -27,9 +27,9 @@ public class TestReentrantLock {
 
         thread2.interrupt();
 
-        Condition condition = reentrantLock.newCondition();
-        condition.await();
-        condition.signal();
+//        Condition condition = reentrantLock.newCondition();
+//        condition.await();
+//        condition.signal();
     }
 
     static class MyThread1 extends Thread {
