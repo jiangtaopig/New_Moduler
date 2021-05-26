@@ -1,10 +1,14 @@
 package com.zjt.startmodepro.repository
 
+import android.util.Log
 import com.zjt.startmodepro.api.DataBase
 import com.zjt.startmodepro.api.TestApi
 import com.zjt.startmodepro.bean.BMWCar
 import com.zjt.startmodepro.bean.Student
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 /**
 
@@ -17,7 +21,7 @@ import kotlinx.coroutines.delay
  */
 
 
-class ArticleRepository {
+class ArticleRepository(private val ioDispatcher: CoroutineDispatcher) {
 
     private val mApi by lazy {
         TestApi()
@@ -42,9 +46,24 @@ class ArticleRepository {
         return Student("xiaozhuge", 32)
     }
 
-    suspend fun getCarInfo() :BMWCar{
+    suspend fun getCarInfo(): BMWCar {
         delay(2_000)
         return BMWCar("bmw")
+    }
+
+    suspend fun test1(): String {
+        Log.e("coroutine", "test1 enter")
+        return withContext(ioDispatcher) {// android 官方推荐使用 注入 Dispatchers ，而不是 硬编码  withContext(Dispatchers.IO)
+            Log.e("coroutine", "test1  thread = ${Thread.currentThread().name}")
+            delay(1500)
+            "test1 result"
+        }
+    }
+
+    suspend fun test2(): String {
+        Log.e("coroutine", "test2 enter thread = ${Thread.currentThread().name}")
+        delay(2500)
+        return "---- test2 result ---"
     }
 
 }

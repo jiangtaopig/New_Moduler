@@ -24,7 +24,7 @@ import kotlin.system.measureTimeMillis
 
 class ArticleViewModel : ViewModel() {
 
-    val articleRepository = ArticleRepository()
+    private val articleRepository = ArticleRepository(Dispatchers.IO)
     val articleList = MutableLiveData<DataBase>()
 
     fun loadData() {
@@ -68,7 +68,6 @@ class ArticleViewModel : ViewModel() {
         viewModelScope.launch {
             val usedTime = measureTimeMillis {
                 val sum = withContext(Dispatchers.IO) {
-                    // 这样是同步执行的，先获取 one()的返回值作为 two 的参数
                     val one = async { articleRepository.one() }
                     val two = async { articleRepository.two(5) }
                     one.await() + two.await()
@@ -83,7 +82,6 @@ class ArticleViewModel : ViewModel() {
         viewModelScope.launch {
             val usedTime = measureTimeMillis {
                 val result = withContext(Dispatchers.IO) {
-                    // 这样是同步执行的，先获取 one()的返回值作为 two 的参数
                     Log.e("ArticleViewModel", "getStudentAndCarInfo thread = ${Thread.currentThread().name}")
                     // async 表示去执行异步操作a
                     val student = async { articleRepository.getStudentInfo() }
@@ -97,13 +95,45 @@ class ArticleViewModel : ViewModel() {
         }
     }
 
+    fun testSuspend() {
+        viewModelScope.launch {
+            Log.e("coroutine", "-----testSuspend1------")
+            val res = articleRepository.test1()
+            Log.e("coroutine", "res = $res")
+        }
+
+        Log.e("coroutine", "--------------------------------------------")
+
+        // 协程 deley 不会阻塞线程，上面的 articleRepository.test1() 调用了 delay 方法。
+        // 后面的 articleRepository.test2() 会立即执行，不会等到 articleRepository.test1() 方法delay完成
+
+        viewModelScope.launch {
+            Log.e("coroutine", "-----testSuspend2------")
+            val res = articleRepository.test2()
+            Log.e("coroutine", "res = $res")
+        }
+    }
+
+    fun testSuspend1() {
+        viewModelScope.launch {
+            Log.e("coroutine", "-----testSuspend1------")
+            val res = articleRepository.test1()
+            Log.e("coroutine", "res = $res")
+        }
+    }
+
+    fun testSuspend2() {
+        viewModelScope.launch {
+            Log.e("coroutine", "-----testSuspend2------")
+            val res = articleRepository.test2()
+            Log.e("coroutine", "res = $res")
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
     }
 
-    data class MergeInfo(val student: Student, val car: BMWCar) {
-
-    }
-
+    data class MergeInfo(val student: Student, val car: BMWCar)
 }
