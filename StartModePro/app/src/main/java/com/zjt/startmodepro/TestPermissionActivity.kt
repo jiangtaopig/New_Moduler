@@ -62,8 +62,10 @@ class TestPermissionActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
+                    //ccccc
                     requestCameraAndCheckNotReminder()
-//                    requestStorageAndCheckNotReminder()
+                    val a = 11
+                    requestStorageAndCheckNotReminder()
 //                    showPermissionDialog()
 //                    requestAlbum()
 //                    getPermission()
