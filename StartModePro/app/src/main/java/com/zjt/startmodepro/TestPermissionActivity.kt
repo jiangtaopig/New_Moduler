@@ -63,6 +63,7 @@ class TestPermissionActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
                     //ctex21
+                    // test2 分支第一次提交
 //                    requestCameraAndCheckNotReminder()
                     val a = 11
 //                    requestStorageAndCheckNotReminder()
