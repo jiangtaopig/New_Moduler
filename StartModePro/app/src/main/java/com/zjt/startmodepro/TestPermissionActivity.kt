@@ -65,6 +65,7 @@ class TestPermissionActivity : AppCompatActivity() {
                     //ctex21
                     // test2 分支第一次提交
                     // test2 分支的第二次提交
+                    // test2 分支的第3次提交
 //                    requestCameraAndCheckNotReminder()
                     val a = 11
 //                    requestStorageAndCheckNotReminder()
