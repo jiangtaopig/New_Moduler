@@ -55,6 +55,10 @@ class TestPermissionActivity : AppCompatActivity() {
 //        showPermissionDialog()
 //        requestCameraAndCheckNotReminder()
 //        requestAll()
+        val model = Build.MODEL
+
+        Log.e("TestPermissionActivity", "model = $model")
+
     }
 
     @SuppressLint("NewApi")
@@ -66,7 +70,7 @@ class TestPermissionActivity : AppCompatActivity() {
                     // test2 分支第一次提交
                     // test2 分支的第二次提交
                     // test2 分支的第3次提交
-//                    requestCameraAndCheckNotReminder()
+                    requestCameraAndCheckNotReminder()
                     val a = 11
 //                    requestStorageAndCheckNotReminder()
 //                    showPermissionDialog()
@@ -328,6 +332,8 @@ class TestPermissionActivity : AppCompatActivity() {
                 if (grantResults[0] == 0) {// 表示用户同意授权
                     mPermissionDialog.setCameraOpen()
                     mMmkv.encode(CAMERA_APPLIED, false)
+                } else {
+                    Toast.makeText(this, "请去设置中打开相机权限", Toast.LENGTH_LONG).show()
                 }
             }
             STORAGE_REQUEST_CODE -> {
@@ -335,6 +341,8 @@ class TestPermissionActivity : AppCompatActivity() {
                 if (grantResults[0] == 0) {
                     mPermissionDialog.setStorageOpen()
                     mMmkv.encode(STORAGE_APPLIED, false)
+                } else {
+                    Toast.makeText(this, "请去设置中打开文件权限", Toast.LENGTH_LONG).show()
                 }
             }
             ALL_REQUEST_CODE -> {
