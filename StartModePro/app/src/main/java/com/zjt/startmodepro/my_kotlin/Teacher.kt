@@ -2,7 +2,7 @@ package com.zjt.startmodepro.my_kotlin
 
 class Teacher(val name: String) {
 
-    constructor(){
+    constructor() : this("111"){
 
     }
 

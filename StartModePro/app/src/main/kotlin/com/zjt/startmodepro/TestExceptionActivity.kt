@@ -44,6 +44,10 @@ class TestExceptionActivity : BaseActivity() {
                         currentName.value = "我是 ExceptionActivity 中的livedata 数据"
                     }
                 }
+
+//        ConstantV2.PORTRAIT_PRE_VIEW_SHARE_ID
+//        Device
+        val v = PORTRAIT_PRE_VIEW_SHARE_ID
     }
 
     private fun testDelay() {

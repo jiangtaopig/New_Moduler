@@ -22,7 +22,6 @@ import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -87,6 +86,15 @@ public class MainActivity extends BaseActivity {
 //            test1();
 //            test2();
 
+            TestBuilder testBuilder = new TestBuilder.Builder()
+                    .setName("aaa")
+                    .setAge(233)
+                    .build();
+
+
+            Log.e("zjt", "name = " + testBuilder.name + ", age = " + testBuilder.age);
+
+
             // 测试 ARouter 的 Provider 的使用
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
@@ -110,6 +118,7 @@ public class MainActivity extends BaseActivity {
 //            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
 //            UserInfo userInfo = userProvider.getUserInfo();
 //            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
+
         });
 
         mRangeSeekBar = findViewById(R.id.range_seek_bar);
@@ -132,6 +141,7 @@ public class MainActivity extends BaseActivity {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
 //            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
             MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("编辑对话框");
+            myKotlinDialog.setTitle("123456");
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
         });
 
