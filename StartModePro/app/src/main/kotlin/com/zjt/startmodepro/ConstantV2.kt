@@ -14,3 +14,5 @@ const val LANDSCAPE_PRE_VIEW_SHARE_ORIGIN = "vertical-share"
 
 const val LANDSCAPE_LIVING_SHARE_ID = "live.my-live-room-show.0.0.pv" //  横屏 播中 id
 const val LANDSCAPE_LIVING_SHARE_ORIGIN = "vertical-share"
+
+// 提交2
