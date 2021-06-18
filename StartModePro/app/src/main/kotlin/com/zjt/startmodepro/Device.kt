@@ -15,4 +15,6 @@ import android.util.Log
 
 fun doSth() {
     Log.e("Device", "i am a top function")
+    // test merge
+    // 111
 }
