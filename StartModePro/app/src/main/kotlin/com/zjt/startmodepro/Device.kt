@@ -17,4 +17,5 @@ fun doSth() {
     Log.e("Device", "i am a top function")
     // test merge
     // 111
+    // 222
 }
