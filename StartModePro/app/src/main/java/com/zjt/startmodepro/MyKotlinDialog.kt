@@ -3,6 +3,7 @@ package com.zjt.startmodepro
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.*
 import android.widget.TextView
@@ -16,6 +17,7 @@ class MyKotlinDialog : DialogFragment(), DialogInterface {
     private lateinit var mTitleTv: TextView
     private var mTitle: String? = null
     private var mNameViewModel: NameViewModel? = null
+    private lateinit var countDownTimer :BlinkCountDownTimer
 
     companion object {
         private const val TITLE_KEY = "title"
@@ -40,9 +42,9 @@ class MyKotlinDialog : DialogFragment(), DialogInterface {
         Log.e(TAG, "onStart")
         val window = dialog?.window
         var params: WindowManager.LayoutParams = window?.attributes!!
-        params.gravity = Gravity.BOTTOM // BOTTOM 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
+        params.gravity = Gravity.CENTER // BOTTOM 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
 //        params.windowAnimations = R.style.MyDialogStyleBottom
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -79,10 +81,27 @@ class MyKotlinDialog : DialogFragment(), DialogInterface {
         mTitleTv = view.findViewById(R.id.txt_title)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        countDownTimer.cancel()
+    }
+
     private fun initData() {
         arguments?.run {
             mTitle = getString(TITLE_KEY)
         }
+
+        countDownTimer = BlinkCountDownTimer(180_000, 1000) { timeStr ->
+            Log.e("BlinkCountDownTimer", "onTimer time = $timeStr")
+        }
+
+//        countDownTimer.setOnTimerCallback(object : BlinkCountDownTimer.OnTimerCallback {
+//            override fun onTimer(time: String) {
+//                Log.e("BlinkCountDownTimer", "onTimer time = $time")
+//            }
+//
+//        })
+
         mTitleTv.text = mTitle
         mTitleTv.setOnClickListener {
 //            val myTask = MyTask()
@@ -95,6 +114,8 @@ class MyKotlinDialog : DialogFragment(), DialogInterface {
             mNameViewModel?.apply {
                 currentName.value = "我是在 MyKotlinDialog 中利用 NameViewModel 修改的数据"
             }
+
+            countDownTimer.start()
         }
     }
 

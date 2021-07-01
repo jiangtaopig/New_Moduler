@@ -71,17 +71,6 @@ public class MainActivity extends BaseActivity {
             Log.e("MainActivity", "data ==== > " + data);
         });
 
-        ReentrantLock reentrantLock = new ReentrantLock();
-        reentrantLock.lock();
-
-        LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>(4);
-        try {
-            linkedBlockingQueue.put("a");
-            linkedBlockingQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();

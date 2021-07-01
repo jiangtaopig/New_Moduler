@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_ffffff_9_round_rect"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="6dp"
+        android:gravity="center"
+        android:text="标题"
+        android:textColor="#ff212121"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="还在直播间请点确认倒计时结束后无点击将视为已离开直播间并自动关播哦"
+        android:textColor="#ff505050"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_fb7299_4_round_rect"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="#fefefe"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txt_counter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        tools:text="02:59"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -16,4 +16,9 @@
         android:textSize="@dimen/dimen_16sp"
         android:background="@drawable/bg_ffffff_9_round_rect"/>
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>
