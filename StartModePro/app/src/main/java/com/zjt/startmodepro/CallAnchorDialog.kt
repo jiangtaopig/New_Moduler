@@ -2,6 +2,7 @@ package com.zjt.startmodepro
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
@@ -52,6 +53,8 @@ class CallAnchorDialog : DialogFragment() {
         })
         Log.e("CallAnchorDialog", "-----value = ${callAnchorViewModel?.counterTime?.value}")
 
+
+        // 为何只赋值一次，防止横竖屏切换的时候导致的从头开始计时，因为ViewModel 能够记住值。
         if (callAnchorViewModel?.counterTime?.value == null || callAnchorViewModel?.counterTime?.value!! < 0L) {
             callAnchorViewModel?.counterTime?.value = 660_000
         }

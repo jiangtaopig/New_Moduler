@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        TestExceptionActivity.Companion.setMydata(new MyData("zhujiangtao", "hhhhhh"));
 
         mTv = findViewById(R.id.txt_rx);
         mToUserTxt = findViewById(R.id.txt_user);
@@ -328,9 +329,13 @@ public class MainActivity extends BaseActivity {
         Log.e("MainActivity", " ----- onStop --------");
     }
 
+    /**
+     * 严格模式下，MainActivity 跳转到其他的界面那么 会走到 MainActivity 的 onDestroy
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.e("MainActivity", " ----- onDestroy --------");
+//        TestExceptionActivity.Companion.setMydata(null);
     }
 }
