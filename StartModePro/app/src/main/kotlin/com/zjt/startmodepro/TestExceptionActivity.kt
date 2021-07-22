@@ -41,6 +41,7 @@ class TestExceptionActivity : BaseActivity() {
         nameViewModel = getApplicationScopeViewModel(NameViewModel::class.java)
         initView()
         initData(savedInstanceState)
+        val tl = ThreadLocal<String>()
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {

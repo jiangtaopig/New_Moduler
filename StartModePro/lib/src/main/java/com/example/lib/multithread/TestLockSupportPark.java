@@ -3,7 +3,14 @@ package com.example.lib.multithread;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
+/**
+ * LockSupport 会为使用它的线程关联一个许可证 (permit)，permit 的语义是【是否拥有许可】-- 0 代表 否，1 代表是 ，默认为0
+ * LockSupport.unpark() ：指定线程关联的 permit 为1，如果之前的 permit < 1，则唤醒该线程
+ * LockSupport.park() ：如果当前线程关联的 permit > 1,则直接把 permit 更新为0， 否则直接阻塞该线程
+ *
+ */
 public class TestLockSupportPark {
+
 
     public static void main(String[] args) {
 //        testInterrupt();

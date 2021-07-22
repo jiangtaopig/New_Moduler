@@ -54,8 +54,8 @@ class TestEditActivity : AppCompatActivity() {
         mTitleEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 mTitleEditText.let {
-                    it.isSingleLine = false
-                    it.maxLines = 2
+//                    it.isSingleLine = false
+//                    it.maxLines = 2
                     requestFocus()
                 }
 

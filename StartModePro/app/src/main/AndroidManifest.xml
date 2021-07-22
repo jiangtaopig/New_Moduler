@@ -55,6 +55,7 @@
         <activity android:name=".TestCoroutineActivity" />
         <activity android:name=".TestPermissionActivity" />
         <activity android:name=".TestEditActivity" />
+        <activity android:name=".schedule.ScheduleActivity"/>
 
         <activity
             android:name=".DispatchActivity"

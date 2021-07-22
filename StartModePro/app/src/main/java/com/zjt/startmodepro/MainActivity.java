@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
+import com.zjt.startmodepro.schedule.ScheduleActivity;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
@@ -23,6 +24,8 @@ import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -33,6 +36,7 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
@@ -66,11 +70,22 @@ public class MainActivity extends BaseActivity {
             FileActivity.Companion.enter(this);
         });
 
+
+
         mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
         Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
         mNameViewModel.getCurrentName().observe(this, data -> {
             Log.e("MainActivity", "data ==== > " + data);
         });
+
+        Observable.interval(5000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Throwable {
+                        mNameViewModel.getCurrentName().setValue(aLong+" .. ZZ..");
+                    }
+                });
 
         mTv.setOnClickListener(v -> {
 //            test1();
@@ -192,8 +207,17 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_permission)
                 .setOnClickListener(v -> {
-                    Intent intent = new Intent(this, TestPermissionActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(this, TestPermissionActivity.class);
+//                    startActivity(intent);
+                    Semaphore semaphore = new Semaphore(0);
+                    try {
+                        semaphore.acquire();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("xxxxx", "num = " + semaphore.availablePermits());
+                    semaphore.release();
+                    Log.e("xxxxx", "num = " +semaphore.availablePermits());
                 });
 
         findViewById(R.id.btn_edit)
@@ -206,6 +230,11 @@ public class MainActivity extends BaseActivity {
                 .setOnClickListener(v -> {
                     Intent intent = new Intent(this, TestThreadLocalActivity.class);
                     startActivity(intent);
+                });
+
+        findViewById(R.id.btn_schedule)
+                .setOnClickListener(v -> {
+                    ScheduleActivity.Companion.enter(this);
                 });
     }
 

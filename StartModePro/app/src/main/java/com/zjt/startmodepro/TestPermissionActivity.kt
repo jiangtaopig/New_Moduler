@@ -24,6 +24,7 @@ import bolts.Task.create
 import com.tencent.mmkv.MMKV
 import com.zjt.startmodepro.utils.PermissionsChecker
 import com.zjt.startmodepro.utils.PermissionsHelper
+import kotlinx.coroutines.sync.Semaphore
 
 /**
 
@@ -50,6 +51,8 @@ class TestPermissionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_permission_layout)
         initView()
 
+
+
         mMmkv = MMKV.mmkvWithID("z_aron")!!
 
 //        showPermissionDialog()
@@ -66,12 +69,7 @@ class TestPermissionActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_apply_permission)
                 .setOnClickListener {
-                    //ctex21
-                    // test2 分支第一次提交
-                    // test2 分支的第二次提交
-                    // test2 分支的第3次提交
-                    requestCameraAndCheckNotReminder()
-                    val a = 11
+//                    requestCameraAndCheckNotReminder()
 //                    requestStorageAndCheckNotReminder()
 //                    showPermissionDialog()
 //                    requestAlbum()
