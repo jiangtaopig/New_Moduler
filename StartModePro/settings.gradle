@@ -7,3 +7,4 @@ include ':router'
 include ':app'
 rootProject.name = "StartModePro"
 
+include ':mylibrary'

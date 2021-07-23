@@ -6,8 +6,10 @@ package com.example.lib;
  * @Description : TestJava
  */
 
-
 public class TestJava {
+    public static void main(String[] args) {
+
+    }
 
     private static void makeString(int a , String b){
         String c = a + b;

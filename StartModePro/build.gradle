@@ -3,10 +3,16 @@ buildscript {
     repositories {
         google()
         jcenter()
+        // 插件需要加上的第一步
+        maven {
+            url uri('repo')
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
+        // 插件需要加上的第2步
+        classpath "com.zjt:autotrack.android:1.0.0"
 
 
         // NOTE: Do not place your application dependencies here; they belong

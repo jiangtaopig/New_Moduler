@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.zjt.startmodepro.refactor.PushClientManager
+import com.zjt.startmodepro.singleinstance.DataManager
 
 /**
 
@@ -52,6 +53,8 @@ class TestRefactorActivity : AppCompatActivity() {
                     mPushClientManager.startPush()
                     mPushClientManager.onDestroy()
                 }
+
+
     }
 
 

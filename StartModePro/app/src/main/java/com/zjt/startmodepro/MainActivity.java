@@ -2,6 +2,7 @@ package com.zjt.startmodepro;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,12 +18,14 @@ import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.schedule.ScheduleActivity;
+import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
+import java.net.URI;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -235,8 +238,17 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.btn_schedule)
                 .setOnClickListener(v -> {
                     ScheduleActivity.Companion.enter(this);
+
+                    String data = "?streamname=live_25489630_8896947&key=6f85a209ffa9d775b0a8d3635128b0a5";
+                    Uri uri = Uri.parse(data);
+                    String stream = uri.getQueryParameter("streamname");
+                    String key = uri.getQueryParameter("key");
+
+                    DataManager.Companion.getInstance(this).doSth();
+                    DataManager.Companion.getInstance(this).doSth();
                 });
     }
+
 
     private void test2() {
         Observable<Integer> createOb = Observable.create(new ObservableOnSubscribe<Integer>() {
