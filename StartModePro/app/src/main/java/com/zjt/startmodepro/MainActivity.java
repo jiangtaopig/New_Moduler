@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
+import com.zjt.startmodepro.cpu_info.BlinkCpuInfo;
 import com.zjt.startmodepro.schedule.ScheduleActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
@@ -25,11 +26,8 @@ import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
-import java.net.URI;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -246,6 +244,12 @@ public class MainActivity extends BaseActivity {
 
                     DataManager.Companion.getInstance(this).doSth();
                     DataManager.Companion.getInstance(this).doSth();
+
+                    BlinkCpuInfo blinkCpuInfo = BlinkCpuInfo.parseCpuInfo();
+                    if (blinkCpuInfo != null && blinkCpuInfo.mRawInfoMap != null && !blinkCpuInfo.mRawInfoMap.isEmpty()){
+                        String cpu = blinkCpuInfo.mRawInfoMap.get("hardware");
+                        Log.e("cpucpu", "cpuinfo = "+cpu);
+                    }
                 });
     }
 
