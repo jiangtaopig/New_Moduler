@@ -235,7 +235,7 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_schedule)
                 .setOnClickListener(v -> {
-                    ScheduleActivity.Companion.enter(this);
+//                    ScheduleActivity.Companion.enter(this);
 
                     String data = "?streamname=live_25489630_8896947&key=6f85a209ffa9d775b0a8d3635128b0a5";
                     Uri uri = Uri.parse(data);
@@ -250,6 +250,9 @@ public class MainActivity extends BaseActivity {
                         String cpu = blinkCpuInfo.mRawInfoMap.get("hardware");
                         Log.e("cpucpu", "cpuinfo = "+cpu);
                     }
+                    Intent intent = new Intent(this, TextFolderActivity2.class);
+                    startActivity(intent);
+
                 });
     }
 

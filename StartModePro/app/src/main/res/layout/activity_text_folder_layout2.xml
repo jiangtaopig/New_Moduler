@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/description_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="12dip"
+    android:paddingRight="12dip"
+    android:background="@color/color_f6f6f6"
+    android:paddingTop="5dip" >
+
+    <TextView
+        android:id="@+id/description_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="视频拍摄啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪ID覅额突破一批一批【人【让旁人【突
+        然普通人牌铁皮普通人【啪啪啪啪啪啪啪啪啪啪啪啪啪上课时开始看看看陪我玩玩去玩ISO维尔瓦IE平OTO
+        啥时候时好时坏啥时候事实上实话实说啥时候事实上事实上还是是啥时候水水水水护手霜护手霜舒舒服服厚案发后案发后恢复卡恢复恢复
+        视频拍摄啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪啪ID覅额突破一批一批【人【让旁人【突
+        然普通人牌铁皮普通人【啪啪啪啪啪啪啪啪啪啪啪啪啪上课时开始看看看陪我玩玩去玩ISO维尔瓦IE平OTO
+        啥时候时好时坏啥时候事实上实话实说啥时候事实上事实上还是是啥时候水水水水护手霜护手霜舒舒服服厚案发后案发后恢复卡恢复恢复"
+        android:textSize="15sp"
+        android:background="@drawable/bg_fb7299_4_round_rect"
+        android:padding="@dimen/dimen_5dp">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/expand_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/dimen_3dp"
+        android:padding="@dimen/dimen_5dp"
+        android:src="@drawable/seek_button"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="啥时候时好时坏啥时候事实上实话实说啥时候事实上事实上还是是啥时候水水水水护手霜护手霜舒舒服服厚案发后案发后恢复卡恢复恢复"
+        android:textColor="@color/color_333333" />
+
+</LinearLayout>

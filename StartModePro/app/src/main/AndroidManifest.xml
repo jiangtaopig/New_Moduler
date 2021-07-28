@@ -75,6 +75,8 @@
         </activity>
 
         <activity android:name=".TestThreadLocalActivity"/>
+        <activity android:name=".TextFolderActivity"/>
+        <activity android:name=".TextFolderActivity2"/>
 
     </application>
 
