@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
@@ -125,6 +126,7 @@ public class MainActivity extends BaseActivity {
 //            UserInfo userInfo = userProvider.getUserInfo();
 //            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
 
+//            Glide.with(this).load("url").into(mToUserTxt);
         });
 
         mRangeSeekBar = findViewById(R.id.range_seek_bar);
@@ -256,6 +258,19 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // onResume 生命周期中是可以在子线程中更新UI的。因为线程检查是在 ViewRootImpl 类中的，而 ViewRootImpl 类是在onResume执行完成之后才创建的。
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                super.run();
+//                mTv.setText("我是在onResume生命周期的子线程中更新的UI");
+//            }
+//        }.start();
+    }
 
     private void test2() {
         Observable<Integer> createOb = Observable.create(new ObservableOnSubscribe<Integer>() {

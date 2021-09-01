@@ -17,6 +17,7 @@ import com.zjt.startmodepro.my_kotlin.KotlinHelper.isInstanceOf
 import com.zjt.startmodepro.my_kotlin.MyKotlinManager
 import com.zjt.startmodepro.my_kotlin.OnSuccessListener
 import com.zjt.startmodepro.viewmodel.JetPack3ViewModel
+import kotlinx.coroutines.GlobalScope
 
 class JetPack3Activity : AppCompatActivity() {
 
@@ -93,6 +94,9 @@ class JetPack3Activity : AppCompatActivity() {
             for (i in 1..10) {
                 list.add("数据--$i")
             }
+
+
+
 
 //            mMyAdapter.setDataList(list)
         }

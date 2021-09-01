@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -26,45 +27,80 @@ import com.zjt.user.viewmodel.MeViewModel
 class KtFragment : BaseFragment() {
 
     lateinit var mTitleTv: TextView
+    lateinit var mNameEdit :EditText
     private var mMeViewModel: MeViewModel? = null
     private var mDialog: AlertDialog? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.e(TAG, "onAttach")
         mMeViewModel = activity?.let {
             ViewModelProvider(it).get(MeViewModel::class.java)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.e(TAG, "onCreateView")
         return inflater.inflate(R.layout.fragment_me_layout, container, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e(TAG, "onViewCreated")
         mTitleTv = view.findViewById(R.id.txt_me_kt)
+        mNameEdit = view.findViewById(R.id.name_edit)
 
         mMeViewModel.apply {
-            mMeViewModel?.mData?.observe(viewLifecycleOwner, Observer<String> { t -> mTitleTv.text = t })
+            mMeViewModel?.mData?.observe(viewLifecycleOwner, { t -> mTitleTv.text = t })
         }
 
         Log.e("KtFragment", "mMeViewModel = $mMeViewModel")
 
-        mTitleTv.setOnClickListener {
-            mMeViewModel?.doSth()
+        // 记录之前输入的文本
+        val txt = mMeViewModel?.mName?.value?: ""
+        if (txt.isNotEmpty()) {
+            mNameEdit.setText(mMeViewModel?.mName?.value)
         }
 
+        mTitleTv.setOnClickListener {
+            mMeViewModel?.doSth()
+            activity.apply {
+                mMeViewModel?.mName?.value = mNameEdit.text.toString()
+                val intent = Intent(this, TestActivity::class.java)
+                startActivityForResult(intent, 3001)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 3001) {
+            val dataVal = data?.getStringExtra("little pig")
+            mMeViewModel?.jumpToFloatFragment?.value = true
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private fun requestCamera() {
-        if (checkSelfPermission(context!!, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(
+                context!!,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == 1) {
@@ -73,7 +109,11 @@ class KtFragment : BaseFragment() {
                 if (grantResults[i] == 0) {
                     continue
                 }
-                if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, permissions[i])) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        activity!!,
+                        permissions[i]
+                    )
+                ) {
                     //选择禁止/拒绝
                     request()
                 } else {
@@ -119,7 +159,14 @@ class KtFragment : BaseFragment() {
         mDialog!!.show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e(TAG, "onDestroy")
+    }
 
+    companion object {
+        const val TAG = "KtFragment"
+    }
 }
 
 

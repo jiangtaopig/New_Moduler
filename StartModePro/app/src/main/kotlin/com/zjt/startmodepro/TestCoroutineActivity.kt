@@ -44,6 +44,8 @@ class TestCoroutineActivity : AppCompatActivity() {
 
         initView()
 
+        
+
     }
 
     private fun initView() {
@@ -62,9 +64,36 @@ class TestCoroutineActivity : AppCompatActivity() {
 //                    viewModel.testSuspend()
 //                    testCoroutine()
 
-                    testFlow3()
+//                    testFlow3()
+
+                    scope.launch {
+                        val ret = countdown(10, 2) { remianTime -> calculate(remianTime) }
+                            .onStart { Log.v("test", "countdown start") }
+                            .onCompletion { Log.v("test", "countdown end") }
+                            .reduce { acc, value ->
+                                Log.v("test", "coutdown acc  = $acc， value = $value")
+                                acc + value
+                            }
+                        Log.v("test", "coutdown acc ret = $ret")
+                    }
                 }
     }
+
+    private fun calculate(value: Long) :Long {
+        Log.v("test", "calculate value = $value")
+        return value +10;
+    }
+
+    fun <T> countdown(
+        duration: Long,
+        interval: Long,
+        onCountdown: suspend (Long) -> T
+    ): Flow<T> =
+        flow { (duration - interval downTo 0 step interval).forEach { emit(it) } }
+            .onEach { delay(interval) }
+            .onStart { emit(duration) }
+            .map { onCountdown(it) }
+            .flowOn(Dispatchers.Default)
 
     /**
      * 视图不应直接触发任何协程来执行业务逻辑，而应将这项工作委托给 ViewModel，这里都是测试代码所以直接写在了 Activity 中了。

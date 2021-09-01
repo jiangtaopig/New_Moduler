@@ -76,4 +76,8 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     api 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
+    // glide
+    api 'com.github.bumptech.glide:glide:4.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+
 }

@@ -1,6 +1,9 @@
 package com.zjt.startmodepro.my_kotlin
 
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 
 class MyKotlinManager(val name: String) { // 主构造器
 
@@ -110,6 +113,8 @@ class MyKotlinManager(val name: String) { // 主构造器
             else -> Log.e("zjt", "既不是整型也不是字符串类型 $content")
         }
     }
+
+
 
 
 }
