@@ -15,7 +15,7 @@
         android:id="@+id/txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_fb7299_4_round_rect"
+        android:background="@drawable/bg_fb7299_8_round_rect"
         android:layout_marginTop="@dimen/dimen_10dp"
         android:textSize="@dimen/dimen_14sp"
         android:textColor="@color/color_333333"

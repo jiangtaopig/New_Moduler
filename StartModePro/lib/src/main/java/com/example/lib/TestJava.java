@@ -2,7 +2,12 @@ package com.example.lib;
 
 import java.net.URI;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -12,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class TestJava {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         int[] a = {1, 2, 3, 4, 5};
         int[] b = new int[10];
 //        System.arraycopy(a, 0, b, 0, b.length);
@@ -26,27 +31,84 @@ public class TestJava {
 
         url.subSequence(0, 2);
 
-        ReentrantLock reentrantLock = new ReentrantLock(true);
+        ReentrantLock reentrantLock = new ReentrantLock();
         reentrantLock.lock();
-        try {
-            reentrantLock.lockInterruptibly();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        Semaphore semaphore = new Semaphore(3);
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Map.Entry<Integer, TreeSet<String>> treeSetEntry;
+        TreeMap<Integer, TreeSet<String>> treeSetTreeMap = new TreeMap<>();
+
+        TreeSet<String> t1 = new TreeSet<>();
+        t1.add("a");
+        t1.add("b");
+
+        treeSetTreeMap.put(1, t1);
+
+        treeSetEntry = treeSetTreeMap.pollFirstEntry();
+        String s = treeSetEntry.getValue().pollFirst();
+        String s2 = treeSetEntry.getValue().pollFirst();
+        System.out.println("s = "+s+ ", s2 = "+ s2 +" , treeSetEntry = "+treeSetEntry);
+
+
+        testSemaphore();
+
+        Map<String,String>  map = new HashMap<>(4);
+        map.put("1", "a");
 
     }
 
 
-
-
-    private static void makeString(int a , String b){
+    private synchronized static void makeString(int a , String b){
         String c = a + b;
+    }
+
+    private static void testSemaphore() {
+        Semaphore semaphore = new Semaphore(1);
+
+        new Thread("A") {
+            @Override
+            public void run() {
+                try {
+                    semaphore.acquire();
+                    System.out.println("thread "+Thread.currentThread().getName() + " >>> start , time = "+System.currentTimeMillis());
+                    Thread.sleep(2_000);
+                    semaphore.release();
+                    Thread.sleep(2_000);
+                    System.out.println("thread "+Thread.currentThread().getName() + " >>> end !!! , time = "+System.currentTimeMillis());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
+        new Thread("B") {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("----------------------");
+                    semaphore.acquire();
+                    System.out.println("thread "+Thread.currentThread().getName() + " >>> start , time = "+System.currentTimeMillis());
+                    Thread.sleep(2_000);
+                    semaphore.release();
+                    System.out.println("thread "+Thread.currentThread().getName() + " >>> end !!!, time = "+System.currentTimeMillis());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
+//        new Thread("C") {
+//            @Override
+//            public void run() {
+//                try {
+//                    semaphore.acquire();
+//                    System.out.println("thread "+Thread.currentThread().getName() + " >>> start , time = "+System.currentTimeMillis());
+//                    Thread.sleep(2_000);
+//                    semaphore.release();
+//                    System.out.println("thread "+Thread.currentThread().getName() + " >>> end !!!, time = "+System.currentTimeMillis());
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
     }
 }

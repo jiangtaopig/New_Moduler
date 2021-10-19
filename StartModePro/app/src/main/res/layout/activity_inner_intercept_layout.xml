@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#666666">
+
+    <com.zjt.startmodepro.scroll_conflict.MyScrollerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/a2" />
+
+            <com.zjt.startmodepro.scroll_conflict.InterceptRecycleView
+                android:id="@+id/recycle_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp">
+
+            </com.zjt.startmodepro.scroll_conflict.InterceptRecycleView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="至于ScrollView，默认在拖拽状态下会拦截MOVE事件，默认不拦截UP事件，
+                若需要拦截UP事件，可重写ScrollView的onInterceptTouchEvent方法，
+                但不是必须拦截UP事件，若父ViewGroup不需要触发单击事件，则可以不拦截。\n
+                其实内部拦截的模板已经在伪代码中体现了。只要实现子View 对事件处理的判断即可。
+                我们需要监听ListView滚动到顶部和底部的状态，
+                当RecycleView滚动到顶部时且手指触摸方向向下或者RecycleView滚动到底部且手机触摸方向向上，则将事件交由ScrollView处理。"
+                android:textSize="@dimen/dimen_18sp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </com.zjt.startmodepro.scroll_conflict.MyScrollerView>
+
+</FrameLayout>

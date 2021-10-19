@@ -1,11 +1,17 @@
 package com.zjt.startmodepro;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
+import android.os.MessageQueue;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,15 +20,18 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
 import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.cpu_info.BlinkCpuInfo;
-import com.zjt.startmodepro.schedule.ScheduleActivity;
+import com.zjt.startmodepro.cpu_info.MemoryMeter;
+import com.zjt.startmodepro.cpu_info.Unit;
+import com.zjt.startmodepro.scroll_conflict.TestInnerInterceptActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
+import com.zjt.startmodepro.widget.TestDefineViewActivity;
+import com.zjt.startmodepro.widget.TestPostByMultiThread;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
@@ -60,6 +69,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // 表示的是系统开机到现在的具体时间，单位为毫秒，不算系统休眠时间即息屏等
+        Log.e("xxxx", "time = >> "+ SystemClock.uptimeMillis());
+
+        HandlerThread handlerThread = new HandlerThread("DownLoadResource");
+
+
+
         setContentView(R.layout.activity_main);
         TestExceptionActivity.Companion.setMydata(new MyData("zhujiangtao", "hhhhhh"));
 
@@ -72,13 +88,13 @@ public class MainActivity extends BaseActivity {
             FileActivity.Companion.enter(this);
         });
 
-
-
         mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
         Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
         mNameViewModel.getCurrentName().observe(this, data -> {
-            Log.e("MainActivity", "data ==== > " + data);
+//            Log.e("MainActivity", "data ==== > " + data);
         });
+
+
 
         Observable.interval(5000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -118,15 +134,16 @@ public class MainActivity extends BaseActivity {
         });
 
         mToUserTxt.setOnClickListener(v -> {
-            ARouter.getInstance()
-                    .build(RouteHub.User.USER_MAIN_PATH)
-                    .navigation(this);
+//            ARouter.getInstance()
+//                    .build(RouteHub.User.USER_MAIN_PATH)
+//                    .navigation(this);
 
 //            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
 //            UserInfo userInfo = userProvider.getUserInfo();
 //            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
 
 //            Glide.with(this).load("url").into(mToUserTxt);
+
         });
 
         mRangeSeekBar = findViewById(R.id.range_seek_bar);
@@ -171,6 +188,7 @@ public class MainActivity extends BaseActivity {
                 setOnClickListener(
                         v -> {
                             Handler handler = new Handler();
+
                             handler.post(() -> {
                                 Log.e("zjt", "runnable 1 start");
                                 try {
@@ -188,6 +206,10 @@ public class MainActivity extends BaseActivity {
                             handler.postAtFrontOfQueue(() -> {
                                 Log.e("zjt", "runnable 3 start");
                             });
+
+                            handler.postDelayed(() ->{
+                                Log.e("zjt", "delay runnable");
+                            }, 3_000);
                         }
                 );
 
@@ -212,15 +234,28 @@ public class MainActivity extends BaseActivity {
                 .setOnClickListener(v -> {
 //                    Intent intent = new Intent(this, TestPermissionActivity.class);
 //                    startActivity(intent);
-                    Semaphore semaphore = new Semaphore(0);
-                    try {
-                        semaphore.acquire();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+//                    Semaphore semaphore = new Semaphore(0);
+//                    try {
+//                        semaphore.acquire();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Log.e("xxxxx", "num = " + semaphore.availablePermits());
+//                    semaphore.release();
+//                    Log.e("xxxxx", "num = " +semaphore.availablePermits());
+
+                    String brand = android.os.Build.BRAND;
+                    String model = android.os.Build.MODEL;
+                    int cores = Runtime.getRuntime().availableProcessors();
+                    BlinkCpuInfo blinkCpuInfo = BlinkCpuInfo.parseCpuInfo();
+                    if (blinkCpuInfo != null && blinkCpuInfo.mRawInfoMap != null && !blinkCpuInfo.mRawInfoMap.isEmpty()){
+                        String cpu = blinkCpuInfo.mRawInfoMap.get("hardware");
+                        Log.e("cpucpu", "cpuinfo = "+cpu);
                     }
-                    Log.e("xxxxx", "num = " + semaphore.availablePermits());
-                    semaphore.release();
-                    Log.e("xxxxx", "num = " +semaphore.availablePermits());
+                    MemoryMeter memory = new MemoryMeter(this);
+                    long totalMemory = memory.getSystemTotalMem(Unit.MB);
+
+                    Log.e("xxxxx", "brand = " + brand+ " ，model = " + model + "， cores = " + cores + " , totalMemory = " + totalMemory);
                 });
 
         findViewById(R.id.btn_edit)
@@ -247,15 +282,74 @@ public class MainActivity extends BaseActivity {
                     DataManager.Companion.getInstance(this).doSth();
                     DataManager.Companion.getInstance(this).doSth();
 
-                    BlinkCpuInfo blinkCpuInfo = BlinkCpuInfo.parseCpuInfo();
-                    if (blinkCpuInfo != null && blinkCpuInfo.mRawInfoMap != null && !blinkCpuInfo.mRawInfoMap.isEmpty()){
-                        String cpu = blinkCpuInfo.mRawInfoMap.get("hardware");
-                        Log.e("cpucpu", "cpuinfo = "+cpu);
-                    }
+
                     Intent intent = new Intent(this, TextFolderActivity2.class);
                     startActivity(intent);
 
                 });
+
+        findViewById(R.id.btn_scroll_conflict)
+                .setOnClickListener(v -> {
+                    String file = this.getDir("mod_resource", Context.MODE_PRIVATE).getAbsolutePath();
+                    Intent intent = new Intent(this, TestInnerInterceptActivity.class);
+                    startActivity(intent);
+
+//                    TestHandlerThread handlerThread = new TestHandlerThread();
+//                    for (int i = 1; i < 5; i++) {
+//                        handlerThread.addMsg("消息"+i);
+//                    }
+//                    testPost();
+                });
+
+        findViewById(R.id.btn_coroutine_2)
+                .setOnClickListener(v -> {
+                    com.zjt.startmodepro.widget.TestCoroutineActivity.Companion.enter(this);
+                });
+
+        findViewById(R.id.btn_canvas)
+                .setOnClickListener(v -> {
+//                    Intent intent = new Intent(this, TestDefineViewActivity.class);
+//                    startActivity(intent);
+
+                    new Thread("thread_zhu") {
+                        @Override
+                        public void run() {
+                            super.run();
+                            String a = null;
+                            a.length();
+                        }
+                    }.start();
+                }); //
+
+        findViewById(R.id.btn_pop_window)
+                .setOnClickListener(v -> {
+                    Intent intent = new Intent(this, TestPopWindowActivity.class);
+                    startActivity(intent);
+
+                });
+
+    }
+
+
+    private void testPost() {
+        TestPostByMultiThread postByMultiThread = new TestPostByMultiThread();
+        for (int i = 5; i < 10; i++) {
+            int finalI = i;
+            new Thread("thread "+ finalI){
+                @Override
+                public void run() {
+                    char [] tmp = new char[1];
+                    tmp[0] = (char) (97 + finalI);
+                    postByMultiThread.addTask(finalI, new String(tmp));
+                }
+            }.start();
+        }
+
+
+    }
+
+    private int sum(int x, int y){
+        return x + y;
     }
 
     @Override

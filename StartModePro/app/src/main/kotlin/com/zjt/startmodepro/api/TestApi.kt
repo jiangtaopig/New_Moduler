@@ -11,21 +11,20 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @Description : TestApi
  */
 class TestApi {
-    private var service: TestService? = null
+    private var service: TestService
 
     init {
-
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://www.imooc.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .build()
+            .baseUrl("http://www.imooc.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
         service = retrofit.create(TestService::class.java)
     }
 
 
     fun getArticleDataAsync(type: Int, num: Int): Deferred<DataBase?>? {
-        return service!!.getArticleData(type, num)
+        return service.getArticleData(type, num)
     }
 
 }

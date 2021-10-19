@@ -46,14 +46,11 @@ class TestThreadPoolActivity : AppCompatActivity() {
 //                        executorService.execute(runnable)
 //                    }
 
-                    val myFutureTask = MyFutureTask(object : Callable<String>{
-                        override fun call(): String {
-                            val a = "123"
-                            Thread.sleep(500)
-                            return a;
-                        }
-
-                    })
+                    val myFutureTask = MyFutureTask {
+                        val a = "123"
+                        Thread.sleep(500)
+                        a;
+                    }
                     executorService.submit(myFutureTask)
                     executorService.shutdown()
 

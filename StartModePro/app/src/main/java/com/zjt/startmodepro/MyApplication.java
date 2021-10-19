@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.tencent.mmkv.MMKV;
 import com.zjt.base.BaseApplication;
 import com.zjt.startmodepro.lifecycle.ApplicationObserver;
+import com.zjt.startmodepro.utils.MyExceptionHandler;
 
 public
 /**
@@ -22,6 +23,7 @@ class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        MyExceptionHandler.getInstance().init();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationObserver());
         mContext = getApplicationContext();
         initARouter();

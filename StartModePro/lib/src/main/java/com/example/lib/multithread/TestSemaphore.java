@@ -13,10 +13,8 @@ public class TestSemaphore {
 
     public static void main(String[] args) {
 
-
-//        test1();
-        test2();
-
+        test1();
+//        test2();
     }
 
     /**
@@ -115,15 +113,20 @@ class MyThread extends Thread {
 
     @Override
     public void run() {
+        int max = 6;
         try {
-            while (value.get() <= 12) {
-                System.out.println("thread name = " + Thread.currentThread().getName()
-                        + ", value get = " + value.get());
+            while (value.get() <= max) {
+//                System.out.println("thread name = " + Thread.currentThread().getName()
+//                        + ", value get = " + value.get());
                 cur.acquire();
-                System.out.println("thread name = " + Thread.currentThread().getName()
-                        + ", value = " + value.getAndAdd(1));
+                if (value.get() <= max) { // 注释【1】
+                    System.out.println("thread name = " + Thread.currentThread().getName()
+                            + ", value = " + value.getAndAdd(1));
+                }
                 next.release();
-                sleep(10); // 这一行很重要
+                // 这一行很重要，这一行保证当前线程再次while循环的时候value的值已经更新了，不然会导致输出的值超过 max 值
+                // 这行不加，就得加上注释【1】
+//                sleep(10);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

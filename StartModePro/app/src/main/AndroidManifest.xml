@@ -56,6 +56,8 @@
         <activity android:name=".TestPermissionActivity" />
         <activity android:name=".TestEditActivity" />
         <activity android:name=".schedule.ScheduleActivity"/>
+        <activity android:name=".widget.TestDefineViewActivity"/>
+        <activity android:name=".TestPopWindowActivity"></activity>
 
         <activity
             android:name=".DispatchActivity"
@@ -77,6 +79,8 @@
         <activity android:name=".TestThreadLocalActivity"/>
         <activity android:name=".TextFolderActivity"/>
         <activity android:name=".TextFolderActivity2"/>
+        <activity android:name=".scroll_conflict.TestInnerInterceptActivity"/>
+        <activity android:name=".widget.TestCoroutineActivity"/>
 
     </application>
 

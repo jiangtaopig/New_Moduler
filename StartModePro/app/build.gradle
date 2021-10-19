@@ -6,9 +6,23 @@ apply plugin: 'com.alibaba.arouter'
 
 
 def isNeedZhujt = true
+def compose_version = '1.1.0-alpha03'
 
 android {
     compileSdkVersion 29
+
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//        useIR = true
+//    }
+//    buildFeatures {
+//        compose true
+//    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion compose_version
+//        kotlinCompilerVersion '1.4.0'
+//    }
+
 
     defaultConfig {
         applicationId "com.zjt.startmodepro"
@@ -97,5 +111,13 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.4.0-rc-95"
+
+//    implementation "androidx.activity:activity:1.2.0"
+//    implementation "androidx.fragment:fragment:1.3.0"
+
+//    implementation "androidx.compose.ui:ui:$compose_version"
+//    implementation "androidx.compose.material:material:$compose_version"
+//    implementation "androidx.ui:ui-tooling:$compose_version"
+
 
 }

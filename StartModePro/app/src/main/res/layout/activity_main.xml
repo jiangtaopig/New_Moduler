@@ -157,6 +157,38 @@
                 android:text="测试 循环计时"
                 android:textSize="@dimen/dimen_18sp" />
 
+            <Button
+                android:id="@+id/btn_scroll_conflict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_4dp"
+                android:text="测试 同向滑动冲突"
+                android:textSize="@dimen/dimen_18sp" />
+
+            <Button
+                android:id="@+id/btn_coroutine_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_4dp"
+                android:text="协程学习"
+                android:textSize="@dimen/dimen_18sp" />
+
+            <Button
+                android:id="@+id/btn_canvas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_4dp"
+                android:text="canvas 学习"
+                android:textSize="@dimen/dimen_18sp" />
+
+            <Button
+                android:id="@+id/btn_pop_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_4dp"
+                android:text="pop window"
+                android:textSize="@dimen/dimen_18sp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

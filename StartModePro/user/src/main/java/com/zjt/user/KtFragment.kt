@@ -51,9 +51,11 @@ class KtFragment : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        registerForActivityResult
         Log.e(TAG, "onViewCreated")
         mTitleTv = view.findViewById(R.id.txt_me_kt)
         mNameEdit = view.findViewById(R.id.name_edit)
+
 
         mMeViewModel.apply {
             mMeViewModel?.mData?.observe(viewLifecycleOwner, { t -> mTitleTv.text = t })
@@ -67,11 +69,14 @@ class KtFragment : BaseFragment() {
             mNameEdit.setText(mMeViewModel?.mName?.value)
         }
 
+
         mTitleTv.setOnClickListener {
             mMeViewModel?.doSth()
             activity.apply {
                 mMeViewModel?.mName?.value = mNameEdit.text.toString()
                 val intent = Intent(this, TestActivity::class.java)
+                val f : Float = 1.5f
+                val b = f.toInt()
                 startActivityForResult(intent, 3001)
             }
         }

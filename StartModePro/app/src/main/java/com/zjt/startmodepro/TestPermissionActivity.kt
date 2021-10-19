@@ -56,7 +56,7 @@ class TestPermissionActivity : AppCompatActivity() {
         mMmkv = MMKV.mmkvWithID("z_aron")!!
 
 //        showPermissionDialog()
-//        requestCameraAndCheckNotReminder()
+        requestCameraAndCheckNotReminder()
 //        requestAll()
         val model = Build.MODEL
 
