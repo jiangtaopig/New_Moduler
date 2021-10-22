@@ -8,21 +8,34 @@ import com.zjt.startmodepro.widget.MyPopWindow
 
 class TestPopWindowActivity : AppCompatActivity() {
 
-    private var tv :TextView? = null
+    private var tv: TextView? = null
+    private lateinit var popWindowHelper: PopWindowHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pop_window_layout)
         tv = findViewById(R.id.test_pop_window)
+
+        popWindowHelper = PopWindowHelper(this)
+
         tv?.setOnClickListener {
-            val popupWindow = MyPopWindow(this)
-            popupWindow.show(tv!!, "pop_window 哈哈哈太好了")
+//            val popupWindow = MyPopWindow(this)
+//            popupWindow.showBubble(tv!!, "pop_window", MyPopWindow.ABOVE_ANCHOR_VIEW)
+            popWindowHelper.show(tv!!, "pop_window", MyPopWindow.ABOVE_ANCHOR_VIEW)
         }
 
         val tv2 = findViewById<TextView>(R.id.test_pop_window2)
         tv2.setOnClickListener {
-            val popupWindow = MyPopWindow(this)
-            popupWindow.show(tv2!!, "pop window 2 哈哈哈太好了吧")
+//            val popupWindow = MyPopWindow(this)
+//            popupWindow.showBubble(tv2!!, "pop window 2 哈哈哈太好了吧", MyPopWindow.ABOVE_ANCHOR_VIEW)
+            popWindowHelper.show(tv2!!, "pop window 2 哈哈哈太好了吧", MyPopWindow.ABOVE_ANCHOR_VIEW)
+        }
+
+        val tv3 = findViewById<TextView>(R.id.test_pop_window3)
+        tv3.setOnClickListener {
+            popWindowHelper.show(tv3!!, "pop window 3 牛逼啊", MyPopWindow.BELOW_ANCHOR_VIEW)
+//            val popupWindow = MyPopWindow(this)
+//            popupWindow.showBubble(tv3!!, "pop window 2 哈哈哈太好了吧", MyPopWindow.BELOW_ANCHOR_VIEW)
         }
 
     }
@@ -31,10 +44,10 @@ class TestPopWindowActivity : AppCompatActivity() {
         super.onResume()
         // 此时 tv 的 windowToken 还未赋值，所以会报
         val popupWindow = MyPopWindow(this)
-        tv?.let { popupWindow.show(it, "我是 popWindow 哈哈") }
+        tv?.let { popupWindow.showBelow(it, "我是 popWindow 哈哈") }
     }
 
-    private fun setBackgroundAlpha( bgAlpha :Float){
+    private fun setBackgroundAlpha(bgAlpha: Float) {
         val layoutParams = window.attributes
         layoutParams.alpha = bgAlpha
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
