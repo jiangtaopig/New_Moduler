@@ -13,8 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.zjt.startmodepro.R
 import com.zjt.startmodepro.utils.DisplayUtil
@@ -34,6 +34,8 @@ class MyPopWindow constructor(val context: Context?) :
     private var rootView: View? = null
     private var upArrowImg: ImageView? = null
     private var downArrowImg: ImageView? = null
+    private var leftArrowImg: ImageView? = null
+    private var rightArrowImg : ImageView? = null
     private var screenWidth = 0
     private var mWillNotAutoDismiss = false
     private lateinit var mDismissOpt: () -> Unit
@@ -50,6 +52,8 @@ class MyPopWindow constructor(val context: Context?) :
             titleTv = rootView?.findViewById(R.id.pop_title_tv)
             upArrowImg = rootView?.findViewById(R.id.up_arrow_img)
             downArrowImg = rootView?.findViewById(R.id.down_arrow_img)
+            leftArrowImg = rootView?.findViewById(R.id.left_arrow_img)
+            rightArrowImg = rootView?.findViewById(R.id.right_arrow_img)
             contentView = rootView
             contentView.apply {
                 isOutsideTouchable = false
@@ -64,7 +68,7 @@ class MyPopWindow constructor(val context: Context?) :
         }
     }
 
-    fun showBubble(anchorView: View, content: String, position :Int, dismissOpt: () -> Unit) {
+    fun showBubble(anchorView: View, content: String, position: Int, dismissOpt: () -> Unit) {
         // anchorView.windowToken == null 防止在 onCreate/onResume 中调用时 anchorView.windowToken 还没有被赋值
         if (context == null || anchorView.windowToken == null) return
         if (context is Activity) {
@@ -76,8 +80,8 @@ class MyPopWindow constructor(val context: Context?) :
         titleTv?.text = content
         val x = anchorView.x
         val y = anchorView.y
-        val width = anchorView.width
-        val height = anchorView.height
+        val anchorViewWidth = anchorView.width
+        val anchorViewHeight = anchorView.height
 
         /**
          * anchorView 在屏幕中的位置
@@ -87,6 +91,8 @@ class MyPopWindow constructor(val context: Context?) :
         val posX = anchorPos[0]
         val posY = anchorPos[1]
         val statusBarHeight = DisplayUtil.getStatusBarHeight(context) // 状态栏高度
+
+        handleArrowVisibility(position)
 
         /**
          * 因为这时候还未绘制，所以 width = 0 ,height = 0; 所以要主动测量
@@ -98,207 +104,102 @@ class MyPopWindow constructor(val context: Context?) :
         val contentViewHeight = contentView.measuredHeight
         Log.e(
             "MyPopWindow",
-            "x = $x, y = $y, width = $width, height = $height, posX = $posX, posY = $posY, " +
+            "x = $x, y = $y, width = $anchorViewWidth, height = $anchorViewHeight, posX = $posX, posY = $posY, " +
                     "\n statusBarHeight = $statusBarHeight, contentViewWidth = $contentViewWidth, contentViewHeight = $contentViewHeight" +
                     "\n screenWidth = $screenWidth"
 
         )
-        var offX = (width - contentViewWidth) / 2
 
-        // 防止贴着屏幕的右边，所以 -3
-        if (posX + contentViewWidth > screenWidth) {
-            offX = screenWidth - (posX + contentViewWidth) - 3
-        }
+        var offX = 0
+        if (position == BELOW_ANCHOR_VIEW || position == ABOVE_ANCHOR_VIEW) {
+            offX = (anchorViewWidth - contentViewWidth) / 2
+            val marin = 3
+            // 防止贴着屏幕的右边，所以去掉 marin
+            if (posX + contentViewWidth > screenWidth) {
+                offX = screenWidth - (posX + contentViewWidth) - marin
+            }
 
-        // 防止贴着屏幕的左边，所以 -3
-        if (offX < 0) {
-            if (abs(offX) > posX) {
-                offX = -(posX - 3)
+            // 防止贴着屏幕的左边，所以去掉 margin
+            if (offX < 0) {
+                if (abs(offX) > posX) {
+                    offX = -(posX - marin)
+                }
             }
         }
 
-        Log.e("MyPopWindow","offX = $offX")
+        Log.e("MyPopWindow", "offX = $offX")
 
-        var arrowImgWidth = downArrowImg?.measuredWidth ?: 0
+        var arrowImgWidth = 0
         var offY = 0
+        // 箭头位置
         var arrowX = 0
         when (position) {
             BELOW_ANCHOR_VIEW -> {
-                downArrowImg?.visibility = View.GONE
-                upArrowImg?.visibility = View.VISIBLE
                 arrowImgWidth = upArrowImg?.measuredWidth ?: 0
                 // anchorView 中点在屏幕上的位置 减去popWindow 的x在屏幕上的位置 减去 小箭头的一半
-                arrowX = posX + width / 2 - (posX + offX) - arrowImgWidth / 2
-                val params: LinearLayout.LayoutParams = upArrowImg?.layoutParams as LinearLayout.LayoutParams
+                arrowX = posX + anchorViewWidth / 2 - (posX + offX) - arrowImgWidth / 2
+                val params: RelativeLayout.LayoutParams =
+                    upArrowImg?.layoutParams as RelativeLayout.LayoutParams
                 params.leftMargin = arrowX
             }
             ABOVE_ANCHOR_VIEW -> {
-                upArrowImg?.visibility = View.GONE
-                downArrowImg?.visibility = View.VISIBLE
-                arrowImgWidth = downArrowImg?.measuredWidth ?: 0
-                offY = height + contentViewHeight
+                offY = anchorViewHeight + contentViewHeight
                 // anchorView 中点在屏幕上的位置 减去popWindow 的x在屏幕上的位置 减去 小箭头的一半
-                 arrowX = posX + width / 2 - (posX + offX) - arrowImgWidth / 2
-                val params: LinearLayout.LayoutParams = downArrowImg?.layoutParams as LinearLayout.LayoutParams
+                arrowX = posX + anchorViewWidth / 2 - (posX + offX) - arrowImgWidth / 2
+                val params: RelativeLayout.LayoutParams =
+                    downArrowImg?.layoutParams as RelativeLayout.LayoutParams
                 params.leftMargin = arrowX
             }
+            RIGHT_ANCHOR_VIEW -> {
+                offX = anchorViewWidth
+                offY = (anchorViewHeight + contentViewHeight) / 2
+                val params: RelativeLayout.LayoutParams =
+                    leftArrowImg?.layoutParams as RelativeLayout.LayoutParams
+                params.topMargin = (contentViewHeight - (leftArrowImg?.measuredHeight ?: 0)) / 2
+            }
+
+            LEFT_ANCHOR_VIEW -> {
+                offX = -contentViewWidth
+                offY = (anchorViewHeight + contentViewHeight) / 2
+                val params: RelativeLayout.LayoutParams =
+                    rightArrowImg?.layoutParams as RelativeLayout.LayoutParams
+                params.topMargin = (contentViewHeight - (rightArrowImg?.measuredHeight ?: 0)) / 2
+            }
         }
-        Log.e("MyPopWindow", "offX = $offX, arrowX = $arrowX, upArrowImgWidth = $arrowImgWidth, offY = $offY")
+        Log.e(
+            "MyPopWindow",
+            "offX = $offX, arrowX = $arrowX, upArrowImgWidth = $arrowImgWidth, offY = $offY"
+        )
         showAsDropDown(anchorView, offX, -offY)
         viewShowAlpha()
     }
 
-    /**
-     * 在 anchorView 的下面
-     */
-    @Deprecated("废弃该方法")
-    fun showBelow(anchorView: View, content: String) {
-        // anchorView.windowToken == null 防止在 onCreate/onResume 中调用时 anchorView.windowToken 还没有被赋值
-        if (context == null || anchorView.windowToken == null) return
-        if (context is Activity) {
-            val activity = context
-            if (activity.isFinishing || activity.isDestroyed) return
-        }
-
-        downArrowImg?.visibility = View.GONE
-        titleTv?.text = content
-
-        val x = anchorView.x
-        val y = anchorView.y
-        val width = anchorView.width
-        val height = anchorView.height
-
-        /**
-         * anchorView 在屏幕中的位置
-         */
-        val anchorPos = intArrayOf(-1, -1)
-        anchorView.getLocationOnScreen(anchorPos)
-        val posX = anchorPos[0]
-        val posY = anchorPos[1]
-        val statusBarHeight = DisplayUtil.getStatusBarHeight(context) // 状态栏高度
-
-        /**
-         * 因为这时候还未绘制，所以 width = 0 ,height = 0; 所以要主动测量
-         * 获取 measuredWidth
-         */
-        getSizeBeforeDraw()
-
-        val contentViewWidth = contentView.measuredWidth
-        val contentViewHeight = contentView.measuredHeight
-        Log.e(
-            "MyPopWindow",
-            "x = $x, y = $y, width = $width, height = $height, posX = $posX, posY = $posY, " +
-                    "\n statusBarHeight = $statusBarHeight, contentViewWidth = $contentViewWidth, contentViewHeight = $contentViewHeight" +
-                    "\n screenWidth = $screenWidth"
-
-        )
-
-        val upArrowImgWidth = upArrowImg?.measuredWidth ?: 0
-        var offX = (width - contentViewWidth) / 2
-
-        // 防止贴着屏幕的右边，所以 -3
-        if (posX + contentViewWidth > screenWidth) {
-            offX = screenWidth - (posX + contentViewWidth) - 3
-        }
-
-        // 防止贴着屏幕的左边，所以 -3
-        if (offX < 0) {
-            if (abs(offX) > posX) {
-                offX = -(posX - 3)
+    private fun handleArrowVisibility(position: Int) {
+        when (position) {
+            BELOW_ANCHOR_VIEW -> {
+                leftArrowImg?.visibility = View.GONE
+                downArrowImg?.visibility = View.GONE
+                rightArrowImg?.visibility = View.GONE
+                upArrowImg?.visibility = View.VISIBLE
+            }
+            ABOVE_ANCHOR_VIEW -> {
+                leftArrowImg?.visibility = View.GONE
+                upArrowImg?.visibility = View.GONE
+                downArrowImg?.visibility = View.VISIBLE
+            }
+            RIGHT_ANCHOR_VIEW -> {
+                upArrowImg?.visibility = View.GONE
+                downArrowImg?.visibility = View.GONE
+                rightArrowImg?.visibility = View.GONE
+                leftArrowImg?.visibility = View.VISIBLE
+            }
+            LEFT_ANCHOR_VIEW -> {
+                upArrowImg?.visibility = View.GONE
+                downArrowImg?.visibility = View.GONE
+                leftArrowImg?.visibility = View.GONE
+                rightArrowImg?.visibility = View.VISIBLE
             }
         }
-
-        // anchorView 中点在屏幕上的位置 减去popWindow 的x在屏幕上的位置 减去 小箭头的一半
-        val arrowX = posX + width / 2 - (posX + offX) - upArrowImgWidth / 2
-        Log.e("MyPopWindow", "offX = $offX, arrowX = $arrowX, upArrowImgWidth = $upArrowImgWidth")
-
-        val params: LinearLayout.LayoutParams =
-            upArrowImg?.layoutParams as LinearLayout.LayoutParams
-        params.leftMargin = arrowX
-
-        showAsDropDown(anchorView, offX, 0)
-        viewShowAlpha()
-    }
-
-    /**
-     * 在指定 anchorView 的上面
-     */
-    @Deprecated("废弃该方法")
-    fun showUp(anchorView: View, content: String, dismissOpt: () -> Unit) {
-//        mDismissOpt = dismissOpt
-        // anchorView.windowToken == null 防止在 onCreate/onResume 中调用时 anchorView.windowToken 还没有被赋值
-        if (context == null || anchorView.windowToken == null) return
-        if (context is Activity) {
-            val activity = context
-            if (activity.isFinishing || activity.isDestroyed) return
-        }
-        upArrowImg?.visibility = View.GONE
-
-        titleTv?.text = content
-
-        val x = anchorView.x
-        val y = anchorView.y
-        val width = anchorView.width
-        val height = anchorView.height
-
-        /**
-         * anchorView 在屏幕中的位置
-         */
-        val anchorPos = intArrayOf(-1, -1)
-        anchorView.getLocationOnScreen(anchorPos)
-        val posX = anchorPos[0]
-        val posY = anchorPos[1]
-        val statusBarHeight = DisplayUtil.getStatusBarHeight(context) // 状态栏高度
-
-        /**
-         * 因为这时候还未绘制，所以 width = 0 ,height = 0; 所以要主动测量
-         * 获取 measuredWidth
-         */
-        getSizeBeforeDraw()
-
-        val contentViewWidth = contentView.measuredWidth
-        val contentViewHeight = contentView.measuredHeight
-        Log.e(
-            "MyPopWindow",
-            "x = $x, y = $y, width = $width, height = $height, posX = $posX, posY = $posY, " +
-                    "\n statusBarHeight = $statusBarHeight, contentViewWidth = $contentViewWidth, contentViewHeight = $contentViewHeight" +
-                    "\n screenWidth = $screenWidth"
-
-        )
-
-        val downArrowImgWidth = downArrowImg?.measuredWidth ?: 0
-        val downArrowImgHeight = downArrowImg?.measuredHeight ?: 0
-        var offX = (width - contentViewWidth) / 2
-//        val arrowX = contentViewWidth / 2 - downArrowImgWidth / 2
-
-        // 防止贴着屏幕的右边，所以 -3
-        if (posX + contentViewWidth > screenWidth) {
-            offX = screenWidth - (posX + contentViewWidth) - 3
-        }
-
-        // 防止贴着屏幕的左边，所以 -3
-        if (offX < 0) {
-            if (abs(offX) > posX) {
-                offX = -(posX - 3)
-            }
-        }
-
-        // anchorView 中点在屏幕上的位置 减去popWindow 的x在屏幕上的位置 减去 小箭头的一半
-        val arrowX = posX + width / 2 - (posX + offX) - downArrowImgWidth / 2
-
-        Log.e(
-            "MyPopWindow",
-            "offX = $offX, arrowX = $arrowX, downArrowImgWidth = $downArrowImgWidth, downArrowImgHeight = $downArrowImgHeight"
-        )
-
-        val params: LinearLayout.LayoutParams =
-            downArrowImg?.layoutParams as LinearLayout.LayoutParams
-        params.leftMargin = arrowX
-
-        val offY = height + contentViewHeight
-
-        showAsDropDown(anchorView, offX, -offY)
-        viewShowAlpha()
     }
 
     private fun viewShowAlpha() {
@@ -339,4 +240,5 @@ class MyPopWindow constructor(val context: Context?) :
         contentView?.measure(makeDropDownMeasureSpec(width), makeDropDownMeasureSpec(height))
     }
 
+    /// -------END -----------
 }

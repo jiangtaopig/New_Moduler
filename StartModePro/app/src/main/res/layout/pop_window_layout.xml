@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -13,22 +13,43 @@
         android:rotation="270"
         android:src="@drawable/ic_blink_right_arrow" />
 
+    <ImageView
+        android:id="@+id/left_arrow_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/up_arrow_img"
+        android:layout_marginRight="-3dp"
+        android:rotation="180"
+        android:src="@drawable/ic_blink_right_arrow" />
+
     <TextView
         android:id="@+id/pop_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/up_arrow_img"
+        android:layout_toRightOf="@id/left_arrow_img"
         android:background="@drawable/bg_fb7299_8_round_rect"
         android:padding="@dimen/dimen_6dp"
-        android:text="我是普通的text"
+        android:text="我是普通的 pop text"
         android:textColor="@color/white"
         android:textSize="@dimen/dimen_14sp" />
+
+    <ImageView
+        android:id="@+id/right_arrow_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/up_arrow_img"
+        android:layout_toRightOf="@id/pop_title_tv"
+        android:layout_marginLeft="-3dp"
+        android:src="@drawable/ic_blink_right_arrow" />
 
     <ImageView
         android:id="@+id/down_arrow_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/pop_title_tv"
         android:layout_marginTop="-3dp"
         android:rotation="90"
         android:src="@drawable/ic_blink_right_arrow" />
 
-</LinearLayout>
+</RelativeLayout>

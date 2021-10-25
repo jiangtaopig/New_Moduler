@@ -38,13 +38,33 @@ class TestPopWindowActivity : AppCompatActivity() {
 //            popupWindow.showBubble(tv3!!, "pop window 2 哈哈哈太好了吧", MyPopWindow.BELOW_ANCHOR_VIEW)
         }
 
+        val rightPop = findViewById<TextView>(R.id.test_right_pop_window)
+
+        rightPop.setOnClickListener {
+            val popupWindow = MyPopWindow(this)
+            popupWindow.showBubble(it, "我是 right bubble", MyPopWindow.RIGHT_ANCHOR_VIEW) {
+
+            }
+        }
+
+        val leftPop = findViewById<TextView>(R.id.test_left_pop_window)
+        leftPop.setOnClickListener {
+            val popupWindow = MyPopWindow(this)
+            popupWindow.showBubble(it, "我是 left bubble", MyPopWindow.LEFT_ANCHOR_VIEW) {
+
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         // 此时 tv 的 windowToken 还未赋值，所以会报
         val popupWindow = MyPopWindow(this)
-        tv?.let { popupWindow.showBelow(it, "我是 popWindow 哈哈") }
+        tv?.let {
+            popupWindow.showBubble(it, "我是 popWindow 哈哈", MyPopWindow.ABOVE_ANCHOR_VIEW) {
+
+            }
+        }
     }
 
     private fun setBackgroundAlpha(bgAlpha: Float) {
