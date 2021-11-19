@@ -27,6 +27,7 @@ class TestThreadPoolActivity : AppCompatActivity() {
         setContentView(R.layout.activity_thread_pool_layout)
         initView()
 
+        val a  = 1
 
     }
 
