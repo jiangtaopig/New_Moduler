@@ -28,6 +28,7 @@ class TestThreadPoolActivity : AppCompatActivity() {
         initView()
 
 
+        val m =1
     }
 
     private fun initView() {
