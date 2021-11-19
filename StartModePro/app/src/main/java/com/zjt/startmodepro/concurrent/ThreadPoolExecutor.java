@@ -527,7 +527,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     /**
      * Tracks largest attained pool size. Accessed only under
      * mainLock.
+     * 用来记录线程池中曾经出现过的最大线程数
      */
+
     private int largestPoolSize;
 
     /**
@@ -1222,7 +1224,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         boolean completedAbruptly = true;
         try {
 
-            // 如果task为空，或者去阻塞队列中去取任务不为空，这里的getTask 如果阻塞队列中任务为空 会阻塞当前线程
+            // 如果task为空，或者去阻塞队列中去取任务不为空，这里的 getTask 如果阻塞队列中任务为空 会阻塞当前线程
             // 这里就是线程复用的核心，比方说当这个程执行完当前任务后，就去队列中取任务来执行，这就完成了线程的复用
             while (task != null || (task = getTask()) != null) {
 //                Log.e("test thread pool", "runWorker  while task = " + task);

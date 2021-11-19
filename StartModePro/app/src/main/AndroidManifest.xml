@@ -14,6 +14,7 @@
     <uses-permission android:name="android.hardware.camera.any"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <!--android:resizeableActivity="false" 不支持小屏 只能在 application 或者 MainActivity -->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -22,10 +23,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeWelcome"
-        android:usesCleartextTraffic="true">
+        android:resizeableActivity="false"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="n">
 
         <activity
             android:name=".MainActivity"
+
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
@@ -57,7 +61,11 @@
         <activity android:name=".TestEditActivity" />
         <activity android:name=".schedule.ScheduleActivity"/>
         <activity android:name=".widget.TestDefineViewActivity"/>
-        <activity android:name=".TestPopWindowActivity"></activity>
+        <activity android:name=".TestPopWindowActivity"
+
+            >
+
+        </activity>
 
         <activity
             android:name=".DispatchActivity"

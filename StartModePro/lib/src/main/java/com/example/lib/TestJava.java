@@ -1,13 +1,15 @@
 package com.example.lib;
 
 import java.net.URI;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -46,18 +48,23 @@ public class TestJava {
         treeSetEntry = treeSetTreeMap.pollFirstEntry();
         String s = treeSetEntry.getValue().pollFirst();
         String s2 = treeSetEntry.getValue().pollFirst();
-        System.out.println("s = "+s+ ", s2 = "+ s2 +" , treeSetEntry = "+treeSetEntry);
+        System.out.println("s = " + s + ", s2 = " + s2 + " , treeSetEntry = " + treeSetEntry);
 
 
         testSemaphore();
 
-        Map<String,String>  map = new HashMap<>(4);
-        map.put("1", "a");
+        LinkedBlockingDeque<Integer> blockingDeque = new LinkedBlockingDeque<>(3);
+        blockingDeque.put(1);
+        blockingDeque.add(2);
 
+        CompletableFuture<String> completableFuture = new CompletableFuture<>();
+        completableFuture.join();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.submit(new Student()::show);
     }
 
-
-    private synchronized static void makeString(int a , String b){
+    private synchronized static void makeString(int a, String b) {
         String c = a + b;
     }
 
@@ -69,11 +76,11 @@ public class TestJava {
             public void run() {
                 try {
                     semaphore.acquire();
-                    System.out.println("thread "+Thread.currentThread().getName() + " >>> start , time = "+System.currentTimeMillis());
+                    System.out.println("thread " + Thread.currentThread().getName() + " >>> start , time = " + System.currentTimeMillis());
                     Thread.sleep(2_000);
                     semaphore.release();
                     Thread.sleep(2_000);
-                    System.out.println("thread "+Thread.currentThread().getName() + " >>> end !!! , time = "+System.currentTimeMillis());
+                    System.out.println("thread " + Thread.currentThread().getName() + " >>> end !!! , time = " + System.currentTimeMillis());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -86,10 +93,10 @@ public class TestJava {
                 try {
                     System.out.println("----------------------");
                     semaphore.acquire();
-                    System.out.println("thread "+Thread.currentThread().getName() + " >>> start , time = "+System.currentTimeMillis());
+                    System.out.println("thread " + Thread.currentThread().getName() + " >>> start , time = " + System.currentTimeMillis());
                     Thread.sleep(2_000);
                     semaphore.release();
-                    System.out.println("thread "+Thread.currentThread().getName() + " >>> end !!!, time = "+System.currentTimeMillis());
+                    System.out.println("thread " + Thread.currentThread().getName() + " >>> end !!!, time = " + System.currentTimeMillis());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

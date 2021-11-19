@@ -8,9 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
-import android.os.Message;
-import android.os.MessageQueue;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Button;
@@ -30,13 +27,11 @@ import com.zjt.startmodepro.scroll_conflict.TestInnerInterceptActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
-import com.zjt.startmodepro.widget.TestDefineViewActivity;
 import com.zjt.startmodepro.widget.TestPostByMultiThread;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -73,8 +68,6 @@ public class MainActivity extends BaseActivity {
         Log.e("xxxx", "time = >> "+ SystemClock.uptimeMillis());
 
         HandlerThread handlerThread = new HandlerThread("DownLoadResource");
-
-
 
         setContentView(R.layout.activity_main);
         TestExceptionActivity.Companion.setMydata(new MyData("zhujiangtao", "hhhhhh"));

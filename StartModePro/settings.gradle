@@ -1,4 +1,3 @@
-include ':gradle_plugin'
 include ':lib'
 include ':user_api'
 include ':user'
@@ -8,3 +7,4 @@ include ':app'
 rootProject.name = "StartModePro"
 
 include ':mylibrary'
+//include ':asmplugin'

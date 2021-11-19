@@ -6,8 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.zjt.startmodepro.R
 import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.Callable
-import java.util.concurrent.FutureTask
+import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.TimeUnit
 
 /**
@@ -27,35 +26,71 @@ class TestThreadPoolActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thread_pool_layout)
         initView()
+
+
     }
 
-    private fun initView(){
+    private fun initView() {
         findViewById<Button>(R.id.btn_add_task)
-                .setOnClickListener {
-                    val executorService = ThreadPoolExecutor(2, 5, 10_000, TimeUnit.MILLISECONDS, ArrayBlockingQueue(10))
-//                    for (i in 0..14) {
-//                        val runnable = Runnable {
-//                            Log.e("gggg", "任务" + (i + 1) + "开始")
-//                            try {
-//                                Thread.sleep(3000)
-//                            } catch (e: InterruptedException) {
-//                                e.printStackTrace()
-//                            }
-//                            Log.e("gggg", "任务" + (i + 1) + "结束")
-//                        }
-//                        executorService.execute(runnable)
-//                    }
-
-                    val myFutureTask = MyFutureTask {
-                        val a = "123"
-                        Thread.sleep(500)
-                        a;
+            .setOnClickListener {
+                val executorService =
+                    ThreadPoolExecutor(1, 1, 10_000, TimeUnit.MILLISECONDS, SynchronousQueue(), ZjtThreadFactory())
+                for (i in 0..3) {
+                    val runnable = Runnable {
+                        Log.e(
+                            "test thread pool",
+                            "thread name = " + Thread.currentThread().name + "任务" + (i + 1) + "开始"
+                        )
+                        try {
+                            Thread.sleep(1000)
+                        } catch (e: InterruptedException) {
+                            e.printStackTrace()
+                        }
+                        Log.e("test thread pool", "任务" + (i + 1) + "结束")
                     }
-                    executorService.submit(myFutureTask)
-                    executorService.shutdown()
-
-
+                    executorService.execute(runnable)
                 }
+
+//                val runnable1 = Runnable {
+//                    Log.e(
+//                        "test thread pool",
+//                        "thread name = " + Thread.currentThread().name + "任务1" + "开始"
+//                    )
+//                    try {
+//                        Thread.sleep(1000)
+//                    } catch (e: InterruptedException) {
+//                        e.printStackTrace()
+//                    }
+//                    Log.e("test thread pool", "任务1" + "结束")
+//                }
+//                executorService.execute(runnable1)
+//
+//                Thread.sleep(2000)
+//
+//                val runnable2 = Runnable {
+//                    Log.e(
+//                        "test thread pool",
+//                        "thread name = " + Thread.currentThread().name + "任务2" + "开始"
+//                    )
+//                    try {
+//                        Thread.sleep(1000)
+//                    } catch (e: InterruptedException) {
+//                        e.printStackTrace()
+//                    }
+//                    Log.e("test thread pool", "任务2" + "结束")
+//                }
+//                executorService.execute(runnable2)
+
+//                    val myFutureTask = MyFutureTask {
+//                        val a = "123"
+//                        Thread.sleep(500)
+//                        a;
+//                    }
+//                    executorService.submit(myFutureTask)
+//                    executorService.shutdown()
+
+
+            }
     }
 
 

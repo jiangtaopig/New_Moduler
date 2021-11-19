@@ -10,4 +10,11 @@ package com.example.lib;
 public class Student {
     public String name;
     public int age;
+    public boolean needShow;
+
+    public void show() {
+        if (needShow) {
+
+        }
+    }
 }
