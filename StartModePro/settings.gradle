@@ -8,3 +8,4 @@ rootProject.name = "StartModePro"
 
 include ':mylibrary'
 //include ':asmplugin'
+include ':zjt_plugin'

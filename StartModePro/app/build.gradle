@@ -5,7 +5,9 @@ apply plugin: 'kotlin-android-extensions'
 // 文件名就是插件名称
 apply plugin: 'com.zjt.android'
 //apply plugin: 'com.zjt.asm'
-apply plugin: 'com.alibaba.arouter'
+//apply plugin: 'com.alibaba.arouter'
+
+//apply plugin: 'com.zjt.zrouter'
 
 
 def isNeedZhujt = true
@@ -63,6 +65,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.arr"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+//    implementation files('libs/17.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -93,7 +96,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.4.0-rc-95"
-
-//    implementation 'com.github.tiann:epic:0.11.2'
 
 }

@@ -1,0 +1,51 @@
+apply plugin: 'kotlin'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    compileOnly 'com.android.tools.build:gradle:3.4.1'
+}
+
+repositories {
+    jcenter()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+//        java {
+//            srcDir "src/main/java"
+//        }
+
+//        kotlin {
+//            srcDir "src/main/kotlin"
+//        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+// 上传到本地的代码仓
+uploadArchives{
+    repositories.mavenDeployer{
+        // 本地仓库路径
+        repository(url: uri('../zjt_repo'))
+
+        // 设置 groupId
+        pom.groupId = 'com.zjt.zrouter'
+
+        // 设置 artifactId
+        pom.artifactId = 'zrouter.android'
+
+        // 设置 插件版本号
+        pom.version = '1.0.1'
+    }
+}
