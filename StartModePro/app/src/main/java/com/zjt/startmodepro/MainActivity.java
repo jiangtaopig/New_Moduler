@@ -83,24 +83,27 @@ public class MainActivity extends BaseActivity {
 
         mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
         Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
-        mNameViewModel.getCurrentName().observe(this, data -> {
-//            Log.e("MainActivity", "data ==== > " + data);
-        });
+
+        mNameViewModel.setCurrentName("测试ViewModel页面服用");
 
 
-
-        Observable.interval(5000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Throwable {
-                        mNameViewModel.getCurrentName().setValue(aLong+" .. ZZ..");
-                    }
-                });
+//        Observable.interval(5000, TimeUnit.MILLISECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Long>() {
+//                    @Override
+//                    public void accept(Long aLong) throws Throwable {
+//                        mNameViewModel.getCurrentName().setValue(aLong+" .. ZZ..");
+//                    }
+//                });
 
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
+
+            // 演示livedata 数据倒灌，及先设置livedata的值，后监听依然能够收到数据回调
+            mNameViewModel.getCurrentName().observe(this, data -> {
+                Log.e("MainActivity", "data ==== > " + data);
+            });
 
             TestBuilder testBuilder = new TestBuilder.Builder()
                     .setName("aaa")
@@ -121,15 +124,13 @@ public class MainActivity extends BaseActivity {
             userProvider.getUserInfo();
             Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
 
-            mNameViewModel.setCurrentName("测试ViewModel页面服用");
-
 //            JetPackActivity.enter(this);
         });
 
         mToUserTxt.setOnClickListener(v -> {
-//            ARouter.getInstance()
-//                    .build(RouteHub.User.USER_MAIN_PATH)
-//                    .navigation(this);
+            ARouter.getInstance()
+                    .build(RouteHub.User.USER_MAIN_PATH)
+                    .navigation(this);
 
 //            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
 //            UserInfo userInfo = userProvider.getUserInfo();

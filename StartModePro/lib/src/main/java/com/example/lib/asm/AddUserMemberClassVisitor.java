@@ -11,7 +11,7 @@ import static org.objectweb.asm.Opcodes.IFEQ;
 
 public class AddUserMemberClassVisitor extends ClassVisitor {
 
-    private String onwer;
+    private String owner;
 
     public AddUserMemberClassVisitor(int api, ClassVisitor classVisitor) {
         super(api, classVisitor);
@@ -20,7 +20,7 @@ public class AddUserMemberClassVisitor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
-        onwer = name;
+        owner = name;
     }
 
     @Override

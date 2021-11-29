@@ -63,19 +63,22 @@ class TestCoroutineActivity : AppCompatActivity() {
 //                    viewModel.getStudentAndCarInfo()
 //                    viewModel.testSuspend()
 //                    testCoroutine()
+//                    viewModel.test3()
+                    viewModel.testSuspend2()
+
 
 //                    testFlow3()
 
-                    scope.launch {
-                        val ret = countdown(10, 2) { remianTime -> calculate(remianTime) }
-                            .onStart { Log.v("test", "countdown start") }
-                            .onCompletion { Log.v("test", "countdown end") }
-                            .reduce { acc, value ->
-                                Log.v("test", "coutdown acc  = $acc， value = $value")
-                                acc + value
-                            }
-                        Log.v("test", "coutdown acc ret = $ret")
-                    }
+//                    scope.launch {
+//                        val ret = countdown(10, 2) { remianTime -> calculate(remianTime) }
+//                            .onStart { Log.v("test", "countdown start") }
+//                            .onCompletion { Log.v("test", "countdown end") }
+//                            .reduce { acc, value ->
+//                                Log.v("test", "coutdown acc  = $acc， value = $value")
+//                                acc + value
+//                            }
+//                        Log.v("test", "coutdown acc ret = $ret")
+//                    }
                 }
     }
 

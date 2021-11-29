@@ -24,6 +24,9 @@ public class NameViewModel extends ViewModel {
     }
 
     public void setCurrentName(String name) {
+        if (currentName == null){
+            getCurrentName();
+        }
         currentName.setValue(name);
     }
 }

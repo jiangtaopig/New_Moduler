@@ -45,7 +45,7 @@ class KtFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.e(TAG, "onCreateView")
-        return inflater.inflate(R.layout.fragment_me_layout, container, false)
+        return inflater.inflate(R.layout.fragment_kt_layout, container, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -53,9 +53,16 @@ class KtFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 //        registerForActivityResult
         Log.e(TAG, "onViewCreated")
-        mTitleTv = view.findViewById(R.id.txt_me_kt)
+        mTitleTv = view.findViewById(R.id.txt_kt)
         mNameEdit = view.findViewById(R.id.name_edit)
-
+        view.findViewById<TextView>(R.id.txt_get_child_fragments)
+            .setOnClickListener {
+                // 获取 KtFragment 中添加的 Fragment，即 MeFragment
+                val fragments = childFragmentManager.fragments
+                if (fragments != null) {
+                    fragments.size
+                }
+            }
 
         mMeViewModel.apply {
             mMeViewModel?.mData?.observe(viewLifecycleOwner, { t -> mTitleTv.text = t })
@@ -69,16 +76,16 @@ class KtFragment : BaseFragment() {
             mNameEdit.setText(mMeViewModel?.mName?.value)
         }
 
-
         mTitleTv.setOnClickListener {
-            mMeViewModel?.doSth()
-            activity.apply {
-                mMeViewModel?.mName?.value = mNameEdit.text.toString()
-                val intent = Intent(this, TestActivity::class.java)
-                val f : Float = 1.5f
-                val b = f.toInt()
-                startActivityForResult(intent, 3001)
-            }
+//            mMeViewModel?.doSth()
+//            activity.apply {
+//                mMeViewModel?.mName?.value = mNameEdit.text.toString()
+//                val intent = Intent(this, TestActivity::class.java)
+//                val f : Float = 1.5f
+//                val b = f.toInt()
+//                startActivityForResult(intent, 3001)
+//            }
+            MeFragment.show(this, R.id.container_view)
         }
     }
 

@@ -51,7 +51,7 @@ public class TestJava {
         System.out.println("s = " + s + ", s2 = " + s2 + " , treeSetEntry = " + treeSetEntry);
 
 
-        testSemaphore();
+//        testSemaphore();
 
         LinkedBlockingDeque<Integer> blockingDeque = new LinkedBlockingDeque<>(3);
         blockingDeque.put(1);
@@ -62,6 +62,9 @@ public class TestJava {
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         executorService.submit(new Student()::show);
+
+        String vv = "010";
+        System.out.println("vv = "+Integer.parseInt(vv));
     }
 
     private synchronized static void makeString(int a, String b) {

@@ -38,6 +38,17 @@
             android:layout_weight="1"
             android:text="设置"/>
 
+        <TextView
+            android:id="@+id/txt_get_all_fragments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:text="获取当前的fragment"/>
+
     </LinearLayout>
 
 

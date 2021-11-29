@@ -29,9 +29,11 @@ class ArticleViewModel : ViewModel() {
 
     fun loadData() {
         // viewModelScope 默认是在 MAIN 线程
+        Log.e("coroutine", "start >>>> ${Thread.currentThread().name}")
         viewModelScope.launch {
             getArticles()
         }
+        Log.e("coroutine", "start >>>> ${Thread.currentThread().name}")
     }
 
     private suspend fun getArticles() {
@@ -82,14 +84,19 @@ class ArticleViewModel : ViewModel() {
         viewModelScope.launch {
             val usedTime = measureTimeMillis {
                 val result = withContext(Dispatchers.IO) {
-                    Log.e("ArticleViewModel", "getStudentAndCarInfo thread = ${Thread.currentThread().name}")
-                    // async 表示去执行异步操作a
+                    Log.e(
+                        "ArticleViewModel",
+                        "getStudentAndCarInfo thread = ${Thread.currentThread().name}"
+                    )
+                    // async 表示去执行异步操作
                     val student = async { articleRepository.getStudentInfo() }
                     val car = async { articleRepository.getCarInfo() }
                     MergeInfo(student.await(), car.await())
                 }
-                Log.e("ArticleViewModel", "getStudentAndCarInfo student = ${result.student} ," +
-                        " car is ${result.car.label}, threadName = ${Thread.currentThread().name}")
+                Log.e(
+                    "ArticleViewModel", "getStudentAndCarInfo student = ${result.student} ," +
+                            " car is ${result.car.label}, threadName = ${Thread.currentThread().name}"
+                )
             }
             Log.e("ArticleViewModel", "getStudentAndCarInfo usedTime = $usedTime")
         }
@@ -97,13 +104,14 @@ class ArticleViewModel : ViewModel() {
 
     fun testSuspend() {
         viewModelScope.launch {
-            Log.e("coroutine", "-----testSuspend1------")
-            val res = articleRepository.test1()
-            Log.e("coroutine", "res = $res")
+            val data = withContext(Dispatchers.IO) {
+                Log.e("coroutine", "-----testSuspend1------")
+                val res = articleRepository.test1()
+                Log.e("coroutine", "res = $res")
+                "|| ----123------"
+            }
+            Log.e("coroutine", "--------------------------------------------data -----$data")
         }
-
-        Log.e("coroutine", "--------------------------------------------")
-
         // 协程 deley 不会阻塞线程，上面的 articleRepository.test1() 调用了 delay 方法。
         // 后面的 articleRepository.test2() 会立即执行，不会等到 articleRepository.test1() 方法delay完成
 
@@ -123,11 +131,41 @@ class ArticleViewModel : ViewModel() {
     }
 
     fun testSuspend2() {
+        Log.e("coroutine", "start >>>> ${Thread.currentThread().name}")
         viewModelScope.launch {
             Log.e("coroutine", "-----testSuspend2------")
+            // test2 是 suspend 挂起函数，是非阻塞式的，它不会阻塞你当前的线程，所以不会等到执行完test2后才会继续执行 注释【2】
+            // 会阻塞当前的协程（viewModelScope.launch 创建的协程），所以 注释【1】会等到 test2执行完
             val res = articleRepository.test2()
-            Log.e("coroutine", "res = $res")
+            Log.e("coroutine", "res = $res") // 注释【1】
         }
+        Log.e("coroutine", "end >>>> ${Thread.currentThread().name}") // 注释【2】
+    }
+
+    fun test3() {
+        viewModelScope.launch {
+            Log.e("coroutine", "start >>>> ${Thread.currentThread().name}")
+//            viewModelScope.launch(Dispatchers.IO) {
+//                Log.e("coroutine", "-- start--- ${Thread.currentThread().name}")
+//                delay(1000)
+//                Log.e("coroutine", "-- end ---${Thread.currentThread().name}")
+//            }
+            /**
+             * viewModelScope.launch(Dispatchers.IO) 和 withContext(Dispatchers.IO) 不同点：
+             * withContext(Dispatchers.IO) 会在 withContext {} 代码块执行完成前阻塞当前协程，执行完成之后后面的  注释【1】才能执行,
+             * 而注释【2】是不会等到 withContext {} 代码执行完才继续执行，即阻塞当前的协程而不会阻塞当前的线程
+             *
+             * viewModelScope.launch(Dispatchers.IO) 则不会阻塞当前协程
+             */
+            withContext(Dispatchers.Main) {
+                Log.e("coroutine", "-- start--- ${Thread.currentThread().name}")
+                delay(1000)
+                Log.e("coroutine", "-- end ---${Thread.currentThread().name}")
+            }
+            Log.e("coroutine", "end >>>> ${Thread.currentThread().name}") // 注释【1】
+        }
+
+        Log.e("coroutine", " 不阻塞当前线程 >>>> ${Thread.currentThread().name}") // 注释【2】
     }
 
     override fun onCleared() {

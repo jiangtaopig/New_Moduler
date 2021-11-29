@@ -18,8 +18,11 @@ public class MyClass {
         sb.append(1);
         System.out.printf("sss------");
 
-        testException("");
-        reSize(3);
+//        testException("");
+//        reSize(3);
+
+        String vv = "01";
+        System.out.println("vv = "+Integer.parseInt(vv));
 
     }
 

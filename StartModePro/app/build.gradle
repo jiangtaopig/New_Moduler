@@ -7,7 +7,7 @@ apply plugin: 'com.zjt.android'
 //apply plugin: 'com.zjt.asm'
 //apply plugin: 'com.alibaba.arouter'
 
-//apply plugin: 'com.zjt.zrouter'
+apply plugin: 'com.zjt.zrouter'
 
 
 def isNeedZhujt = true
@@ -76,8 +76,6 @@ dependencies {
     } else {
         // 开发模式，为了加快编译数据，其他的业务模块可以不用编译
         runtimeOnly project(path: ':user')
-        //        runtimeOnly project(path: ':meet')
-        //        runtimeOnly project(path: ':token')
     }
 
     implementation project(path: ':base')
@@ -85,7 +83,6 @@ dependencies {
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
     implementation 'com.parse.bolts:bolts-tasks:1.4.0'
-
 
     // CameraX core library.
     def camerax_version = "1.0.0-beta03"

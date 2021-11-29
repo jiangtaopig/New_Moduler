@@ -1,8 +1,6 @@
 package com.zjt.user;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +16,7 @@ import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.user.viewmodel.MeViewModel;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.List;
 
 /**
  * Creaeted by ${za.zhu.jiangtao}
@@ -66,20 +63,26 @@ public class UserActivity extends BaseActivity {
             showFloatFragment();
         });
 
+        findViewById(R.id.txt_get_all_fragments)
+                .setOnClickListener(v -> {
+                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                    fragments.size();
+                });
 
-        viewModel = new ViewModelProvider(this).get(MeViewModel.class);
-        viewModel.getMData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Log.e("UserActivity","s = "+s);
-            }
-        });
 
-        viewModel.getJumpToFloatFragment().observe(this, aBoolean -> {
-            if (aBoolean) {
-                showFloatFragment();
-            }
-        });
+//        viewModel = new ViewModelProvider(this).get(MeViewModel.class);
+//        viewModel.getMData().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                Log.e("UserActivity", "s = " + s);
+//            }
+//        });
+//
+//        viewModel.getJumpToFloatFragment().observe(this, aBoolean -> {
+//            if (aBoolean) {
+//                showFloatFragment();
+//            }
+//        });
 
         showKtFragment();
     }
@@ -107,7 +110,7 @@ public class UserActivity extends BaseActivity {
         if (mKtFragment == null) {
             mKtFragment = new KtFragment();
         }
-        if (mKtFragment.isAdded()){
+        if (mKtFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction().show(mKtFragment)
                     .commitAllowingStateLoss();
         } else {
@@ -116,7 +119,7 @@ public class UserActivity extends BaseActivity {
         }
     }
 
-    private void showFloatFragment(){
+    private void showFloatFragment() {
         Fragment preViewFragment = getSupportFragmentManager().findFragmentByTag(KT_FRAGMENT_TAG);
         if (preViewFragment != null) {
             getSupportFragmentManager().beginTransaction().hide(preViewFragment).commitAllowingStateLoss();
