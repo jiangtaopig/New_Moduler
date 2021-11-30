@@ -13,12 +13,12 @@ apply plugin: 'com.zjt.zrouter'
 def isNeedZhujt = true
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.zjt.startmodepro"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -65,7 +65,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.arr"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-//    implementation files('libs/17.jar')
+//    implementation files('libs/17.jar') // arouter 插件后的代码
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

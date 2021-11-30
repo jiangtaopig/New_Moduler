@@ -19,13 +19,13 @@ sourceSets {
             srcDir 'src/main/groovy'
         }
 
-//        java {
-//            srcDir "src/main/java"
-//        }
+        java {
+            srcDir "src/main/java"
+        }
 
-//        kotlin {
-//            srcDir "src/main/kotlin"
-//        }
+        kotlin {
+            srcDir "src/main/kotlin"
+        }
 
         resources {
             srcDir 'src/main/resources'

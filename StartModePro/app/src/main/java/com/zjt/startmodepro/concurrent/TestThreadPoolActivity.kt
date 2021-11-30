@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.zjt.startmodepro.R
-import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.Executors
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.TimeUnit
 
@@ -27,7 +27,24 @@ class TestThreadPoolActivity : AppCompatActivity() {
         setContentView(R.layout.activity_thread_pool_layout)
         initView()
 
+        val executorService = Executors.newFixedThreadPool(5);
+        executorService.execute{
+            Log.e(
+                "TestThreadPoolActivity",
+                "thread name = " + Thread.currentThread().name + "--------- 1234 ---------"
+            )
+        }
 
+        val single = Executors.newSingleThreadScheduledExecutor()
+
+        for (i in 1..3) {
+            single.execute{
+                Log.e(
+                    "TestThreadPoolActivity",
+                    "thread name = " + Thread.currentThread().name + "--------- 5678 ---------$i"
+                )
+            }
+        }
     }
 
     private fun initView() {
