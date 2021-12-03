@@ -15,9 +15,7 @@ class TestThreadFactory(name: String? = "") : ThreadFactory {
         val s = System.getSecurityManager()
         group =
             if (s != null) s.threadGroup else Thread.currentThread().threadGroup
-        namePrefix += "zjt-asm-pool-"+
-        poolNumber.getAndIncrement() +
-                "-thread-"
+        namePrefix += name + poolNumber.getAndIncrement() + "-thread-"
     }
 
     override fun newThread(r: Runnable?): Thread? {

@@ -2,13 +2,12 @@ package com.zjt.startmodepro.utils
 
 import java.util.concurrent.*
 
-class TestIOThreadExecutor private constructor() : ThreadPoolExecutor(
+class TestIOThreadExecutor private constructor(threadName: String) : ThreadPoolExecutor(
     MAX_PROCESS, MAX_PROCESS * 2,
     60, TimeUnit.SECONDS, LinkedBlockingDeque(20),
-    TestThreadFactory(),
+    TestThreadFactory(threadName),
     DiscardPolicy()
 ) {
-
 
     companion object {
         @JvmField
@@ -16,7 +15,7 @@ class TestIOThreadExecutor private constructor() : ThreadPoolExecutor(
 
         @JvmStatic
         val THREAD_POOL_SHARE by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            TestIOThreadExecutor()
+            TestIOThreadExecutor("zjt_hook_thread_pool")
         }
 
         @JvmStatic
@@ -34,6 +33,12 @@ class TestIOThreadExecutor private constructor() : ThreadPoolExecutor(
             return THREAD_POOL_SHARE
         }
 
+        @JvmStatic
+        fun getThreadPool(threadName : String): TestIOThreadExecutor {
+            return synchronized(this) {
+                TestIOThreadExecutor(threadName)
+            }
+        }
     }
 
 }

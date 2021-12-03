@@ -10,6 +10,9 @@ public class TestAge {
 
         int age = getPersonAgeFromIdCard(idCard);
         System.out.println("age = " +age + "周岁");
+
+        String vv = "mm\u200B123"; // ​ 是不可见字符 ZWSP = Zero width space
+        System.out.println("vv >>> " + vv+" ， length = " + vv.length()); // 打印结果 ：vv >>> mm123 ， length = 6，可以看到长度是6，但是只能看见 mm123
     }
 
 

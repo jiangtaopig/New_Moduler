@@ -45,13 +45,15 @@ class TestThreadPoolActivity : AppCompatActivity() {
                 )
             }
         }
+
+        TestHookThreadPool().testHook()
     }
 
     private fun initView() {
         findViewById<Button>(R.id.btn_add_task)
             .setOnClickListener {
                 val executorService =
-                    ThreadPoolExecutor(1, 1, 10_000, TimeUnit.MILLISECONDS, SynchronousQueue(), ZjtThreadFactory())
+                    ThreadPoolExecutor(1, 3, 10_000, TimeUnit.MILLISECONDS, SynchronousQueue(), ZjtThreadFactory())
                 for (i in 0..3) {
                     val runnable = Runnable {
                         Log.e(

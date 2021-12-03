@@ -8,6 +8,7 @@ apply plugin: 'com.zjt.android'
 //apply plugin: 'com.alibaba.arouter'
 
 apply plugin: 'com.zjt.zrouter'
+//apply plugin: 'com.didiglobal.booster'
 
 
 def isNeedZhujt = true
@@ -93,5 +94,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.4.0-rc-95"
+
+
 
 }
