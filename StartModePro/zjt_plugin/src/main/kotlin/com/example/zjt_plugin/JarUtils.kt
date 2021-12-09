@@ -24,9 +24,6 @@ internal object JarUtils {
             enumeration.iterator().forEach constituting@{ jarEntry ->
                 val inputStream = file.getInputStream(jarEntry)
                 val entryName = jarEntry.name
-                if (entryName.contains("BoltsExecutors")) { // BoltsExecutors 里的线程池会导致报错，所以过滤掉
-                    return@constituting
-                }
 //                println("zjt jar >>>>>:$entryName jarFileName:${jarFile.path}")
                 if (entryName.contains("module-info.class") && !entryName.contains("META-INF")) {
 //                    print("jar file module-info:$entryName jarFileName:${jarFile.path}")
@@ -38,7 +35,7 @@ internal object JarUtils {
                     jarOutputStream.putNextEntry(zipEntry)
                     var modifiedClassBytes: ByteArray? = null
                     val sourceClassBytes = inputStream.readBytes()
-                    if (entryName.endsWith(".class")) {
+                    if (entryName.endsWith(".class") && !entryName.contains("bolts")) {
                         try {
                             modifiedClassBytes = transform.process(entryName, sourceClassBytes)
                         } catch (ignored: Exception) {

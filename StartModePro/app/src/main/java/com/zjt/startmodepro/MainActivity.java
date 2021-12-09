@@ -226,8 +226,8 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_permission)
                 .setOnClickListener(v -> {
-//                    Intent intent = new Intent(this, TestPermissionActivity.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(this, TestPermissionActivity.class);
+                    startActivity(intent);
 //                    Semaphore semaphore = new Semaphore(0);
 //                    try {
 //                        semaphore.acquire();

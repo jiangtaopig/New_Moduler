@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +14,7 @@ public class TestHookThreadPool {
     public void testHook() {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             int finalI = i;
             executorService.execute(() -> {
                 try {
@@ -29,7 +30,7 @@ public class TestHookThreadPool {
             @Override
             public void run() {
                 super.run();
-                Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test thread" );
+                Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test thread");
             }
         };
         thread.setName("xxx--xxx");
@@ -41,6 +42,25 @@ public class TestHookThreadPool {
             int finalI = i;
             service.execute(() -> {
                 Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test define thread_pool >>> " + finalI);
+            });
+        }
+
+        ExecutorService service1 = new ThreadPoolExecutor(1, 3, 10_000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(1), new ZjtThreadFactory(), new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test define thread_pool2 rejected:");
+            }
+        });
+
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            service1.execute(() -> {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test define thread_pool2 >>> " + finalI);
             });
         }
     }

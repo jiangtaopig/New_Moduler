@@ -12,6 +12,11 @@ import com.zjt.base.BaseApplication;
 import com.zjt.startmodepro.lifecycle.ApplicationObserver;
 import com.zjt.startmodepro.utils.MyExceptionHandler;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import bolts.Task;
+
 public
 /**
  *Creaeted by ${za.zhu.jiangtao}
@@ -30,6 +35,20 @@ class MyApplication extends BaseApplication {
 
         String rootDir = MMKV.initialize(this);
         Log.e("mmkv", "rootDir = " + rootDir);
+        load();
+
+    }
+
+    private void load(){
+
+        Task<String> stringTask = Task.callInBackground(new Callable<String>() {
+
+            @Override
+            public String call() throws Exception {
+                return "12345";
+            }
+        });
+        Task<Object> val = stringTask.cast();
     }
 
     private void initARouter() {

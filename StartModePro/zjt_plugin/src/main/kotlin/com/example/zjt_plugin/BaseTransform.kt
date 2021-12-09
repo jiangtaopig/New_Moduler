@@ -94,7 +94,8 @@ class BaseTransform(
                         foreachJar(dest, jarInput)
                     }
                 }
-                // 遍历目录文件 即 本地编写的 java ，kotlin 等文件
+                // directoryInputs 表示以源码方式参与编译的所有目录及其目录下的所有文件
+                // 比如我们手写的类、R.class BuildConfig.class 以及MainActivity.class等等
                 for (directoryInput in input.directoryInputs) {
                     foreachClass(directoryInput)
                 }
@@ -236,7 +237,7 @@ class BaseTransform(
             FileUtils.copyDirectory(dir, dest)
             dir.walkTopDown().filter { it.isFile }
                     .forEach { classFile ->
-                        if (classFile.name.endsWith(".class")) {
+                        if (classFile.name.endsWith(".class") && !classFile.name.contains("bolts")) {
                             val task = Callable<Void> {
                                 val absolutePath = classFile.absolutePath.replace(
                                         dir.absolutePath + File.separator, ""

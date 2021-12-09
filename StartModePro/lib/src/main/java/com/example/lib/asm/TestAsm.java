@@ -15,16 +15,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * 变量 descriptor 如下：
+ * 变量 descriptor 如下：注意的2个
  *   Java type    Type descriptor
- *   boolean
+ *   boolean      Z （zero ）
+ *   long         J
  */
 public class TestAsm {
     public static void main(String[] args) {
 //        System.out.println("hello world");
-//        testGenerateClass();
-        addMember();
-        User user = new User();
+        testGenerateClass();
+//        addMember();
+//        User user = new User();
+
+        Object object = new Object();
 
     }
 
@@ -108,7 +111,7 @@ public class TestAsm {
         methodVisitor.visitLdcInsn("Hello World");
         // 调用 println 方法
         methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-        methodVisitor.visitInsn(Opcodes.RETURN);
+        methodVisitor.visitInsn(Opcodes.RETURN); // 为啥要加return？
         methodVisitor.visitMaxs(2, 1);
         methodVisitor.visitEnd();
         cw.visitEnd();

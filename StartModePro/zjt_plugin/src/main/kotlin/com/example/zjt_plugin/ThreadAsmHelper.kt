@@ -156,7 +156,7 @@ class ThreadAsmHelper : AsmHelper {
             return
         }
         when (this.owner) {
-//            com.didiglobal.booster.transform.thread.THREAD -> transformThreadInvokeSpecial(klass, method)
+//            THREAD -> transformThreadInvokeSpecial(klass, method)
 //            HANDLER_THREAD -> transformHandlerThreadInvokeSpecial(klass, method)
 //            TIMER -> transformTimerInvokeSpecial(klass, method)
             THREAD_POOL_EXECUTOR -> transformThreadPoolExecutorInvokeSpecial(className, methodNode)
@@ -190,8 +190,7 @@ class ThreadAsmHelper : AsmHelper {
                         )
                     )
                 }
-                this.desc =
-                    "(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;Ljava/util/concurrent/ThreadFactory;)V"
+                this.desc = "(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;Ljava/util/concurrent/ThreadFactory;)V"
             }
             // ThreadPoolExecutor(int, int, long, TimeUnit, BlockingQueue, ThreadFactory)
             "(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;Ljava/util/concurrent/ThreadFactory;)V" -> {
@@ -229,7 +228,15 @@ class ThreadAsmHelper : AsmHelper {
                             false
                         )
                     )
-                    // ..., handler, factory => ..., factory, handler
+                    // 因为 ThreadFactory作为参数是在 RejectedExecutionHandler的前面，所以要交换，否则生产的class 文件为
+                    /**
+                     *   ExecutorService service1 = new ThreadPoolExecutor(1, 3, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque(1), new RejectedExecutionHandler() {
+                        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                            Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test define thread_pool2 rejected:");
+                          }
+                        }, NamedThreadFactory.newInstance("\u200bcom.zjt.startmodepro.concurrent.TestHookThreadPool"));
+                     */
+                    // ..., RejectedExecutionHandler, ThreadFactory => ..., ThreadFactory, RejectedExecutionHandler
                     insertBefore(init, InsnNode(Opcodes.SWAP))
                 }
                 this.desc =
@@ -239,6 +246,15 @@ class ThreadAsmHelper : AsmHelper {
             "(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;Ljava/util/concurrent/ThreadFactory;Ljava/util/concurrent/RejectedExecutionHandler;)V" -> {
                 println("zjt_asm 自定义线程池 >>>> className = $className, name = ${this.name}, desc = $desc")
                 method.instructions.apply {
+                    /**
+                     * 因为 RejectedExecutionHandler 在操作数栈中的位置是在 ThreadFactory 的上面，如果不交换操作，那么操作的就是 RejectedExecutionHandler，结果如下：
+                     *  ExecutorService service1 = new ThreadPoolExecutor(1, 3, 10000L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque(1), new ZjtThreadFactory(), NamedThreadFactory.newInstance(new RejectedExecutionHandler() {
+                        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                            Log.e("hook_thread_pool", Thread.currentThread().getName() + " >>> test define thread_pool2 rejected:");
+                         }
+                       }, "\u200bcom.zjt.startmodepro.concurrent.TestHookThreadPool"));
+                      * ------- 可以看到之后的2步操作都是操作在RejectedExecutionHandler中了
+                     */
                     // ..., factory, handler => ..., handler, factory
                     insertBefore(init, InsnNode(Opcodes.SWAP))
                     // ..., handler, factory => ..., handler, factory, prefix

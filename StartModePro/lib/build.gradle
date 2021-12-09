@@ -12,5 +12,8 @@ dependencies {
     implementation files('libs/fastjson-1.2.75.jar')
     // https://mvnrepository.com/artifact/org.ow2.asm/asm-commons
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.1'
+    implementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
+    implementation group: 'org.ow2.asm', name: 'asm-analysis', version: '9.1'
 
 }
