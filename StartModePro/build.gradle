@@ -5,7 +5,8 @@ buildscript {
         jcenter()
         // 插件需要加上的第一步
         maven {
-            url uri('repo')
+//            url uri('repo')
+            url uri('/Users/zhujiangtao/My_Pro/New_Moduler/repos') // 发布到我的电脑上了
         }
 //        maven {
 //            url 'https://jitpack.io'

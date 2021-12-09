@@ -1,5 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 dependencies {
     implementation gradleApi()
@@ -26,5 +27,28 @@ uploadArchives{
 
         // 设置 插件版本号
         pom.version = '1.0.0'
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            groupId 'com.zjt'
+            artifactId 'autotrack.android'
+            version '1.0.0'
+
+            from components.java
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            // change to point to your repo, e.g. http://my.org/repo
+            // 我这里是把插件发布到我本地路径:/Users/zhujiangtao/My_Pro/New_Moduler/repos 中，如果把这个路径换成网络地址，那就是发布到网络上。
+            url uri('/Users/zhujiangtao/My_Pro/New_Moduler/repos')
+        }
     }
 }
