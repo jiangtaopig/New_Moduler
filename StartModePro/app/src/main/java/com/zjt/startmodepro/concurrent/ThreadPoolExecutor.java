@@ -419,9 +419,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 //    @ReachabilitySensitive
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
     private static final int COUNT_BITS = Integer.SIZE - 3;
-    private static final int CAPACITY = (1 << COUNT_BITS) - 1;
+    private static final int CAPACITY = (1 << COUNT_BITS) - 1; // 2的29次方-1 等于 前3位是0， 后29位是1
 
-    // runState is stored in the high-order bits
+    // 高3位存的是线程池的状态 runState，低29位表示当前存活线程的数量
     private static final int RUNNING = -1 << COUNT_BITS;
     private static final int SHUTDOWN = 0 << COUNT_BITS;
     private static final int STOP = 1 << COUNT_BITS;
@@ -430,11 +430,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
     // Packing and unpacking ctl
     private static int runStateOf(int c) {
-        return c & ~CAPACITY;
+        return c & ~CAPACITY; // 等于 c & 1110 0000 0000 0000 0000 0000 0000 0000 ,即高3位表示线程池的状态
     }
 
     private static int workerCountOf(int c) {
-        return c & CAPACITY;
+        return c & CAPACITY; // 等于 c & 0001 1111 1111 1111 1111 1111 1111 1111 ,即低29位表示存活线程的数量
     }
 
     private static int ctlOf(int rs, int wc) {
@@ -691,6 +691,15 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             return getState() != 0;
         }
 
+
+        /**
+         * 为什么 Worker 类要实现AQS，而不是直接用 ReentrantLock 即这里的this.mainLock呢？
+         * 因为 ReentrantLock 是可重入的，而这里面调用 shutDown 会调用 tryLock 方法，而 tryLock 会调用此方法 ，如果可重入的话，那么会中断正在执行的线程。
+         * 也可以看 setCorePoolSize 方法，方法中如果我们想动态减少 核心线程数量，那么会走到  interruptIdleWorkers(); 就是中断空闲的线程。
+         *
+         * @param unused 这个变量就没用到
+         * @return
+         */
         protected boolean tryAcquire(int unused) {
             if (compareAndSetState(0, 1)) {
                 setExclusiveOwnerThread(Thread.currentThread());
@@ -776,7 +785,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 return;
             }
             Log.e("test thread pool", ".........tryTerminate.....workerCountOf(c) = " + workerCountOf(c));
-            if (workerCountOf(c) != 0) { // Eligible to terminate
+            if (workerCountOf(c) != 0) { // Eligible to terminate 符合条件的就中断
                 interruptIdleWorkers(ONLY_ONE);
                 return;
             }
@@ -863,6 +872,14 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      *                idle workers so that redundant workers exit promptly, not
      *                waiting for a straggler task to finish.
      */
+
+    /**
+     * 中断空闲的线程，即这个线程执行完之前的任务，然后执行getTask等在哪里，为什么等在那里?
+     * 1. 如果是非核心线程 ，那么会等到 keepAliveTime 结束
+     * 2. 如果是核心线程，那么会一直阻塞这个线程，知道队列里面插入任务唤醒
+     * 注意，不会中断正在运行的线程
+     * @param onlyOne
+     */
     private void interruptIdleWorkers(boolean onlyOne) {
         final ReentrantLock mainLock = this.mainLock;
         mainLock.lock();
@@ -871,7 +888,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 Thread t = w.thread;
                 Log.d("test thread pool", "interruptIdleWorkers t thread = " + t.getName());
                 if (!t.isInterrupted() && w.tryLock()) {
-                    Log.d("test thread pool", "interruptIdleWorkers threadNmae = " + Thread.currentThread().getName());
+                    Log.d("test thread pool", "interruptIdleWorkers threadName = " + Thread.currentThread().getName());
                     try {
                         t.interrupt();
                     } catch (SecurityException ignore) {
@@ -1031,7 +1048,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                     mainLock.unlock();
                 }
                 if (workerAdded) {
-                    Log.e("test thread pool", "addWorker start");
+                    Log.e("test thread pool", "addWorker start， ");
                     t.start();
                     workerStarted = true;
                 }
@@ -1077,7 +1094,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * @param completedAbruptly if the worker died due to user exception
      */
     private void processWorkerExit(Worker w, boolean completedAbruptly) {
-        Log.e("test thread pool", "---------------  processWorkerExit-----------completedAbruptly=" + completedAbruptly);
+        Log.e("test thread pool", Thread.currentThread().getName()+ " >>> processWorkerExit-----------completedAbruptly=" + completedAbruptly);
         if (completedAbruptly) // If abrupt, then workerCount wasn't adjusted
             decrementWorkerCount();
 
@@ -1093,7 +1110,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         tryTerminate();
 
         int c = ctl.get();
-        Log.e("test thread pool", "---------------  processWorkerExit -----------c=" + c);
+        Log.e("test thread pool", Thread.currentThread().getName() + ">> processWorkerExit -----------c=" + c);
         if (runStateLessThan(c, STOP)) {
             if (!completedAbruptly) {
                 int min = allowCoreThreadTimeOut ? 0 : corePoolSize;
@@ -1110,7 +1127,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 if (workerCountOf(c) >= min)
                     return; // replacement not needed
             }
-            Log.e("test thread pool", "---------------  processWorkerExit -----------c=" + c);
+            Log.e("test thread pool", Thread.currentThread().getName() + " xxx  processWorkerExit xxx -c=" + c);
             // 这行代码什么时候会走到呢
             addWorker(null, false);
         }
@@ -1233,10 +1250,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 // if not, ensure thread is not interrupted.  This
                 // requires a recheck in second case to deal with
                 // shutdownNow race while clearing interrupt
-                if ((runStateAtLeast(ctl.get(), STOP) ||
-                        (Thread.interrupted() &&
-                                runStateAtLeast(ctl.get(), STOP))) &&
-                        !wt.isInterrupted()) {
+                // 有2中情况：
+                // 1. 如果执行了 shutdownNow 且 线程没有执行中断方法（interrupt）那么就执行 wt.interrupt();中断正在执行的线程
+                //  interrupted ： 测试当前线程是否被中断（检查中断标志），返回一个boolean并清除中断状态，第二次再调用时中断状态已经被清除，将返回一个false
+                // isInterrupted : 只测试此线程是否被中断 ，不清除中断状态
+                if ((runStateAtLeast(ctl.get(), STOP) || (Thread.interrupted() && runStateAtLeast(ctl.get(), STOP)))
+                        && !wt.isInterrupted()) {
                     Log.e("test thread pool", "runWorker  interrupt");
                     wt.interrupt();
                 }

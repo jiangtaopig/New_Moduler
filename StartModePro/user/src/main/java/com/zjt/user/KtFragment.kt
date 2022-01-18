@@ -30,6 +30,7 @@ class KtFragment : BaseFragment() {
     lateinit var mNameEdit :EditText
     private var mMeViewModel: MeViewModel? = null
     private var mDialog: AlertDialog? = null
+    private var destroyListener :OnDestroyListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -86,6 +87,7 @@ class KtFragment : BaseFragment() {
 //                startActivityForResult(intent, 3001)
 //            }
             MeFragment.show(this, R.id.container_view)
+            destroyListener?.onDestroy()
         }
     }
 
@@ -178,6 +180,16 @@ class KtFragment : BaseFragment() {
 
     companion object {
         const val TAG = "KtFragment"
+
+        fun getInstance(destroyListener: OnDestroyListener) :KtFragment {
+            val ktFragment = KtFragment()
+            ktFragment.destroyListener = destroyListener
+            return ktFragment
+        }
+    }
+
+    interface OnDestroyListener{
+        fun onDestroy()
     }
 }
 

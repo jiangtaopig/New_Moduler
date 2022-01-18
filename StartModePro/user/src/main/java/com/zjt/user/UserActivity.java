@@ -1,15 +1,15 @@
 package com.zjt.user;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zjt.base.BaseActivity;
@@ -39,6 +39,7 @@ public class UserActivity extends BaseActivity {
 
     private MeViewModel viewModel;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,13 +109,21 @@ public class UserActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().hide(preViewFragment).commitAllowingStateLoss();
         }
         if (mKtFragment == null) {
-            mKtFragment = new KtFragment();
+            mKtFragment = KtFragment.Companion.getInstance(() -> {
+                Log.e("xxxxxx", "---- onDestroy-------");
+            });
         }
-        if (mKtFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction().show(mKtFragment)
+        Log.e("zzzz", "showKtFragment mKtFragment = " + mKtFragment + ", mKtFragment.isAdded() >> " + mKtFragment.isAdded()
+                + " , findFragmentByTag = " + getSupportFragmentManager().findFragmentByTag(KT_FRAGMENT_TAG));
+        if (!mKtFragment.isAdded() && getSupportFragmentManager().findFragmentByTag(KT_FRAGMENT_TAG) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, mKtFragment, KT_FRAGMENT_TAG)
                     .commitAllowingStateLoss();
         } else {
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mKtFragment, KT_FRAGMENT_TAG)
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .show(mSettingFragment)
                     .commitAllowingStateLoss();
         }
     }
@@ -128,11 +137,20 @@ public class UserActivity extends BaseActivity {
         if (mSettingFragment == null) {
             mSettingFragment = new MyFloatFragment();
         }
-        if (mSettingFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction().show(mSettingFragment)
+        if (!mSettingFragment.isAdded() && getSupportFragmentManager().findFragmentByTag(FLOAT_FRAGMENT_TAG) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(mSettingFragment)
+                    .commitAllowingStateLoss();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, mSettingFragment, FLOAT_FRAGMENT_TAG)
                     .commitAllowingStateLoss();
         } else {
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mSettingFragment, FLOAT_FRAGMENT_TAG)
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .show(mSettingFragment)
                     .commitAllowingStateLoss();
         }
     }

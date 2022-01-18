@@ -43,9 +43,6 @@ class TestCoroutineActivity : AppCompatActivity() {
         setContentView(R.layout.activity_coroutine_layout)
 
         initView()
-
-        
-
     }
 
     private fun initView() {
@@ -58,13 +55,13 @@ class TestCoroutineActivity : AppCompatActivity() {
         })
 
         findViewById<Button>(R.id.btn_coroutine_1)
-                .setOnClickListener {
+            .setOnClickListener {
 //                    viewModel.loadData()
 //                    viewModel.getStudentAndCarInfo()
 //                    viewModel.testSuspend()
 //                    testCoroutine()
 //                    viewModel.test3()
-                    viewModel.testSuspend2()
+//                    viewModel.testSuspend2()
 
 
 //                    testFlow3()
@@ -79,12 +76,131 @@ class TestCoroutineActivity : AppCompatActivity() {
 //                            }
 //                        Log.v("test", "coutdown acc ret = $ret")
 //                    }
-                }
+                // ---------------------------------------启动模式----------------------------------------------------
+//                    val defaultJob = GlobalScope.launch(Dispatchers.Main + CoroutineName("xxx")) {
+//                        Log.e("coroutine", "CoroutineStart.DEFAULT")
+//                    }
+//                    defaultJob.cancel()
+//
+//                    val atomicJob = GlobalScope.launch(start = CoroutineStart.ATOMIC) {
+//                        Log.e("coroutine", "CoroutineStart.ATOMIC 挂起前")
+//                        delay(300) // 是一个挂起函数
+//                        Log.e("coroutine", "CoroutineStart.ATOMIC 挂起后")
+//                    }
+//                    atomicJob.cancel()
+//
+//                    val unDispatchedJob = GlobalScope.launch(start = CoroutineStart.UNDISPATCHED) {
+//                        Log.e("coroutine", "CoroutineStart.UNDISPATCHED 挂起前")
+//                        delay(300) // 是一个挂起函数
+//                        Log.e("coroutine", "CoroutineStart.UNDISPATCHED 挂起后")
+//                    }
+//                    unDispatchedJob.cancel()
+
+//                GlobalScope.launch(Dispatchers.Main) {
+//                    val job = launch(Dispatchers.IO, start = CoroutineStart.UNDISPATCHED) {
+//                        Log.e("coroutine", "${Thread.currentThread().name} 挂起前")
+//                        delay(200)
+//                        Log.e("coroutine", "${Thread.currentThread().name} 挂起后")
+//                    }
+//                    Log.e("coroutine", "${Thread.currentThread().name}  join 前")
+//                    launch(CoroutineName("我的协程名")) {
+//                        job.join()
+//                        Log.e("coroutine", "${Thread.currentThread().name}  join ---")
+//                    }
+//                    Log.e("coroutine", "${Thread.currentThread().name}  join 后")
+//                }
+//                testException2()
+                testException3()
+            }
     }
 
-    private fun calculate(value: Long) :Long {
+    private fun testException3() {
+
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            Log.e("coroutine", "exceptionHandler , ${coroutineContext[CoroutineName]} $throwable")
+        }
+        GlobalScope.launch() {
+            val job = launch(exceptionHandler + CoroutineName("xxx--2")) {
+                Log.e("coroutine", "testException3 start thread = ${Thread.currentThread().name}")
+                throw NullPointerException("未捕获的异常")
+//                delay(2000)
+                Log.e("coroutine", "testException3 end")
+            }
+            Log.e("coroutine", "testException3 join start")
+            job.join()
+            Log.e("coroutine", "testException3 join end")
+        }
+    }
+
+    private fun testException() {
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            Log.e("coroutine", "exceptionHandler , ${coroutineContext[CoroutineName]} $throwable")
+        }
+
+        GlobalScope.launch(Dispatchers.Main + CoroutineName("scope1") + exceptionHandler) {
+            Log.e("coroutine", "-------1-------")
+
+            launch(CoroutineName("scoepe2") + exceptionHandler) {
+                Log.e("coroutine", "-------2-------")
+                val a = 10 / 0
+                Log.e("coroutine", "-------3-------")
+            }
+
+            val scope3 = launch(CoroutineName("scope3") + exceptionHandler) {
+                Log.d("scope", "--------- 4")
+                delay(2000)
+                Log.d("scope", "--------- 5")
+            }
+            scope3.join()
+            Log.d("scope", "--------- 6")
+        }
+    }
+
+    private fun testException2() {
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            Log.e("coroutine", "exceptionHandler , ${coroutineContext[CoroutineName]} $throwable")
+        }
+
+        GlobalScope.launch( Dispatchers.Main + CoroutineName("scope1") + exceptionHandler) {
+            Log.e("coroutine", "-------1-------")
+            supervisorScope {
+                launch(CoroutineName("scoepe2") + exceptionHandler) {
+                    Log.e("coroutine", "-------2-------")
+                    val a = 10 / 0
+                    Log.e("coroutine", "-------3-------")
+                }
+            }
+            val scope3 = launch(CoroutineName("scope3") + exceptionHandler) {
+                Log.e("coroutine", "--------- 4")
+                delay(2000)
+                Log.e("coroutine", "--------- 5")
+            }
+            scope3.join()
+            Log.e("coroutine", "--------- 6")
+        }
+    }
+
+
+
+    private fun testAsync() {
+        GlobalScope.launch {
+            Log.e("coroutine", "start")
+            val res = async {
+                delay(1000)
+                "我是async的结果"
+            }
+            Log.e("coroutine", "111")
+            // await()是在不阻塞线程的情况下等待该值，但是会挂起调用他的协程，所以后面的 "end" 一定输出在 res的后面，由于不阻塞线程，所以 "-----我是主线程----"会在之前输出
+            Log.e("coroutine", "res = ${res.await()}")
+            Log.e("coroutine", "end")
+        }
+        Thread.sleep(30)
+        Log.e("coroutine", "-----我是主线程----")
+    }
+
+    private fun calculate(value: Long): Long {
         Log.v("test", "calculate value = $value")
-        return value +10;
+        return value + 10;
     }
 
     fun <T> countdown(
@@ -148,10 +264,10 @@ class TestCoroutineActivity : AppCompatActivity() {
         Log.e("flow", "testFlow2 start")
         scope.launch {
             (1..6).asFlow()
-                    .filter { v -> v > 1 } // 过滤所有大于1的, 即 2，3，4，5，
-                    .take(3) // 只取前3个 即 2，3，4，剩下的 5不再发射
-                    .map { value -> request(value) }
-                    .collect { value -> Log.e("flow", "testFlow2 value = $value") }
+                .filter { v -> v > 1 } // 过滤所有大于1的, 即 2，3，4，5，
+                .take(3) // 只取前3个 即 2，3，4，剩下的 5不再发射
+                .map { value -> request(value) }
+                .collect { value -> Log.e("flow", "testFlow2 value = $value") }
         }
         TimeUnit.SECONDS.sleep(1)
         Log.e("flow", "testFlow2 end")
@@ -160,13 +276,21 @@ class TestCoroutineActivity : AppCompatActivity() {
     private fun testFlow3() {
         scope.launch {
             (1..3).asFlow()
-                    .map {
-                        Thread.sleep(1000)
-                        Log.e("flow", "testFlow3 map value = $it , thread = ${Thread.currentThread().name}")
-                        it + 1
-                    }
-                    .flowOn(Dispatchers.IO)
-                    .collect { value -> Log.e("flow", "testFlow3 value = $value, thread = ${Thread.currentThread().name}") }
+                .map {
+                    Thread.sleep(1000)
+                    Log.e(
+                        "flow",
+                        "testFlow3 map value = $it , thread = ${Thread.currentThread().name}"
+                    )
+                    it + 1
+                }
+                .flowOn(Dispatchers.IO)
+                .collect { value ->
+                    Log.e(
+                        "flow",
+                        "testFlow3 value = $value, thread = ${Thread.currentThread().name}"
+                    )
+                }
         }
 
     }

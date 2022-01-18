@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 
 public class ASMPrinter {
     public static void main(String[] args) {
-        String className = "com.example.lib.asm.run.Tasm";
+        String className = "com.example.lib.TT";
         int parsingOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
         boolean asmCode = true;
 

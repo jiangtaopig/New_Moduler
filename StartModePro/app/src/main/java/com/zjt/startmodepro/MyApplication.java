@@ -1,6 +1,5 @@
 package com.zjt.startmodepro;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,7 +11,6 @@ import com.zjt.base.BaseApplication;
 import com.zjt.startmodepro.lifecycle.ApplicationObserver;
 import com.zjt.startmodepro.utils.MyExceptionHandler;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import bolts.Task;
@@ -28,6 +26,7 @@ class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.e("ReInstance__", "MyApplication onCreate");
         MyExceptionHandler.getInstance().init();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationObserver());
         mContext = getApplicationContext();
@@ -39,8 +38,7 @@ class MyApplication extends BaseApplication {
 
     }
 
-    private void load(){
-
+    private void load() {
         Task<String> stringTask = Task.callInBackground(new Callable<String>() {
 
             @Override
@@ -68,4 +66,5 @@ class MyApplication extends BaseApplication {
     public boolean isDebug() {
         return BuildConfig.DEBUG;
     }
+
 }

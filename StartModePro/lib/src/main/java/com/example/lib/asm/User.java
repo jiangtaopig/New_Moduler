@@ -7,4 +7,11 @@ public class User {
         System.out.println(name);
     }
 
+    public int sub(int a, int b) {
+        return a - b;
+    }
+
+    public void testDuration() throws InterruptedException {
+        Thread.sleep(1000);
+    }
 }

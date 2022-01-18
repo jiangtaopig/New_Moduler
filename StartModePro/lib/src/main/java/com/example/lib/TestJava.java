@@ -19,6 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class TestJava {
+    private static long time ;
     public static void main(String[] args) throws InterruptedException {
         int[] a = {1, 2, 3, 4, 5};
         int[] b = new int[10];
@@ -32,9 +33,6 @@ public class TestJava {
         int am = 1;
 
         url.subSequence(0, 2);
-
-        ReentrantLock reentrantLock = new ReentrantLock();
-        reentrantLock.lock();
 
         Map.Entry<Integer, TreeSet<String>> treeSetEntry;
         TreeMap<Integer, TreeSet<String>> treeSetTreeMap = new TreeMap<>();
@@ -57,14 +55,38 @@ public class TestJava {
         blockingDeque.put(1);
         blockingDeque.add(2);
 
-        CompletableFuture<String> completableFuture = new CompletableFuture<>();
-        completableFuture.join();
+//        CompletableFuture<String> completableFuture = new CompletableFuture<>();
+//        completableFuture.join();
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         executorService.submit(new Student()::show);
+        executorService.shutdown();
 
         String vv = "010";
         System.out.println("vv = "+Integer.parseInt(vv));
+
+
+        IDefaultInterface defaultInterface = new DefaultImpl();
+        defaultInterface.sayHi();
+        defaultInterface.sayGoodBye();
+
+        testTime();
+
+    }
+
+    /**
+     * 测试方法的耗时
+     */
+    private static void testTime() {
+        time -= System.currentTimeMillis();
+        System.out.println(" ... time = " + time);
+        try {
+            Thread.sleep(2_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        time += System.currentTimeMillis();
+        System.out.println("time = " + time);
     }
 
     private synchronized static void makeString(int a, String b) {

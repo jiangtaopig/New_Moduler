@@ -5,8 +5,9 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.zjt.startmodepro.R
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
 /**
@@ -19,8 +20,9 @@ import java.util.concurrent.TimeUnit
 
  */
 
-
 class TestThreadPoolActivity : AppCompatActivity() {
+
+    lateinit var executorService :ThreadPoolExecutor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,7 @@ class TestThreadPoolActivity : AppCompatActivity() {
         initView()
 
         val executorService = Executors.newFixedThreadPool(5);
-        executorService.execute{
+        executorService.execute {
             Log.e(
                 "TestThreadPoolActivity",
                 "thread name = " + Thread.currentThread().name + "--------- 1234 ---------"
@@ -38,7 +40,7 @@ class TestThreadPoolActivity : AppCompatActivity() {
         val single = Executors.newSingleThreadScheduledExecutor()
 
         for (i in 1..3) {
-            single.execute{
+            single.execute {
                 Log.e(
                     "TestThreadPoolActivity",
                     "thread name = " + Thread.currentThread().name + "--------- 5678 ---------$i"
@@ -52,65 +54,44 @@ class TestThreadPoolActivity : AppCompatActivity() {
     private fun initView() {
         findViewById<Button>(R.id.btn_add_task)
             .setOnClickListener {
-                val executorService =
-                    ThreadPoolExecutor(1, 3, 10_000, TimeUnit.MILLISECONDS, SynchronousQueue(), ZjtThreadFactory())
-                for (i in 0..3) {
-                    val runnable = Runnable {
-                        Log.e(
-                            "test thread pool",
-                            "thread name = " + Thread.currentThread().name + "任务" + (i + 1) + "开始"
-                        )
-                        try {
-                            Thread.sleep(1000)
-                        } catch (e: InterruptedException) {
-                            e.printStackTrace()
-                        }
-                        Log.e("test thread pool", "任务" + (i + 1) + "结束")
+                executorService =
+                    ThreadPoolExecutor(
+                        2,
+                        3,
+                        60_000,
+                        TimeUnit.MILLISECONDS,
+                        LinkedBlockingQueue(2),
+                        ZjtThreadFactory()
+                    )
+
+                for (i in 1..5) {
+                    executorService.execute {
+                        Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
+                        Thread.sleep(1000)
+                        Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 执行结束")
                     }
-                    executorService.execute(runnable)
+                    executorService.taskCount
                 }
 
-//                val runnable1 = Runnable {
-//                    Log.e(
-//                        "test thread pool",
-//                        "thread name = " + Thread.currentThread().name + "任务1" + "开始"
-//                    )
-//                    try {
-//                        Thread.sleep(1000)
-//                    } catch (e: InterruptedException) {
-//                        e.printStackTrace()
-//                    }
-//                    Log.e("test thread pool", "任务1" + "结束")
-//                }
-//                executorService.execute(runnable1)
-//
-//                Thread.sleep(2000)
-//
-//                val runnable2 = Runnable {
-//                    Log.e(
-//                        "test thread pool",
-//                        "thread name = " + Thread.currentThread().name + "任务2" + "开始"
-//                    )
-//                    try {
-//                        Thread.sleep(1000)
-//                    } catch (e: InterruptedException) {
-//                        e.printStackTrace()
-//                    }
-//                    Log.e("test thread pool", "任务2" + "结束")
-//                }
-//                executorService.execute(runnable2)
+                Thread.sleep(10_000)
 
-//                    val myFutureTask = MyFutureTask {
-//                        val a = "123"
-//                        Thread.sleep(500)
-//                        a;
-//                    }
-//                    executorService.submit(myFutureTask)
-//                    executorService.shutdown()
-
+                Thread{
+                    for(i in 6..10) {
+                        Thread.sleep(3000)
+                        executorService.execute {
+                            Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
+                            Thread.sleep(1000)
+                            Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 执行结束")
+                        }
+                    }
+                }.start()
 
             }
+
+        findViewById<Button>(R.id.btn_add_task2).setOnClickListener {
+
+
+        }
+
     }
-
-
 }

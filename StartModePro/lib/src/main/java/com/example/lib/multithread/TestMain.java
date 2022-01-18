@@ -50,14 +50,26 @@ public class TestMain {
         doSthList.add(tony4);
         doSthList.add(tony5);
 
-        for (DoSth doSth : doSthList) {
-            executorService.execute(() ->{
-                System.out.println(Thread.currentThread().getName() + " >>>> "+ doSth.toString());
-            });
-        }
+//        for (DoSth doSth : doSthList) {
+//            executorService.execute(() ->{
+//                System.out.println(Thread.currentThread().getName() + " >>>> "+ doSth.toString());
+//            });
+//        }
         executorService.shutdown();
 
+//        int a = 2/0;
 
+
+        ExecutorService executorService1 = Executors.newCachedThreadPool();
+
+        for (int i = 0; i < 10; i++) {
+            int finalI = i;
+            executorService1.execute(() ->{
+                System.out.println("newScheduledThreadPool >> "+Thread.currentThread().getName()+"， ii= "+ finalI);
+                int b = 2/0;
+            });
+        }
+        executorService1.shutdown();
     }
 
 

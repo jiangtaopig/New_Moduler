@@ -32,8 +32,6 @@ import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -42,7 +40,6 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
@@ -65,7 +62,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         // 表示的是系统开机到现在的具体时间，单位为毫秒，不算系统休眠时间即息屏等
-        Log.e("xxxx", "time = >> "+ SystemClock.uptimeMillis());
+        Log.e("xxxx", "time = >> " + SystemClock.uptimeMillis());
 
         HandlerThread handlerThread = new HandlerThread("DownLoadResource");
 
@@ -85,16 +82,6 @@ public class MainActivity extends BaseActivity {
         Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
 
         mNameViewModel.setCurrentName("测试ViewModel页面服用");
-
-
-//        Observable.interval(5000, TimeUnit.MILLISECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<Long>() {
-//                    @Override
-//                    public void accept(Long aLong) throws Throwable {
-//                        mNameViewModel.getCurrentName().setValue(aLong+" .. ZZ..");
-//                    }
-//                });
 
         mTv.setOnClickListener(v -> {
 //            test1();
@@ -156,12 +143,14 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+
         mShowDialog.setOnClickListener(v -> {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
 //            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
             MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("编辑对话框");
             myKotlinDialog.setTitle("123456");
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
+
         });
 
         findViewById(R.id.btn_bitmap_clip).setOnClickListener(v -> {
@@ -201,7 +190,7 @@ public class MainActivity extends BaseActivity {
                                 Log.e("zjt", "runnable 3 start");
                             });
 
-                            handler.postDelayed(() ->{
+                            handler.postDelayed(() -> {
                                 Log.e("zjt", "delay runnable");
                             }, 3_000);
                         }
@@ -242,14 +231,14 @@ public class MainActivity extends BaseActivity {
                     String model = android.os.Build.MODEL;
                     int cores = Runtime.getRuntime().availableProcessors();
                     BlinkCpuInfo blinkCpuInfo = BlinkCpuInfo.parseCpuInfo();
-                    if (blinkCpuInfo != null && blinkCpuInfo.mRawInfoMap != null && !blinkCpuInfo.mRawInfoMap.isEmpty()){
+                    if (blinkCpuInfo != null && blinkCpuInfo.mRawInfoMap != null && !blinkCpuInfo.mRawInfoMap.isEmpty()) {
                         String cpu = blinkCpuInfo.mRawInfoMap.get("hardware");
-                        Log.e("cpucpu", "cpuinfo = "+cpu);
+                        Log.e("cpucpu", "cpuinfo = " + cpu);
                     }
                     MemoryMeter memory = new MemoryMeter(this);
                     long totalMemory = memory.getSystemTotalMem(Unit.MB);
 
-                    Log.e("xxxxx", "brand = " + brand+ " ，model = " + model + "， cores = " + cores + " , totalMemory = " + totalMemory);
+                    Log.e("xxxxx", "brand = " + brand + " ，model = " + model + "， cores = " + cores + " , totalMemory = " + totalMemory);
                 });
 
         findViewById(R.id.btn_edit)
@@ -329,20 +318,20 @@ public class MainActivity extends BaseActivity {
         TestPostByMultiThread postByMultiThread = new TestPostByMultiThread();
         for (int i = 5; i < 10; i++) {
             int finalI = i;
-            new Thread("thread "+ finalI){
+            new Thread("thread " + finalI) {
                 @Override
                 public void run() {
-                    char [] tmp = new char[1];
+                    char[] tmp = new char[1];
                     tmp[0] = (char) (97 + finalI);
                     postByMultiThread.addTask(finalI, new String(tmp));
                 }
             }.start();
         }
 
-
     }
 
-    private int sum(int x, int y){
+
+    private int sum(int x, int y) {
         return x + y;
     }
 

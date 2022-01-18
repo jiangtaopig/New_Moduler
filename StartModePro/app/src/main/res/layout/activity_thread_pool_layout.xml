@@ -11,4 +11,10 @@
         android:layout_height="wrap_content"
         android:text="执行任务"/>
 
+    <Button
+        android:id="@+id/btn_add_task2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加任务"/>
+
 </LinearLayout>

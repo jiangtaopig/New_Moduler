@@ -29,8 +29,7 @@
 
         <activity
             android:name=".MainActivity"
-
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="orientation|keyboard|screenSize|smallestScreenSize|screenLayout"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,9 +60,7 @@
         <activity android:name=".TestEditActivity" />
         <activity android:name=".schedule.ScheduleActivity"/>
         <activity android:name=".widget.TestDefineViewActivity"/>
-        <activity android:name=".TestPopWindowActivity"
-
-            >
+        <activity android:name=".TestPopWindowActivity">
 
         </activity>
 
