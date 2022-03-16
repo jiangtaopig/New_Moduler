@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/0c9fbe5dfa638f8dbb0b014592a67ab0/core-1.5.0/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/0c9fbe5dfa638f8dbb0b014592a67ab0/core-1.5.0/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/0c9fbe5dfa638f8dbb0b014592a67ab0/core-1.5.0/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/0c9fbe5dfa638f8dbb0b014592a67ab0/core-1.5.0/res/layout-v21/notification_action_tombstone.xml"
+    }
+]

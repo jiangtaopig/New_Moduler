@@ -11,12 +11,15 @@ import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
@@ -52,6 +55,7 @@ public class MainActivity extends BaseActivity {
     private RangeSeekBar mRangeSeekBar;
     private TextView mShowDialog;
     private Button mJump2FileActivity;
+    private ImageView img;
     private AlertDialog mDialog;
     private NameViewModel mNameViewModel;
 
@@ -73,19 +77,29 @@ public class MainActivity extends BaseActivity {
         mToUserTxt = findViewById(R.id.txt_user);
         mShowDialog = findViewById(R.id.txt_show_dialog);
         mJump2FileActivity = findViewById(R.id.jump_2_file_activity);
+        img = findViewById(R.id.image);
 
         mJump2FileActivity.setOnClickListener(v -> {
             FileActivity.Companion.enter(this);
         });
 
-        mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
-        Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
-
-        mNameViewModel.setCurrentName("测试ViewModel页面服用");
-
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
+//            JetPackActivity.enter(this);
+            Glide.with(this).load("https://tenfei05.cfp.cn/creative/vcg/veer/1600water/veer-104673459.jpg").into(img);
+
+//            CallAnchorDialog.Companion.show(this, new CallAnchorDialog.OnCallDialogDismiss() {
+//                @Override
+//                public void onDismiss() {
+//                    CallAnchorDialog.Companion.hide(MainActivity.this);
+//                }
+//            });
+
+            mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
+            Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
+
+            mNameViewModel.setCurrentName("测试ViewModel页面服用");
 
             // 演示livedata 数据倒灌，及先设置livedata的值，后监听依然能够收到数据回调
             mNameViewModel.getCurrentName().observe(this, data -> {
@@ -123,7 +137,7 @@ public class MainActivity extends BaseActivity {
 //            UserInfo userInfo = userProvider.getUserInfo();
 //            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
 
-//            Glide.with(this).load("url").into(mToUserTxt);
+
 
         });
 

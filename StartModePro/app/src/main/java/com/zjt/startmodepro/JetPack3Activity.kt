@@ -8,7 +8,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,16 +38,29 @@ class JetPack3Activity : AppCompatActivity() {
 
     lateinit var mViewModel: JetPack3ViewModel
     private lateinit var mMyAdapter: MyAdapter
+    private val originalData = MutableLiveData<String>()
+
+    private val mapData = Transformations.map(originalData) {
+        it.plus(" world ...")
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_jetpack_3_layout)
 
+        mapData.observe(this) {
+            Log.e("xxaa", "mapData it = $it")
+        }
 
         mDataChangeTv = findViewById(R.id.txt_title)
         mShowBtn = findViewById(R.id.btn_change_data)
         mRecycleView = findViewById(R.id.recycle_view)
+
+
+        mDataChangeTv.setOnClickListener {
+            originalData.value = "hello"
+        }
 
         mRecycleView.layoutManager = LinearLayoutManager(this)
         mMyAdapter = MyAdapter()
@@ -95,12 +110,8 @@ class JetPack3Activity : AppCompatActivity() {
                 list.add("数据--$i")
             }
 
-
-
-
 //            mMyAdapter.setDataList(list)
         }
-
     }
 
 }

@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import java.text.DecimalFormat
 import kotlin.math.floor
@@ -18,6 +19,7 @@ class CallAnchorDialog : DialogFragment() {
     lateinit var counterTv: TextView
     private var callAnchorViewModel: CallAnchorViewModel? = null
     private lateinit var countDownTimer: BlinkCountDownTimer
+    private var onCallDialogDismiss : OnCallDialogDismiss? = null
 
     override fun onStart() {
         super.onStart()
@@ -29,6 +31,10 @@ class CallAnchorDialog : DialogFragment() {
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
+    }
+
+    public fun setOnCallDialogDismiss(listener :OnCallDialogDismiss) {
+        onCallDialogDismiss = listener
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -46,6 +52,11 @@ class CallAnchorDialog : DialogFragment() {
         counterTv = dialog.findViewById(R.id.txt_counter)
         callAnchorViewModel = requireActivity().let {
             ViewModelProvider(it).get(CallAnchorViewModel::class.java)
+        }
+
+        val dismissTv = dialog.findViewById<TextView>(R.id.txt_dismiss)
+        dismissTv.setOnClickListener {
+            onCallDialogDismiss?.onDismiss()
         }
 
         callAnchorViewModel?.counterTime?.observe(this, {
@@ -103,5 +114,41 @@ class CallAnchorDialog : DialogFragment() {
                 Log.e(TAG, "static show() occursException", e)
             }
         }
+
+        fun show(activity: FragmentActivity, listener: OnCallDialogDismiss) {
+            try {
+                val previousFrag = activity.supportFragmentManager.findFragmentByTag(TAG)
+                if (previousFrag != null && previousFrag is CallAnchorDialog) { // 由于 DialogFragment 无法直接hide ,所以使用 dialog 的 show 和 hide
+//                    activity.supportFragmentManager.beginTransaction().remove(previousFrag)
+//                        .commitAllowingStateLoss()
+                    previousFrag.dialog?.show()
+                    return
+                }
+                val callAnchorDialog = CallAnchorDialog()
+                callAnchorDialog.onCallDialogDismiss = listener
+                activity.supportFragmentManager.beginTransaction().add(callAnchorDialog, TAG)
+                    .commitAllowingStateLoss()
+            } catch (e: Exception) {
+                Log.e(TAG, "static show() occursException", e)
+            }
+        }
+
+        fun hide(activity: FragmentActivity) {
+            val fragments = activity.supportFragmentManager.fragments
+            for (frg in fragments) {
+                if (frg is CallAnchorDialog) {
+                    // DialogFragment 是无法隐藏的，可以调用 remove 或者调用 dialog 的 hide 方法
+//                    activity.supportFragmentManager.beginTransaction().hide(frg)
+//                        .commitAllowingStateLoss()
+                    frg.dialog?.hide()
+                    return
+                }
+            }
+        }
+
+    }
+
+    interface OnCallDialogDismiss {
+        fun onDismiss()
     }
 }

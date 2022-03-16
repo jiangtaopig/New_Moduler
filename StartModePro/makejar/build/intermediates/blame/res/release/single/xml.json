@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/xml/standalone_badge_gravity_top_start.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/xml/standalone_badge_gravity_top_start.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/xml/standalone_badge_offset.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/xml/standalone_badge_offset.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/xml/standalone_badge.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/xml/standalone_badge.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/xml/standalone_badge_gravity_bottom_end.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/xml/standalone_badge_gravity_bottom_end.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/xml/standalone_badge_gravity_bottom_start.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/xml/standalone_badge_gravity_bottom_start.xml"
+    }
+]

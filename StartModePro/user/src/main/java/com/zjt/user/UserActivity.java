@@ -86,6 +86,7 @@ public class UserActivity extends BaseActivity {
 //        });
 
         showKtFragment();
+//        FragmentHelper.showKtFragment(this);
     }
 
     private void switchFragment(Fragment targetFragment) {
@@ -123,7 +124,7 @@ public class UserActivity extends BaseActivity {
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .show(mSettingFragment)
+                    .hide(mKtFragment)
                     .commitAllowingStateLoss();
         }
     }

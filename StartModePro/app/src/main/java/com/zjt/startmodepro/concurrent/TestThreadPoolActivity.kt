@@ -5,9 +5,9 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.zjt.startmodepro.R
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.TimeUnit
 
 /**
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 
 class TestThreadPoolActivity : AppCompatActivity() {
 
-    lateinit var executorService :ThreadPoolExecutor
+    lateinit var executorService: ThreadPoolExecutor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +75,8 @@ class TestThreadPoolActivity : AppCompatActivity() {
 
                 Thread.sleep(10_000)
 
-                Thread{
-                    for(i in 6..10) {
+                Thread {
+                    for (i in 6..10) {
                         Thread.sleep(3000)
                         executorService.execute {
                             Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
@@ -89,8 +89,28 @@ class TestThreadPoolActivity : AppCompatActivity() {
             }
 
         findViewById<Button>(R.id.btn_add_task2).setOnClickListener {
+            /**
+             * SynchronousQueue ：它的特点是不存储数据，当添加一个元素时，必须等待一个消费线程取出它，否则一直阻塞，
+             * 如果当前有空闲线程则直接在这个空闲线程执行，如果没有则新启动一个线程执行任务。
+             * 通常用于需要快速响应任务的场景，在网络请求要求低延迟的大背景下比较合适。
+             */
+            executorService =
+                ThreadPoolExecutor(
+                    0,
+                    3,
+                    60_000,
+                    TimeUnit.MILLISECONDS,
+                    SynchronousQueue(), //
+                    ZjtThreadFactory()
+                )
 
-
+            for (i in 1..5) { // 超过最大线程数3的直接reject了
+                executorService.execute {
+                    Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
+                    Thread.sleep(1000)
+                    Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 执行结束")
+                }
+            }
         }
 
     }

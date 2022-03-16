@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/interpolator-v21/mtrl_fast_out_linear_in.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/interpolator-v21/mtrl_fast_out_linear_in.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/interpolator-v21/mtrl_fast_out_slow_in.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/interpolator-v21/mtrl_fast_out_slow_in.xml"
+    },
+    {
+        "merged": "/Users/zhujiangtao/My_Pro/New_Moduler/StartModePro/makejar/build/intermediates/res/merged/release/interpolator-v21/mtrl_linear_out_slow_in.xml",
+        "source": "/Users/zhujiangtao/.gradle/caches/transforms-2/files-2.1/dace1db3e8d9e81f6040c28af75b193f/material-1.4.0/res/interpolator-v21/mtrl_linear_out_slow_in.xml"
+    }
+]

@@ -16,16 +16,13 @@ public class PrintCharAndNumber {
 //        char[] num = new char[]{'1', '2', '3', '4'};
 //        char[] str = new char[]{'A', 'B', 'C', 'D'};
 
-//        func1();
+        func1();
 //        func2();
 //        func3();
 //        func4();
 //        printCharBy3Threads();
 //        printNum(6);
-        printCharBy3Threads2();
-
-        ThreadLocal<String> threadLocal = new ThreadLocal<>();
-        threadLocal.set("123");
+//        printCharBy3Threads2();
     }
 
 
@@ -41,8 +38,11 @@ public class PrintCharAndNumber {
         new Thread("T1") {
             @Override
             public void run() {
+                System.out.println("T1 acquire lock ... ");
                 synchronized (lock) {
+
                     for (char c : num) {
+                        System.out.println("T1  num = " + c);
                         try {
                             while (printChar.get()) {
                                 printChar.set(false);
@@ -70,7 +70,9 @@ public class PrintCharAndNumber {
             @Override
             public void run() {
                 synchronized (lock) {
+                    System.out.println("T2 acquire lock ... ");
                     for (char c : str) {
+                        System.out.println("T2  char = " + c);
                         try {
                             while (!printChar.get()) {
                                 printChar.set(true);

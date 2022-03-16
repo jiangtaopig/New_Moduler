@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.testaidl">
+    <permission android:protectionLevel="normal" android:name="com.example.testaidl.AIDL_SERVICE"/>
+
+    <application>
+
+        <service
+            android:name="com.example.testaidl.PersonService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":zjt_aidl">
+            <intent-filter>
+                <action android:name="com.example.testaidl.AIDL_SERVICE" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
