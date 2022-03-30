@@ -9,8 +9,12 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.tencent.mmkv.MMKV;
 import com.zjt.base.BaseApplication;
 import com.zjt.startmodepro.lifecycle.ApplicationObserver;
+import com.zjt.startmodepro.soloader.SoFileLoadManager;
+import com.zjt.startmodepro.soloader.SoUtils;
+import com.zjt.startmodepro.soloader.ToastUtil;
 import com.zjt.startmodepro.utils.MyExceptionHandler;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 
 import bolts.Task;
@@ -35,7 +39,7 @@ class MyApplication extends BaseApplication {
         String rootDir = MMKV.initialize(this);
         Log.e("mmkv", "rootDir = " + rootDir);
         load();
-
+        dynamicSo();
     }
 
     private void load() {
@@ -65,6 +69,14 @@ class MyApplication extends BaseApplication {
 
     public boolean isDebug() {
         return BuildConfig.DEBUG;
+    }
+
+    private void dynamicSo() {
+        String soFrom = SoUtils.getSoSourcePath();
+        if (!new File(soFrom).exists()) {
+            ToastUtil.toast(this, "哈哈，本地so文件不存在，" + soFrom);
+        }
+        SoFileLoadManager.loadSoFile(this, soFrom);
     }
 
 }

@@ -30,6 +30,13 @@ android {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
+        // 把 gradle.properties 中自定义的数据写入到 BuildConfig 中
+        buildConfigField "String", "RUNALONE", "${runAlone}"
+        buildConfigField "Boolean", "IS_RUNALONE", "${isRunAlone}"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
     buildTypes {
@@ -54,6 +61,8 @@ android {
             java.srcDirs "src/main/java"
             java.srcDirs "src/main/kotlin"
             res.srcDirs "src/main/res"
+            jni.srcDirs = ['src/main/jni', 'src/main/jni/']
+            jniLibs.srcDirs = ['libs']
             if (isNeedZhujt) {
                 java.srcDirs "src/zhujt/java" // 新建一个跟 main 平行的目录
                 res.srcDirs "src/zhujt/res"

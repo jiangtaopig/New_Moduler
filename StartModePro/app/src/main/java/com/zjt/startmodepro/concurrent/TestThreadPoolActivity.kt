@@ -56,11 +56,11 @@ class TestThreadPoolActivity : AppCompatActivity() {
             .setOnClickListener {
                 executorService =
                     ThreadPoolExecutor(
-                        2,
+                        0,
                         3,
                         60_000,
                         TimeUnit.MILLISECONDS,
-                        LinkedBlockingQueue(2),
+                        LinkedBlockingQueue(),
                         ZjtThreadFactory()
                     )
 
@@ -73,18 +73,18 @@ class TestThreadPoolActivity : AppCompatActivity() {
                     executorService.taskCount
                 }
 
-                Thread.sleep(10_000)
+//                Thread.sleep(10_000)
 
-                Thread {
-                    for (i in 6..10) {
-                        Thread.sleep(3000)
-                        executorService.execute {
-                            Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
-                            Thread.sleep(1000)
-                            Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 执行结束")
-                        }
-                    }
-                }.start()
+//                Thread {
+//                    for (i in 6..10) {
+//                        Thread.sleep(3000)
+//                        executorService.execute {
+//                            Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
+//                            Thread.sleep(1000)
+//                            Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 执行结束")
+//                        }
+//                    }
+//                }.start()
 
             }
 

@@ -86,6 +86,8 @@
         <activity android:name=".TextFolderActivity2"/>
         <activity android:name=".scroll_conflict.TestInnerInterceptActivity"/>
         <activity android:name=".widget.TestCoroutineActivity"/>
+        <activity android:name=".LoadSoActivity"/>
+        <activity android:name=".soloader.TestLoadSoActivity"/>
 
     </application>
 

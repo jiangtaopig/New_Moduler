@@ -19,7 +19,6 @@ import com.zjt.startmodepro.my_kotlin.KotlinHelper.isInstanceOf
 import com.zjt.startmodepro.my_kotlin.MyKotlinManager
 import com.zjt.startmodepro.my_kotlin.OnSuccessListener
 import com.zjt.startmodepro.viewmodel.JetPack3ViewModel
-import kotlinx.coroutines.GlobalScope
 
 class JetPack3Activity : AppCompatActivity() {
 
@@ -39,6 +38,7 @@ class JetPack3Activity : AppCompatActivity() {
     lateinit var mViewModel: JetPack3ViewModel
     private lateinit var mMyAdapter: MyAdapter
     private val originalData = MutableLiveData<String>()
+    private var curPage = 1
 
     private val mapData = Transformations.map(originalData) {
         it.plus(" world ...")
@@ -64,10 +64,33 @@ class JetPack3Activity : AppCompatActivity() {
 
         mRecycleView.layoutManager = LinearLayoutManager(this)
         mMyAdapter = MyAdapter()
+        mMyAdapter.setListener(object : MyOnClickListener {
+            override fun onClick(position: Int) {
+                mMyAdapter.deleteSpecifyData(position)
+            }
+        })
         mRecycleView.adapter = mMyAdapter
 
         mRecycleView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val manager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisiblePosition = manager.findLastVisibleItemPosition();
+                val cnt = manager.itemCount
+                val itemCount = mMyAdapter.itemCount
+
+                Log.e(
+                    "RecycleView",
+                    "lastVisiblePosition = $lastVisiblePosition , cnt = $cnt, itemCount = $itemCount"
+                )
+                /**
+                 * recycleview 分页加载逻辑
+                 */
+                if (dy > 0 && (lastVisiblePosition + 2 > cnt)) {
+                    getNextPage()
+                }
+            }
         })
 
         mViewModel = ViewModelProvider(this).get(JetPack3ViewModel::class.java)
@@ -109,9 +132,20 @@ class JetPack3Activity : AppCompatActivity() {
             for (i in 1..10) {
                 list.add("数据--$i")
             }
-
-//            mMyAdapter.setDataList(list)
+            mMyAdapter.setDataList(list)
         }
+    }
+
+    private fun getNextPage() {
+        Log.e("RecycleView", "getNextPage ------- curPage = $curPage -------  ")
+        curPage++
+        val start = (curPage - 1) * 10 + 1
+        val end = curPage * 10
+        val list = mutableListOf<String>()
+        for (i in start..end) {
+            list.add("数据--$i")
+        }
+        mMyAdapter.addData(list)
     }
 
 }

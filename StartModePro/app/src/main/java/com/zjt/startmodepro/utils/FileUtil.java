@@ -369,6 +369,7 @@ public class FileUtil {
 
     public static void writeFile(String dirName, String fileName, String fileContent) {
         try {
+//            File file = getInnerCacheDir().getParentFile(); // /data/user/0/com.zjt.startmodepro
             File dir = new File(cacheDir, dirName);
             if (!dir.exists()) {
                 dir.mkdirs();

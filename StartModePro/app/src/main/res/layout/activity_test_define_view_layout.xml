@@ -7,6 +7,19 @@
 
     <com.zjt.startmodepro.widget.TestCanvas
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="@dimen/dimen_400dp"
+        android:background="@color/baseColorAccent"/>
+
+
+    <TextView
+        android:id="@+id/txt_change_size"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_width="@dimen/dimen_100dp"
+        android:layout_height="@dimen/dimen_70dp"
+        android:background="@color/cal_stroke"
+        android:textSize="@dimen/dimen_16dp"
+        android:textColor="@color/color_333333"
+        android:text="123"
+        android:gravity="center"/>
 
 </LinearLayout>

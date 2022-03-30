@@ -28,8 +28,10 @@ import com.zjt.startmodepro.cpu_info.MemoryMeter;
 import com.zjt.startmodepro.cpu_info.Unit;
 import com.zjt.startmodepro.scroll_conflict.TestInnerInterceptActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
+import com.zjt.startmodepro.soloader.TestLoadSoActivity;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
+import com.zjt.startmodepro.widget.TestDefineViewActivity;
 import com.zjt.startmodepro.widget.TestPostByMultiThread;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
@@ -86,8 +88,8 @@ public class MainActivity extends BaseActivity {
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
-//            JetPackActivity.enter(this);
-            Glide.with(this).load("https://tenfei05.cfp.cn/creative/vcg/veer/1600water/veer-104673459.jpg").into(img);
+            JetPackActivity.enter(this);
+//            Glide.with(this).load("https://tenfei05.cfp.cn/creative/vcg/veer/1600water/veer-104673459.jpg").into(img);
 
 //            CallAnchorDialog.Companion.show(this, new CallAnchorDialog.OnCallDialogDismiss() {
 //                @Override
@@ -165,6 +167,11 @@ public class MainActivity extends BaseActivity {
             myKotlinDialog.setTitle("123456");
             myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
 
+        });
+
+        findViewById(R.id.btn_so).setOnClickListener(v -> {
+            Intent intent = new Intent(this, TestLoadSoActivity.class);
+            startActivity(intent);
         });
 
         findViewById(R.id.btn_bitmap_clip).setOnClickListener(v -> {
@@ -305,17 +312,17 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_canvas)
                 .setOnClickListener(v -> {
-//                    Intent intent = new Intent(this, TestDefineViewActivity.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(this, TestDefineViewActivity.class);
+                    startActivity(intent);
 
-                    new Thread("thread_zhu") {
-                        @Override
-                        public void run() {
-                            super.run();
-                            String a = null;
-                            a.length();
-                        }
-                    }.start();
+//                    new Thread("thread_zhu") {
+//                        @Override
+//                        public void run() {
+//                            super.run();
+//                            String a = null;
+//                            a.length();
+//                        }
+//                    }.start();
                 }); //
 
         findViewById(R.id.btn_pop_window)
