@@ -57,6 +57,7 @@ public class TestPagerSnapHelperActivity extends AppCompatActivity {
         testAdapter.setDataList(dataList);
 
         // add 1
+        // add 2
         // 添加无用注释
 
         recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
