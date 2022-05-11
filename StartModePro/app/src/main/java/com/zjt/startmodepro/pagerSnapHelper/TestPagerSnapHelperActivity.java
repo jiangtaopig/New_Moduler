@@ -56,7 +56,6 @@ public class TestPagerSnapHelperActivity extends AppCompatActivity {
         dataList.add("江苏");
         testAdapter.setDataList(dataList);
 
-        // add 1
         // add 2
         // 添加无用注释
 
