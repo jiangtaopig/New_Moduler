@@ -48,6 +48,7 @@ public class TestPagerSnapHelperActivity extends AppCompatActivity {
         SnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(recyclerView);
 
+
         List<String> dataList = new ArrayList<>(5);
         dataList.add("安徽");
         dataList.add("浙江");
@@ -55,8 +56,6 @@ public class TestPagerSnapHelperActivity extends AppCompatActivity {
         dataList.add("北京");
         dataList.add("江苏");
         testAdapter.setDataList(dataList);
-
-        // 添加无用注释
 
         recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
