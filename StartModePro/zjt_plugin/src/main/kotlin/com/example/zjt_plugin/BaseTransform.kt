@@ -266,13 +266,15 @@ class BaseTransform(
         tempFile.mkdirs()
         val modified = ClassUtils.saveFile(tempFile, modifiedBytes)
         //key为相对路径
-        val target = File(dest, absolutePath)
+        val target =  dest//File(dest, absolutePath)
+//        println("--saveClassFile--- dest > " + dest.absoluteFile+",, absolutePath = " + absolutePath + "， target = "+ target)
         if (target.exists()) {
             target.delete()
         }
         if (target.absolutePath.contains("TestThreadPoolActivity")) {
             println("---------directory---->>>>-------target >> ${target.absolutePath}, target = ${target.absolutePath}， tempDir = ${tempDir.absolutePath}")
         }
+        // 最后一定要copy
         copyIfLegal(modified, target)
         tempFile.delete()
     }

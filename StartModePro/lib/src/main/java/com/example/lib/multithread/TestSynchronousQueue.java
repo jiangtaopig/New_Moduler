@@ -7,6 +7,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestSynchronousQueue {
 
@@ -120,6 +121,10 @@ public class TestSynchronousQueue {
             e.printStackTrace();
         }
 
+
+        AtomicInteger atomicInteger = new AtomicInteger(1);
+        atomicInteger.getAndAdd(3);
+        atomicInteger.addAndGet(3);
     }
 
     private static void testPut() {

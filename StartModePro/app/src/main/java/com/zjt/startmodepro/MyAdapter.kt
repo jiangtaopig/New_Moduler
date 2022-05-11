@@ -1,5 +1,6 @@
 package com.zjt.startmodepro
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyHolder>() {
         this.listener = listener
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setDataList(list: List<String>) {
         mDataList.clear()
         mDataList.addAll(list)
@@ -28,9 +30,22 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyHolder>() {
         notifyItemRangeChanged(start, mDataList.size -1)
     }
 
-    fun deleteSpecifyData(position: Int) {
+    fun deleteSpecifyPositionData(position: Int) {
+//        mDataList.removeAt(position) // 这种方式会导致数据错乱
+//        notifyItemRemoved(position)
         mDataList.removeAt(position)
-        notifyItemRemoved(position)
+        notifyItemRemoved(position);
+        if (position != mDataList.size) {
+            notifyItemRangeChanged(position, mDataList.size- position);
+        }
+    }
+
+    fun addDataByPosition(position: Int) {
+        mDataList.add(position, "xxx-$position")
+        notifyItemInserted(position)
+        if (position != mDataList.size) {
+            notifyItemRangeChanged(position, mDataList.size- position);
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {

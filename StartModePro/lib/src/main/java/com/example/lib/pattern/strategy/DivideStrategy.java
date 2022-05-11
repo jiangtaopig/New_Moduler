@@ -1,5 +1,7 @@
 package com.example.lib.pattern.strategy;
 
+import com.example.lib.pattern.Strategy;
+
 /**
  * @Author : zhujiangtao01
  * @Time : On 2021/4/13 11:26 上午
@@ -7,7 +9,7 @@ package com.example.lib.pattern.strategy;
  */
 
 
-public class DivideOperation implements BaseOperation {
+public class DivideStrategy implements Strategy {
     @Override
     public int opt(int num1, int num2) {
         if (num2 != 0)

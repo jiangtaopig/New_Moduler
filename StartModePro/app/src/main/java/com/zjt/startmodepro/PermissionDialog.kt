@@ -54,18 +54,17 @@ class PermissionDialog : DialogFragment() {
         super.onStart()
         val window = dialog?.window
         val params: WindowManager.LayoutParams = window?.attributes!!
-        params.gravity = Gravity.BOTTOM // BOTTOM 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
+        params.gravity = if (isScreenPortrait()) Gravity.BOTTOM else Gravity.END // BOTTOM 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
 
         val width = if (isScreenPortrait()) ViewGroup.LayoutParams.MATCH_PARENT else landWidth()
-        val height = if (isScreenPortrait()) portraitHeight() else ViewGroup.LayoutParams.MATCH_PARENT
-
+        val height = if (isScreenPortrait()) portraitHeight() else 800
         window.setLayout(width, height)
-        params.gravity = if (isScreenPortrait()) Gravity.BOTTOM else Gravity.RIGHT
-        if (isScreenPortrait()) {
-            window.setWindowAnimations(R.style.MyDialogStyleBottom)
-        } else {
-            window.setWindowAnimations(R.style.MyDialogStyleRight)
-        }
+
+//        if (isScreenPortrait()) {
+//            window.setWindowAnimations(R.style.BottomDialogTheme)
+//        } else {
+//            window.setWindowAnimations(R.style.MyDialogStyleRight)
+//        }
     }
 
     private fun portraitHeight(): Int {
@@ -81,7 +80,12 @@ class PermissionDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = Dialog(activity!!, R.style.MyDialogStyleBottom)
+        val style = if (isScreenPortrait()) {
+            R.style.BottomDialogTheme
+        } else {
+            R.style.MyDialogStyleRight
+        }
+        val dialog = Dialog(activity!!, style)
         dialog.setContentView(R.layout.dialog_permission_layout)
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true) //触摸对话框外面的区域，对话框消失
@@ -94,6 +98,11 @@ class PermissionDialog : DialogFragment() {
         mCameraTxt = dialog.findViewById(R.id.txt_camera)
         mStorageTxt = dialog.findViewById(R.id.txt_storage)
         mAllTxt = dialog.findViewById(R.id.txt_all)
+
+        dialog.findViewById<TextView>(R.id.txt_slide_from_right)
+            .setOnClickListener {
+                RightDialog.getInstance().show(childFragmentManager, "RightDialog")
+            }
 
         mAllTxt?.setOnClickListener {
             onPermissionClickListener?.onPermissionClick(ALL_TYPE)

@@ -10,7 +10,8 @@ import java.util.Random;
  *    或者调用静态方法
  * 3. 使用反射的方法对类进行反射调用时，如果该类未初始化则进行初始化
  * 4. 当初始化一个类时，如果其父类还未初始化，则先初始化其父类
- * 5. 当Java虚拟机启动时，用户需要指定一个要执行的主类(包含main方法的类)，虚拟机会先初始化这个主类
+ * 5. 当Java虚拟机启动时，初始化包含 main 方法的主类
+ * 6.
  */
 public class Main {
     public static Random rand = new Random(11);

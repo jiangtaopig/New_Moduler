@@ -2,19 +2,23 @@ package com.zjt.startmodepro
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.*
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.zjt.startmodepro.utils.DisplayUtil
 import com.zjt.startmodepro.viewmodel.NameViewModel
 
 class MyKotlinDialog : DialogFragment(), DialogInterface {
 
     private lateinit var mTitleTv: TextView
+    private lateinit var mEditView: EditText
     private var mTitle: String? = null
     private var mNameViewModel: NameViewModel? = null
     private lateinit var countDownTimer :BlinkCountDownTimer
@@ -42,9 +46,9 @@ class MyKotlinDialog : DialogFragment(), DialogInterface {
         Log.e(TAG, "onStart")
         val window = dialog?.window
         var params: WindowManager.LayoutParams = window?.attributes!!
-        params.gravity = Gravity.CENTER // BOTTOM 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
+        params.gravity = Gravity.BOTTOM // BOTTOM 表示在显示在屏幕的底部，CENTER 表示在屏幕的中间
 //        params.windowAnimations = R.style.MyDialogStyleBottom
-        window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -79,6 +83,15 @@ class MyKotlinDialog : DialogFragment(), DialogInterface {
 
     private fun initView(view: View) {
         mTitleTv = view.findViewById(R.id.txt_title)
+        mEditView = view.findViewById(R.id.edit_text)
+        val editClickView = view.findViewById<TextView>(R.id.edit)
+
+        editClickView.setOnClickListener {
+            mEditView.visibility = View.VISIBLE
+            mEditView.requestFocus()
+            mEditView.performClick()
+            DisplayUtil.showSoftInput(mEditView)
+        }
     }
 
     override fun onDestroyView() {

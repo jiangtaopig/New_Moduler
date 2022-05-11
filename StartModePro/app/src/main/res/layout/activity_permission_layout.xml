@@ -5,12 +5,36 @@
     android:layout_height="match_parent"
     android:background="@color/color_f6f6f6">
 
-    <Button
+    <TextView
         android:id="@+id/btn_apply_permission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_333333"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
         android:text="申请权限"/>
 
+    <TextView
+        android:id="@+id/btn_change_orientation"
+        android:layout_margin="@dimen/dimen_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_333333"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="横竖屏切换"/>
 
+    <TextView
+        android:id="@+id/btn_get_screen_size"
+        android:layout_margin="@dimen/dimen_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_333333"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="获取屏幕大小"/>
 
 </LinearLayout>

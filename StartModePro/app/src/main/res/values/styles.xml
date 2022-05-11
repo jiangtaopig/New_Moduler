@@ -267,7 +267,7 @@
         <!--显示区域背景是否透明，（#00000000）-->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5-->
-        <item name="android:backgroundDimAmount">0.2</item>
+        <item name="android:backgroundDimAmount">0.0</item>
         <!--显示区域以外是否使用黑色半透明背景-->
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:gravity">bottom</item>
@@ -335,6 +335,10 @@
     </style>
 
     <style name="MyDialogStyleRight">
+        <!--就是用来控制灰度的值，当为1时，界面除了我们的dialog内容是高亮显示的，dialog以外的区域是黑色的，完全看不到其他内容，系统的默认值是0.5-->
+        <item name="android:backgroundDimAmount">0.0</item>
+        <!--显示区域以外是否使用黑色半透明背景-->
+        <item name="android:backgroundDimEnabled">true</item>
         <!-- 进入和退出时动画-->
         <item name="android:windowAnimationStyle">@style/dialog_fragment_right_animation</item>
 

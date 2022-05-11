@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
@@ -13,6 +14,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +24,9 @@ import bolts.Task
 import bolts.Task.UI_THREAD_EXECUTOR
 import bolts.Task.create
 import com.tencent.mmkv.MMKV
+import com.zjt.startmodepro.utils.DisplayUtil
 import com.zjt.startmodepro.utils.PermissionsChecker
 import com.zjt.startmodepro.utils.PermissionsHelper
-import kotlinx.coroutines.sync.Semaphore
 
 /**
 
@@ -50,28 +52,44 @@ class TestPermissionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission_layout)
         initView()
-
-
-
         mMmkv = MMKV.mmkvWithID("z_aron")!!
-
 //        showPermissionDialog()
         requestCameraAndCheckNotReminder()
 //        requestAll()
         val model = Build.MODEL
-
         Log.e("TestPermissionActivity", "model = $model")
+    }
 
+    override fun onDestroy() {
+        // 测试 leakcanary
+        super.onDestroy()
+        val a = 1
     }
 
     @SuppressLint("NewApi")
     private fun initView() {
+        findViewById<TextView>(R.id.btn_change_orientation)
+            .setOnClickListener {
+                //  横竖屏切换 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+                requestedOrientation = if (isPortrait()) {
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                } else {
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
+            }
 
-        findViewById<Button>(R.id.btn_apply_permission)
+        findViewById<TextView>(R.id.btn_get_screen_size)
+            .setOnClickListener {
+                val screenWidth = DisplayUtil.getScreenWidth(this)
+                val screenHeight = DisplayUtil.getScreenHeight(this)
+                Log.e("TestPermissionActivity", ">>>> screenWidth = $screenWidth, screenHeight = $screenHeight <<<<")
+            }
+
+        findViewById<TextView>(R.id.btn_apply_permission)
                 .setOnClickListener {
 //                    requestCameraAndCheckNotReminder()
 //                    requestStorageAndCheckNotReminder()
-//                    showPermissionDialog()
+                    showPermissionDialog()
 //                    requestAlbum()
 //                    getPermission()
 //                    requestAllPermission()
@@ -79,6 +97,7 @@ class TestPermissionActivity : AppCompatActivity() {
 //                    grantAudio()
 //                    requestAllPermission2()
 //                    requestAll()
+
 
                 }
     }
@@ -94,7 +113,7 @@ class TestPermissionActivity : AppCompatActivity() {
         // 如果所有权限都已开启，则不弹出 Dialog
         if (grantedCamera && grantedStorage) {
             Toast.makeText(this, "相机和读写权限均已开启", Toast.LENGTH_LONG).show()
-            return
+//            return
         }
 
         mPermissionDialog.setOnPermissionClickListener(object : PermissionDialog.OnPermissionClickListener {
@@ -110,6 +129,12 @@ class TestPermissionActivity : AppCompatActivity() {
         mPermissionDialog.setHasCameraPermission(grantedCamera)
         mPermissionDialog.setStoragePermission(grantedStorage)
         mPermissionDialog.show(supportFragmentManager, "PERMISSION_DIALOG")
+    }
+
+    private fun isPortrait () :Boolean {
+        val configuration: Configuration = resources.configuration
+        val orientation = configuration.orientation
+        return Configuration.ORIENTATION_PORTRAIT == orientation
     }
 
     @SuppressLint("NewApi")

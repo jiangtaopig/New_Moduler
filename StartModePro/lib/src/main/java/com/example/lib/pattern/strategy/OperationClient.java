@@ -1,5 +1,7 @@
 package com.example.lib.pattern.strategy;
 
+import com.example.lib.pattern.Strategy;
+
 /**
  * @Author : zhujiangtao01
  * @Time : On 2021/4/13 11:30 上午
@@ -9,9 +11,9 @@ package com.example.lib.pattern.strategy;
 
 public class OperationClient {
 
-    private BaseOperation operation;
+    private Strategy operation;
 
-    public void setOperation(BaseOperation operation) {
+    public void setOperation(Strategy operation) {
         this.operation = operation;
     }
 

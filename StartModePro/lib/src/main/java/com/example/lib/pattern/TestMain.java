@@ -1,9 +1,8 @@
 package com.example.lib.pattern;
 
-import com.example.lib.pattern.strategy.BaseOperation;
-import com.example.lib.pattern.strategy.DivideOperation;
+import com.example.lib.pattern.strategy.DivideStrategy;
 import com.example.lib.pattern.strategy.OperationClient;
-import com.example.lib.pattern.strategy.PlusOperation;
+import com.example.lib.pattern.strategy.PlusStrategy;
 
 /**
  * @Author : zhujiangtao01
@@ -13,16 +12,30 @@ import com.example.lib.pattern.strategy.PlusOperation;
 
 
 public class TestMain {
+    int a = 1;
+
     public static void main(String[] args) {
-        BaseOperation plusOperation = new PlusOperation();
+        Strategy plusOperation = new PlusStrategy();
         OperationClient client = new OperationClient();
         client.setOperation(plusOperation);
         int res = client.doOperation(3, 8);
         System.out.printf("res = " + res);
 
-        BaseOperation divideOpt = new DivideOperation();
+        Strategy divideOpt = new DivideStrategy();
         client.setOperation(divideOpt);
         client.doOperation(2, 4);
+
+
+//        int b = a ;
+    }
+
+
+    private static void f1() {
+//        f2();
+    }
+
+    private void f2() {
+
     }
 
 }

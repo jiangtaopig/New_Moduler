@@ -16,12 +16,35 @@
         android:layout_height="wrap_content"
         android:background="@color/color_333333" />
 
-    <Button
-        android:id="@+id/btn_clip_bitmap"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/inSample_img"
+        android:layout_width="@dimen/dimen_200dp"
+        android:layout_height="@dimen/dimen_110dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:text="图片等比例缩放并裁剪"
-        android:textSize="@dimen/dimen_18sp" />
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_clip_bitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="图片等比例缩放并裁剪"
+            android:textSize="@dimen/dimen_18sp" />
+
+        <Button
+            android:id="@+id/btn_inSample_bitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="图片采样率压缩"
+            android:textSize="@dimen/dimen_18sp" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

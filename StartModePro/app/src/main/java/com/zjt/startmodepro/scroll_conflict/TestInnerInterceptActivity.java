@@ -12,6 +12,7 @@ import com.zjt.startmodepro.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -24,20 +25,20 @@ public class TestInnerInterceptActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
-    private CacheAdapter cacheAdapter;
-
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inner_intercept_layout);
         recyclerView = findViewById(R.id.recycle_view);
         onInitLogic();
+
+        Executors.newFixedThreadPool(3);
     }
 
 
     private void onInitLogic() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        cacheAdapter = new CacheAdapter();
+        CacheAdapter cacheAdapter = new CacheAdapter();
         recyclerView.setAdapter(cacheAdapter);
 
         List<String> dataList = new ArrayList<>();

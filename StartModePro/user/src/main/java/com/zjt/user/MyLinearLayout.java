@@ -52,6 +52,11 @@ public class MyLinearLayout extends LinearLayout {
         mScreenHeight = point.y;
     }
 
+    /**
+     * 不能超过父容器的大小
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();

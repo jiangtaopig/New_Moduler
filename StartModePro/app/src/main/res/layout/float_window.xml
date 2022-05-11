@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aw_rl_float"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_3dp"
+    android:background="#a3b8cc">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dimen_18sp"
+        android:textColor="@color/color_338f66ff"
+        android:text="我是测试悬浮窗的按钮"
+        />
+    <TextView
+        android:id="@+id/aw_iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/dimen_18sp"
+        android:textColor="@color/color_f3ac30"
+        android:layout_gravity="center_horizontal"
+        android:text="12345678"
+        />
+
+</LinearLayout>
+

@@ -88,6 +88,8 @@ dependencies {
         runtimeOnly project(path: ':user')
     }
 
+    compileOnly project(path:':test_compileonly')
+
     implementation project(path: ':base')
     implementation project(path: ':user_api')
 
@@ -104,6 +106,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.4.0-rc-95"
 
+    // leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 
 
 }

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
+    android:gravity="top"
     android:padding="@dimen/dimen_10dp">
 
     <TextView
@@ -44,6 +45,16 @@
         android:gravity="center"
         android:padding="@dimen/dimen_10dp"
         android:text="一键申请"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dimen_18sp" />
+
+    <TextView
+        android:id="@+id/txt_slide_from_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="从右侧滑出的dialog"
         android:textColor="@color/color_333333"
         android:textSize="@dimen/dimen_18sp" />
 

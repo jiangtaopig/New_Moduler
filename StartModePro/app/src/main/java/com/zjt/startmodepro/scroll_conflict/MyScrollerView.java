@@ -20,6 +20,7 @@ public class MyScrollerView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        // ScrollView 默认在拖拽状态下会拦截 MOVE 事件，默认不拦截UP事件，所以这里只拦截了 UP 事件，
         boolean intercepted  = super.onInterceptTouchEvent(ev);
         if (ev.getAction() == MotionEvent.ACTION_UP) {
             intercepted = true;

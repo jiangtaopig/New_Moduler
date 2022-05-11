@@ -8,6 +8,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import okhttp3.*
 import java.io.IOException
 
@@ -40,7 +41,9 @@ class HttpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_http_layout)
 
         findViewById<Button>(R.id.btn_fetch).setOnClickListener {
-            fetchData()
+//            fetchData()
+
+            SingleModel.testVal.value = Pair("11", "22")
         }
     }
 

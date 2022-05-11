@@ -31,7 +31,7 @@ class ThreadAsmHelper : AsmHelper {
                     }
                 } else if (it.opcode == Opcodes.INVOKEVIRTUAL) { // INVOKEVIRTUAL 针对的是 对象方法
                     if (it is MethodInsnNode) {
-//                        it.transformInvokeVirtual(className, method)
+                        it.transformInvokeVirtual(className, method)
                     }
                 } else if (it.opcode == Opcodes.INVOKESPECIAL) {
                     if (it is MethodInsnNode) {

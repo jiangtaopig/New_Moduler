@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dimen_200dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_ffffff_9_round_rect"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <TextView
         android:id="@+id/txt_title"
@@ -32,6 +33,7 @@
         android:background="@color/color_eeeeee" />
 
     <TextView
+        android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -39,5 +41,13 @@
         android:text="编辑"
         android:textColor="@color/color_333333"
         android:textSize="@dimen/dimen_18sp" />
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

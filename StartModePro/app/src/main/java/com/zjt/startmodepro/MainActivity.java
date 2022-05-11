@@ -1,5 +1,6 @@
 package com.zjt.startmodepro;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +28,8 @@ import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.cpu_info.BlinkCpuInfo;
 import com.zjt.startmodepro.cpu_info.MemoryMeter;
 import com.zjt.startmodepro.cpu_info.Unit;
+import com.zjt.startmodepro.float_window.FloatWindowView;
+import com.zjt.startmodepro.pagerSnapHelper.TestPagerSnapHelperActivity;
 import com.zjt.startmodepro.scroll_conflict.TestInnerInterceptActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.soloader.TestLoadSoActivity;
@@ -36,6 +40,13 @@ import com.zjt.startmodepro.widget.TestPostByMultiThread;
 import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
+
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -61,6 +72,21 @@ public class MainActivity extends BaseActivity {
     private AlertDialog mDialog;
     private NameViewModel mNameViewModel;
 
+    public void applyPermission(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            ((Activity) context).startActivityForResult(intent, 1001);
+        }
+    }
+
+    public boolean checkFloatWindowPermission(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return Settings.canDrawOverlays(context);
+        }
+        return true;
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -82,14 +108,49 @@ public class MainActivity extends BaseActivity {
         img = findViewById(R.id.image);
 
         mJump2FileActivity.setOnClickListener(v -> {
-            FileActivity.Companion.enter(this);
+            if (checkFloatWindowPermission(this)) {
+                FloatWindowView floatWindowView = new FloatWindowView(this);
+                floatWindowView.show();
+            } else {
+                applyPermission(this);
+            }
+
+            Queue<String> queue = new ArrayDeque<>(3);
+            queue.poll();
+
+//            FileActivity.Companion.enter(this);
+
+        });
+
+
+        SingleModel.INSTANCE.getTestVal().observe(this, stringStringPair -> {
+            String v1 = stringStringPair.component1();
+            String v2 = stringStringPair.component2();
         });
 
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
             JetPackActivity.enter(this);
-//            Glide.with(this).load("https://tenfei05.cfp.cn/creative/vcg/veer/1600water/veer-104673459.jpg").into(img);
+//            Glide.with(this).load(R.drawable.a2).into(img);
+
+            // 跳转手势 activity
+//            Intent intent = new Intent(this, TestGestureDetectorActivity.class);
+//            startActivity(intent);
+
+            NumberFormat moneyFormat = NumberFormat.getCurrencyInstance();
+            moneyFormat.setGroupingUsed(false);
+            moneyFormat.setMaximumFractionDigits(0);
+            moneyFormat.setRoundingMode(RoundingMode.HALF_UP);   //四舍五入
+            // 如果你在手机系统里面设置地区比如说是中国台湾，那么下面就会返回 NT$4, NT$ 表示的是 new TaiWan Dollar
+            String result = moneyFormat.format(4); //
+
+            String money = StringFormatter.format("%s", result.substring(1));
+            System.out.println("money = "+money);
+
+//            ARouter.getInstance()
+//                    .build(RouteHub.User.USER_FLOAT_ACTIVITY)
+//                    .navigation(this);
 
 //            CallAnchorDialog.Companion.show(this, new CallAnchorDialog.OnCallDialogDismiss() {
 //                @Override
@@ -103,7 +164,7 @@ public class MainActivity extends BaseActivity {
 
             mNameViewModel.setCurrentName("测试ViewModel页面服用");
 
-            // 演示livedata 数据倒灌，及先设置livedata的值，后监听依然能够收到数据回调
+            // 演示livedata 数据倒灌，就是先设置 livedata 的值，后监听依然能够收到数据回调
             mNameViewModel.getCurrentName().observe(this, data -> {
                 Log.e("MainActivity", "data ==== > " + data);
             });
@@ -127,7 +188,6 @@ public class MainActivity extends BaseActivity {
             userProvider.getUserInfo();
             Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
 
-//            JetPackActivity.enter(this);
         });
 
         mToUserTxt.setOnClickListener(v -> {
@@ -138,9 +198,6 @@ public class MainActivity extends BaseActivity {
 //            UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
 //            UserInfo userInfo = userProvider.getUserInfo();
 //            Log.e("zjt", "获取 ARouter 服务的方式2 name = " + userInfo.getName() + " , age = " + userInfo.getAge());
-
-
-
         });
 
         mRangeSeekBar = findViewById(R.id.range_seek_bar);
@@ -329,6 +386,12 @@ public class MainActivity extends BaseActivity {
                 .setOnClickListener(v -> {
                     Intent intent = new Intent(this, TestPopWindowActivity.class);
                     startActivity(intent);
+
+                });
+
+        findViewById(R.id.btn_pager_snap_helper)
+                .setOnClickListener(v -> {
+                    TestPagerSnapHelperActivity.enter(this);
 
                 });
 

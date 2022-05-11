@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="你好啊"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dimen_18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:background="#e5e5e5" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="哈哈哈哈哈哈"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dimen_18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:background="#e5e5e5" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dimen_10dp"
+        android:text="谢谢谢谢谢"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dimen_18sp" />
+
+
+</LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.lib.multithread;
 
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TestReentrantLock {
@@ -44,6 +43,7 @@ public class TestReentrantLock {
             System.out.println(Thread.currentThread().getName() + " start and sleep 3s");
             lock.lock();
             try {
+                System.out.println("--- isLock == > "+lock.isLocked());
                 Thread.sleep(3_000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -63,8 +63,10 @@ public class TestReentrantLock {
 
         @Override
         public void run() {
+            System.out.println("isLock == > "+lock.isLocked());
             System.out.println(Thread.currentThread().getName() + " start and try lock by lockInterruptibly");
             try {
+                // reentrantlock 支持中断，而 synchronized 不支持
                 lock.lockInterruptibly();
             } catch (InterruptedException e) {
                 e.printStackTrace();

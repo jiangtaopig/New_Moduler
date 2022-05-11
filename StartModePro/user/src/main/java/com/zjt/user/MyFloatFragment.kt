@@ -50,6 +50,7 @@ class MyFloatFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.e(TAG, "onViewCreated")
 
+
         val topMargin = 0F
         val lp = (view.parent as? ViewGroup)?.layoutParams
         if (lp is ViewGroup.MarginLayoutParams) {
@@ -77,6 +78,12 @@ class MyFloatFragment : BaseFragment() {
             ?.setOnClickListener {
                 mMeViewModel?.mData?.value = "我是float fragment"
             }
+        ff("sss")
+        ff()
+    }
+
+    private fun  ff(name :String = "123") {
+
     }
 
     override fun onDestroy() {

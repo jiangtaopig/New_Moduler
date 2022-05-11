@@ -2,6 +2,7 @@ package com.zjt.user;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.zjt.base.BaseActivity;
@@ -71,7 +74,14 @@ public class UserActivity extends BaseActivity {
                 });
 
 
-//        viewModel = new ViewModelProvider(this).get(MeViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MeViewModel.class);
+
+        viewModel.getTestVal().setValue(1);
+
+        viewModel.getTestVal().observe(this, integer -> {
+            Toast.makeText(this, "xxxx", Toast.LENGTH_LONG).show();
+        });
+
 //        viewModel.getMData().observe(this, new Observer<String>() {
 //            @Override
 //            public void onChanged(String s) {

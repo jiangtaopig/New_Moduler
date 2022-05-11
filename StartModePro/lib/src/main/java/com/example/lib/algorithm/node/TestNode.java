@@ -33,6 +33,8 @@ public class TestNode {
         List<String> list = new ArrayList<>();
         list.add("1");
         list.remove("1");
+
+        A aw = new A();
     }
 
     /**
@@ -72,7 +74,7 @@ public class TestNode {
         ListNode pre = r.next;
         ListNode cur = r.next.next;
 
-        // 因为 m 对应的结点不懂，m 到 n 之间的结点包含 n 要插入到 r 和 m 之间
+        // 因为 m 对应的结点不动，m 到 n 之间的结点包含 n 要插入到 r 和 m 之间
         for (int j = 0; j < n - m; j++) {
             pre.next = cur.next;
             cur.next = r.next;
@@ -119,7 +121,7 @@ public class TestNode {
     }
 
     /**
-     * 获取2个链表的焦点，没有就返回 null （当 p1 和 p2 都指向 null 的时候 说明 p1 = p2 ，那么返回 null）
+     * 获取2个链表的交点，没有就返回 null （当 p1 和 p2 都指向 null 的时候 说明 p1 = p2 ，那么返回 null）
      */
     private static ListNode getIntersectionNode(ListNode l1, ListNode l2) {
         ListNode p1 = l1;
@@ -177,8 +179,6 @@ public class TestNode {
             }
             r = r.next;
         }
-
-        int a = 1;
         return dummyNode.next;
     }
 
@@ -302,4 +302,8 @@ public class TestNode {
         }
         return L.next;
     }
+ }
+
+ class A {
+
  }

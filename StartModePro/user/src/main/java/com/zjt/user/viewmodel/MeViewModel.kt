@@ -11,6 +11,8 @@ class MeViewModel : ViewModel() {
 
     var mName = MutableLiveData<String>()
 
+    var testVal = MutableLiveData(-1) // 有默认值，打开的 activity
+
     fun doSth(){
         mData.postValue("哈哈，我是牛人啊！！！")
     }

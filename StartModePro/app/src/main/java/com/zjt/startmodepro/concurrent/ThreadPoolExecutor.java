@@ -642,9 +642,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * state to a negative value, and clear it upon start (in
      * runWorker).
      */
-    private final class Worker
-            extends AbstractQueuedSynchronizer
-            implements Runnable {
+    private final class Worker extends AbstractQueuedSynchronizer implements Runnable {
         /**
          * This class will never be serialized, but we provide a
          * serialVersionUID to suppress a javac warning.
@@ -694,7 +692,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
         /**
          * 为什么 Worker 类要实现AQS，而不是直接用 ReentrantLock 即这里的this.mainLock呢？
-         * 因为 ReentrantLock 是可重入的，而这里面调用 shutDown 会调用 tryLock 方法，而 tryLock 会调用此方法 ，如果可重入的话，那么会中断正在执行的线程。
+         * 因为 ReentrantLock 是可重入的，而调用 shutDown 会调用 tryLock 方法，而 tryLock 会调用此方法 ，
+         * 这个方法通过 CAS 把 state 的值从0设置为1 就是加锁的意思。0 表示的是 未上锁的状态， 1 表示已经加锁了。
+         * 什么时候加锁的呢？ runTask 方法中 会调用 lock 方法加锁。也就是说 state=1的 worker肯定是正在执行任务的线程，不可以被中断。
+         *
+         * 这里就是打破可重入锁，如果可重入的话，那么会中断正在执行的线程。
          * 也可以看 setCorePoolSize 方法，方法中如果我们想动态减少 核心线程数量，那么会走到  interruptIdleWorkers(); 就是中断空闲的线程。
          *
          * @param unused 这个变量就没用到
@@ -1095,8 +1097,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      */
     private void processWorkerExit(Worker w, boolean completedAbruptly) {
         Log.e("test thread pool", Thread.currentThread().getName()+ " >>> processWorkerExit-----------completedAbruptly=" + completedAbruptly);
+
+        // 由于该线程执行任务发生异常，那么线程数减一
         if (completedAbruptly) // If abrupt, then workerCount wasn't adjusted
-            decrementWorkerCount();
+            decrementWorkerCount(); // 注释【1】
 
         final ReentrantLock mainLock = this.mainLock;
         mainLock.lock();
@@ -1117,18 +1121,17 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 if (min == 0 && !workQueue.isEmpty())
                     min = 1;
                 // min 默认表示核心线程数，由于我调用了shutDown，所以也会回收核心线程，
-                // 那么就存在 线程池中线程的数量 小于核心线程数，即下面条件不成立，执行 addWorker(null, false);
-                // addWorker 里面会判断 if (rs >= SHUTDOWN &&
-                //                         !(rs == SHUTDOWN &&
-                //                            firstTask == null &&
-                //                             !workQueue.isEmpty()))
-                //                return false;
+                // 那么就存在 线程池中线程的数量 小于核心线程数，即下面条件不成立，即执行 addWorker(null, false);
+                // addWorker 里面会判断 if (rs >= SHUTDOWN &&!(rs == SHUTDOWN && firstTask == null && !workQueue.isEmpty())) {
+                //     return false;
+                // }
                 // 由于调了 shunDown 所以 rs >= SHUTDOWN，连核心线程都回收了，那么任务队列肯定为空，所以 addWorker(null, false) 返回false，不会开启线程
-                if (workerCountOf(c) >= min)
+                if (workerCountOf(c) >= min) // 注释【2】
                     return; // replacement not needed
             }
             Log.e("test thread pool", Thread.currentThread().getName() + " xxx  processWorkerExit xxx -c=" + c);
-            // 这行代码什么时候会走到呢
+            // 这行代码什么时候会走到呢 ? 由于执线程执行任务是发生异常，所以会走到注释【1】导致线程数减一，就有可能导致注释【2】的条件不成立
+            // 这时候就准备创建一个线程去处理任务队列中的任务，addWorker 中会判断这个线程是否能够创建，具体可看 addWorker 方法
             addWorker(null, false);
         }
     }
@@ -1180,6 +1183,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 Runnable r = timed ?
                         workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
                         workQueue.take();//注5
+                Log.e("test thread pool", "--getTask  r = " + r);
                 if (r != null)
                     return r;
                 timedOut = true;//注6
@@ -1241,7 +1245,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         boolean completedAbruptly = true;
         try {
 
-            // 如果task为空，或者去阻塞队列中去取任务不为空，这里的 getTask 如果阻塞队列中任务为空 会阻塞当前线程
+            // 如果task不为空，或者去阻塞队列中能够取到任务。这里的 getTask 如果阻塞队列中任务为空 会阻塞当前线程，
             // 这里就是线程复用的核心，比方说当这个程执行完当前任务后，就去队列中取任务来执行，这就完成了线程的复用
             while (task != null || (task = getTask()) != null) {
 //                Log.e("test thread pool", "runWorker  while task = " + task);
@@ -1251,7 +1255,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 // requires a recheck in second case to deal with
                 // shutdownNow race while clearing interrupt
                 // 有2中情况：
-                // 1. 如果执行了 shutdownNow 且 线程没有执行中断方法（interrupt）那么就执行 wt.interrupt();中断正在执行的线程
+                // 1. 如果执行了 shutdownNow 且 线程没有执行中断方法（interrupt）那么就执行 wt.interrupt() 中断正在执行的线程
                 //  interrupted ： 测试当前线程是否被中断（检查中断标志），返回一个boolean并清除中断状态，第二次再调用时中断状态已经被清除，将返回一个false
                 // isInterrupted : 只测试此线程是否被中断 ，不清除中断状态
                 if ((runStateAtLeast(ctl.get(), STOP) || (Thread.interrupted() && runStateAtLeast(ctl.get(), STOP)))
@@ -1485,12 +1489,14 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         int wtc = workerCountOf(c);
         Log.e("test thread pool", "c = " + c + ", wtc = " + wtc);
         if (wtc < corePoolSize) {
+            // 如果当前线程数小于核心线程数，那么直接创建一个线程来执行任务
+            // addWorker 可能会因为线程池被关闭了、线程数量超出限制等原因返回 false
             if (addWorker(command, true))
                 return;
             c = ctl.get();
             Log.e("test thread pool", "addWorker failed c = " + c);
         }
-        if (isRunning(c) && workQueue.offer(command)) {
+        if (isRunning(c) && workQueue.offer(command)) { // 线程池还处于运行状态且成功添加任务到任务队列
             int recheck = ctl.get();
             Log.e("test thread pool", "recheck = " + recheck);
             if (!isRunning(recheck) && remove(command)) {

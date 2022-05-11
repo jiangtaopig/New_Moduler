@@ -1,7 +1,10 @@
 package com.zjt.startmodepro.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+
 
 /**
  * @Author : zhujiangtao01
@@ -13,10 +16,11 @@ import android.util.Log;
 public class BitmapUtils {
 
     /**
+     * 等比例缩放
      *
      * @param bitmap
-     * @param w  想要缩放后的 宽度 比如 给定ImageView 设置了精确的 宽/高
-     * @param h  想要缩放后的 高度
+     * @param w      想要缩放后的 宽度 比如 给定ImageView 设置了精确的 宽/高
+     * @param h      想要缩放后的 高度
      * @return
      */
     public static Bitmap scaleBitmap(Bitmap bitmap, float w, float h) {
@@ -24,7 +28,7 @@ public class BitmapUtils {
         float height = bitmap.getHeight();
         float x = 0, y = 0, scaleWidth = width, scaleHeight = height;
         Bitmap newbmp;
-        Log.e("BitmapUtils","width:"+width+" height:"+height);
+        Log.e("BitmapUtils", "width:" + width + " height:" + height);
         if (w > h) {//比例宽度大于高度的情况
             float scale = w / h;
             float tempH = width / scale;
@@ -68,7 +72,7 @@ public class BitmapUtils {
             }
         }
         try {
-            // createBitmap()方法中定义的参数x+width要小于或等于bitmap.getWidth()，y+height要小于或等于bitmap.getHeight()
+            // createBitmap() 方法中定义的参数 x + width 要小于或等于 bitmap.getWidth()，y + height 要小于或等于 bitmap.getHeight()
             newbmp = Bitmap.createBitmap(bitmap, (int) x, (int) y, (int) scaleWidth, (int) scaleHeight, null, false);
             //bitmap.recycle();
         } catch (Exception e) {
@@ -76,5 +80,39 @@ public class BitmapUtils {
             return null;
         }
         return newbmp;
+    }
+
+    /**
+     * 采样率压缩
+     * @param w      图片容器如 ImageView 的宽度
+     * @param h      图片容器如 ImageView 的高度
+     * @return
+     */
+    public static Bitmap bitmapInSampleSize(Context context, int resId, int w, int h) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        // 设置 inJustDecodeBounds 为 true 后 decodeResource 方法只会去读取 Bitmap 的宽高属性而不会去进行实际加载
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(context.getResources(), resId, options);
+        int inSampleSize = calculateInSampleSize(options, w, h);
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(context.getResources(), resId, options);
+
+    }
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        int height = options.outHeight;
+        int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            int halfHeight = height / 2;
+            int halfWidth = width / 2;
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
     }
 }

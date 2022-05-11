@@ -212,6 +212,14 @@
                 android:text="test so"
                 android:textSize="@dimen/dimen_18sp" />
 
+            <Button
+                android:id="@+id/btn_pager_snap_helper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_4dp"
+                android:text="pager snap helper"
+                android:textSize="@dimen/dimen_18sp" />
+
 
         </LinearLayout>
 

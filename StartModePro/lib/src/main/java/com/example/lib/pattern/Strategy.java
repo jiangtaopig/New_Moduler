@@ -1,4 +1,4 @@
-package com.example.lib.pattern.strategy;
+package com.example.lib.pattern;
 
 /**
  * @Author : zhujiangtao01
@@ -7,6 +7,6 @@ package com.example.lib.pattern.strategy;
  */
 
 
-public interface BaseOperation {
+public interface Strategy {
     int opt(int num1, int num2);
 }

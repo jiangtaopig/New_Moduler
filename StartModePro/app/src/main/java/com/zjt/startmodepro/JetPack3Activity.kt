@@ -66,7 +66,7 @@ class JetPack3Activity : AppCompatActivity() {
         mMyAdapter = MyAdapter()
         mMyAdapter.setListener(object : MyOnClickListener {
             override fun onClick(position: Int) {
-                mMyAdapter.deleteSpecifyData(position)
+                mMyAdapter.deleteSpecifyPositionData(position)
             }
         })
         mRecycleView.adapter = mMyAdapter
@@ -80,16 +80,18 @@ class JetPack3Activity : AppCompatActivity() {
                 val cnt = manager.itemCount
                 val itemCount = mMyAdapter.itemCount
 
-                Log.e(
-                    "RecycleView",
-                    "lastVisiblePosition = $lastVisiblePosition , cnt = $cnt, itemCount = $itemCount"
-                )
+                Log.e("RecycleView", "dx = $dx , dy = $dy")
+
+//                Log.e(
+//                    "RecycleView",
+//                    "lastVisiblePosition = $lastVisiblePosition , cnt = $cnt, itemCount = $itemCount"
+//                )
                 /**
                  * recycleview 分页加载逻辑
                  */
-                if (dy > 0 && (lastVisiblePosition + 2 > cnt)) {
-                    getNextPage()
-                }
+//                if (dy > 0 && (lastVisiblePosition + 2 > cnt)) {
+//                    getNextPage()
+//                }
             }
         })
 

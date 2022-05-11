@@ -11,8 +11,11 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CAMERA" />
     <!--添加操作android.hardware.camera.any可确保该设备具有摄像机。指定.any意味着它可以是前置摄像头或后置摄像头。-->
-    <uses-permission android:name="android.hardware.camera.any"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 
     <!--android:resizeableActivity="false" 不支持小屏 只能在 application 或者 MainActivity -->
     <application
@@ -20,10 +23,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeWelcome"
-        android:resizeableActivity="false"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
 
@@ -58,16 +61,16 @@
         <activity android:name=".TestCoroutineActivity" />
         <activity android:name=".TestPermissionActivity" />
         <activity android:name=".TestEditActivity" />
-        <activity android:name=".schedule.ScheduleActivity"/>
-        <activity android:name=".widget.TestDefineViewActivity"/>
+        <activity android:name=".schedule.ScheduleActivity" />
+        <activity android:name=".widget.TestDefineViewActivity" />
         <activity android:name=".TestPopWindowActivity">
 
         </activity>
 
         <activity
             android:name=".DispatchActivity"
-            android:launchMode="singleTask"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -81,13 +84,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestThreadLocalActivity"/>
-        <activity android:name=".TextFolderActivity"/>
-        <activity android:name=".TextFolderActivity2"/>
-        <activity android:name=".scroll_conflict.TestInnerInterceptActivity"/>
-        <activity android:name=".widget.TestCoroutineActivity"/>
-        <activity android:name=".LoadSoActivity"/>
-        <activity android:name=".soloader.TestLoadSoActivity"/>
+        <activity android:name=".TestThreadLocalActivity" />
+        <activity android:name=".TextFolderActivity" />
+        <activity android:name=".TextFolderActivity2" />
+        <activity android:name=".scroll_conflict.TestInnerInterceptActivity" />
+        <activity android:name=".widget.TestCoroutineActivity" />
+        <activity android:name=".LoadSoActivity" />
+        <activity android:name=".soloader.TestLoadSoActivity" />
+        <activity android:name=".TestGestureDetectorActivity" />
+        <activity android:name=".pagerSnapHelper.TestPagerSnapHelperActivity"/>
 
     </application>
 
