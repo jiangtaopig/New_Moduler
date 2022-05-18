@@ -56,9 +56,6 @@ public class TestPagerSnapHelperActivity extends AppCompatActivity {
         dataList.add("江苏");
         testAdapter.setDataList(dataList);
 
-        // add 2
-        // 添加无用注释
-
         recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(@NonNull View view) {

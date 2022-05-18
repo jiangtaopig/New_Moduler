@@ -30,6 +30,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
 
+<!--        <meta-data android:value="ApplicationDelegate" android:name=".MainActivity"/>-->
+        <meta-data android:value="ApplicationDelegate" android:name="com.zjt.startmodepro.HomeApplicationDelegate"/>
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboard|screenSize|smallestScreenSize|screenLayout"

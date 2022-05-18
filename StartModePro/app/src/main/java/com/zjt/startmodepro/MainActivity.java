@@ -20,8 +20,6 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zjt.base.BaseActivity;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
@@ -45,8 +43,6 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -146,7 +142,7 @@ public class MainActivity extends BaseActivity {
             String result = moneyFormat.format(4); //
 
             String money = StringFormatter.format("%s", result.substring(1));
-            System.out.println("money = "+money);
+            System.out.println("money = " + money);
 
 //            ARouter.getInstance()
 //                    .build(RouteHub.User.USER_FLOAT_ACTIVITY)

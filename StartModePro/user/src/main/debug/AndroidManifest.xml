@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zjt.user">
+
+    <application
+        android:supportsRtl="true"
+        android:theme="@style/UserThemeWelcome"
+        android:usesCleartextTraffic="true"
+        >
+
+        <activity
+            android:name=".UserActivity"
+            android:configChanges="orientation|keyboard|screenSize|smallestScreenSize|screenLayout"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+<!--        <activity android:name=".UserActivity" />-->
+        <activity android:name=".TestFloatActivity"/>
+        <activity android:name=".TestActivity"/>
+    </application>
+</manifest>
