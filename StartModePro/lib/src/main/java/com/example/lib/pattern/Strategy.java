@@ -9,4 +9,5 @@ package com.example.lib.pattern;
 
 public interface Strategy {
     int opt(int num1, int num2);
+    Integer i = Integer.valueOf(130);
 }

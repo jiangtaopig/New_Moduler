@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -103,6 +106,18 @@ public class MainActivity extends BaseActivity {
         mJump2FileActivity = findViewById(R.id.jump_2_file_activity);
         img = findViewById(R.id.image);
 
+        mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
+        Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
+
+        mNameViewModel.setCurrentName("测试ViewModel页面服用");
+
+        getLifecycle().addObserver(new LifecycleEventObserver() {
+            @Override
+            public void onStateChanged(@androidx.annotation.NonNull LifecycleOwner source, @androidx.annotation.NonNull Lifecycle.Event event) {
+                Log.e("MainActivity", "event =" + event);
+            }
+        });
+
         mJump2FileActivity.setOnClickListener(v -> {
             if (checkFloatWindowPermission(this)) {
                 FloatWindowView floatWindowView = new FloatWindowView(this);
@@ -111,11 +126,7 @@ public class MainActivity extends BaseActivity {
                 applyPermission(this);
             }
 
-            Queue<String> queue = new ArrayDeque<>(3);
-            queue.poll();
-
 //            FileActivity.Companion.enter(this);
-
         });
 
 
@@ -128,6 +139,13 @@ public class MainActivity extends BaseActivity {
 //            test1();
 //            test2();
             JetPackActivity.enter(this);
+
+            // 演示livedata 数据倒灌，就是先设置 livedata 的值，后监听依然能够收到数据回调
+            mNameViewModel.getCurrentName().observe(this, data -> {
+                Log.e("MainActivity", "onCreate data ==== > " + data);
+            });
+
+
 //            Glide.with(this).load(R.drawable.a2).into(img);
 
             // 跳转手势 activity
@@ -154,16 +172,6 @@ public class MainActivity extends BaseActivity {
 //                    CallAnchorDialog.Companion.hide(MainActivity.this);
 //                }
 //            });
-
-            mNameViewModel = new ViewModelProvider(this).get(NameViewModel.class);
-            Log.e("MainActivity", "mNameViewModel ==== > " + mNameViewModel);
-
-            mNameViewModel.setCurrentName("测试ViewModel页面服用");
-
-            // 演示livedata 数据倒灌，就是先设置 livedata 的值，后监听依然能够收到数据回调
-            mNameViewModel.getCurrentName().observe(this, data -> {
-                Log.e("MainActivity", "data ==== > " + data);
-            });
 
             TestBuilder testBuilder = new TestBuilder.Builder()
                     .setName("aaa")
@@ -418,6 +426,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        mNameViewModel.getCurrentName().observe(this, data -> {
+//            Log.e("MainActivity", "onResume data ==== > " + data);
+//        });
 
         // onResume 生命周期中是可以在子线程中更新UI的。因为线程检查是在 ViewRootImpl 类中的，而 ViewRootImpl 类是在onResume执行完成之后才创建的。
 //        new Thread(){
@@ -428,6 +439,17 @@ public class MainActivity extends BaseActivity {
 //            }
 //        }.start();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        Log.e("MainActivity", " onStart ");
+//        mNameViewModel.getCurrentName().observe(this, data -> {
+//            Log.e("MainActivity", "onStart data ==== > " + data);
+//        });
+    }
+
+
 
     private void test2() {
         Observable<Integer> createOb = Observable.create(new ObservableOnSubscribe<Integer>() {

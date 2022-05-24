@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,10 +44,6 @@ public class MyClass {
 
 //        testException("");
 //        reSize(3);
-
-
-        String vv = "01";
-        System.out.println("vv = " + Integer.parseInt(vv));
 
         TestStatic ts1 = new TestStatic();
         ts1.printName();

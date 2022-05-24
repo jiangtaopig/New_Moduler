@@ -34,11 +34,18 @@ public
 class MyApplication extends BaseApplication {
     private static Context mContext;
     private static final String MODULE_META_KEY = "ApplicationDelegate";
+    List<ApplicationDelegate> delegates;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        delegates = findApplicationDelegate(this);
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("ReInstance__", "MyApplication onCreate");
+        Log.e("zjt_application", "MyApplication onCreate");
         MyExceptionHandler.getInstance().init();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationObserver());
         mContext = getApplicationContext();
@@ -49,7 +56,10 @@ class MyApplication extends BaseApplication {
         load();
         dynamicSo();
 
-        findApplicationDelegate(this);
+        for (ApplicationDelegate delegate : delegates) {
+            delegate.onCreate(this);
+        }
+
     }
 
 

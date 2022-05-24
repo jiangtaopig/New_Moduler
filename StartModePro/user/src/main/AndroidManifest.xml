@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zjt.user">
 
-
     <application>
+        <meta-data android:value="ApplicationDelegate" android:name="com.zjt.user.UserApplication"/>
         <activity android:name=".UserActivity" />
         <activity android:name=".TestFloatActivity"/>
         <activity android:name=".TestActivity"/>
