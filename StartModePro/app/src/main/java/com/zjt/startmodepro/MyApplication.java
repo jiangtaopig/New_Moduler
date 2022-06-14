@@ -59,9 +59,7 @@ class MyApplication extends BaseApplication {
         for (ApplicationDelegate delegate : delegates) {
             delegate.onCreate(this);
         }
-
     }
-
 
     public List<ApplicationDelegate> findApplicationDelegate(Context context) {
         List<ApplicationDelegate> delegates = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.zjt.user;
 
+import com.zjt.base.user.User;
 import com.zjt.user_api.UserInfo;
 
 public
@@ -28,6 +29,13 @@ class UserManager {
     public UserInfo getUserInfo(){
         UserInfo userInfo = new UserInfo("xju", 23);
         return userInfo;
+    }
+
+    public User getUser() {
+        User user = new User();
+        user.setName("zzjj");
+        user.setAge(32);
+        return user;
     }
 
 }

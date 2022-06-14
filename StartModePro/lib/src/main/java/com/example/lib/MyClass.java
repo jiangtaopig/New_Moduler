@@ -3,10 +3,7 @@ package com.example.lib;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -47,6 +44,8 @@ public class MyClass {
 
         TestStatic ts1 = new TestStatic();
         ts1.printName();
+
+
 
         TestStatic ts2 = new TestStatic();
         ts2.printName();

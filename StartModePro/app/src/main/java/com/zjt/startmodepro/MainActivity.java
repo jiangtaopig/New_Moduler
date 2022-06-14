@@ -23,7 +23,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.zjt.base.BaseActivity;
+import com.zjt.base.user.User;
+import com.zjt.base.user.UserNavigator;
 import com.zjt.router.RouteHub;
 import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.cpu_info.BlinkCpuInfo;
@@ -44,8 +47,8 @@ import com.zjt.user_api.UserProxy;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Arrays;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -138,15 +141,35 @@ public class MainActivity extends BaseActivity {
         mTv.setOnClickListener(v -> {
 //            test1();
 //            test2();
-            JetPackActivity.enter(this);
+//            JetPackActivity.enter(this);
+
+            mNameViewModel.setActivityEntranceList(Arrays.asList("1", "2", "3", "4", "5"));
+            mNameViewModel.innerEntranceList.observe(this, new androidx.lifecycle.Observer<List<String>>() {
+                @Override
+                public void onChanged(List<String> strings) {
+                    if (!strings.isEmpty()) {
+                        for (String s : strings) {
+                            Log.e("MainActivity", "innerEntranceList >>> s = " + s);
+                        }
+                    }
+                }
+            });
+
+            /**
+             *  获取的是 user 模块的信息，user 模块实现 base 中定义的接口， base 模块中通过反射调用 user 中的实现
+             */
+            User user = UserNavigator.getInstance().getUser();
 
             // 演示livedata 数据倒灌，就是先设置 livedata 的值，后监听依然能够收到数据回调
             mNameViewModel.getCurrentName().observe(this, data -> {
                 Log.e("MainActivity", "onCreate data ==== > " + data);
             });
 
+            mNameViewModel.getCurrentName().observe(this, data -> {
+                Log.e("MainActivity", "onCreate data22 ==== > " + data);
+            });
 
-//            Glide.with(this).load(R.drawable.a2).into(img);
+            Glide.with(this).load(R.drawable.a2).into(img);
 
             // 跳转手势 activity
 //            Intent intent = new Intent(this, TestGestureDetectorActivity.class);
@@ -186,7 +209,6 @@ public class MainActivity extends BaseActivity {
             UserProvider provider = UserProxy.getInstance().getUserProvider();
             UserInfo userInfo = provider.getUserInfo();
             Log.e("zjt", "name = " + userInfo.getName() + " , age = " + userInfo.getAge());
-
 
             UserProvider userProvider = (UserProvider) ARouter.getInstance().build(RouteHub.User.USER_PROVIDER_PATH).navigation();
             userProvider.getUserInfo();
@@ -448,7 +470,6 @@ public class MainActivity extends BaseActivity {
 //            Log.e("MainActivity", "onStart data ==== > " + data);
 //        });
     }
-
 
 
     private void test2() {
