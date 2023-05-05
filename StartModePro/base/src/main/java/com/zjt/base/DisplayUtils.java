@@ -21,7 +21,10 @@ public class DisplayUtils {
         Display defaultDisplay = windowManager.getDefaultDisplay();
         //获取屏幕的宽、高，单位是像素
         defaultDisplay.getSize(point);
+
+
     }
+
 
 
 

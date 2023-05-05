@@ -1188,6 +1188,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                     return r;
                 timedOut = true;//注6
             } catch (InterruptedException retry) {
+                Log.e("test thread pool", "--getTask  InterruptedException -----timed = " + timed + ", wc = " + wc + ", c = " + c);
                 timedOut = false;
             }
         }

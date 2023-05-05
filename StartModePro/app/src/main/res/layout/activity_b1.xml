@@ -2,13 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
+
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:gravity="center"
-        android:text="我是B1的activity">
+        android:textColor="@color/white"
+        android:background="#330088"
+        android:text="我是B1的activity"/>
+
+    <TextView
+        android:id="@+id/tttx"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="#330088"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:text="下载">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tttx2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="#330088"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:text="安装">
+    </TextView>
+
+    <TextView
+        android:id="@+id/download_continue"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="#330088"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:text="断点下载">
 
     </TextView>
 

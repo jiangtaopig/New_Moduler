@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.tencent.mmkv.MMKV;
@@ -39,6 +40,7 @@ class MyApplication extends BaseApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        MultiDex.install(base);
         delegates = findApplicationDelegate(this);
     }
 

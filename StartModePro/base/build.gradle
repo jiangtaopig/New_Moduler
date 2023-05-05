@@ -32,6 +32,12 @@ android {
     }
 }
 
+//repositories{
+//    flatDir{
+//        dirs 'libs'
+//    }
+//}
+
 task makeJar(type: Copy) {
     delete 'build/libs/mylibrary.jar' //删除已经存在的jar包
     from('build/intermediates/bundles/release/')//从该目录下加载要打包的文件
@@ -45,9 +51,11 @@ makeJar.dependsOn(build)
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar", "*arr"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation files('libs/fastjson-1.2.75.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+//    implementation (name:'libs/tiphone_sdk_java_CTICloudDefault_10.2.7.2_release',ext:'aar')
 
     api project(path :':router')
 

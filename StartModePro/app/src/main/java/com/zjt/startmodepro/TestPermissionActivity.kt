@@ -170,7 +170,7 @@ class TestPermissionActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     private fun requestStorageAndCheckNotReminder() {
         if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // 之前申请权限时如果是拒绝且不再提醒，那么跳转到系统的权限界面; 拒绝且不再提醒 shouldShowRequestPermissionRationale 返回false
+            // 之前申请权限时如果是拒绝且不再提醒，那么跳转到系统的权限界面; 用户拒绝且不再提醒 shouldShowRequestPermissionRationale 返回false
             // 如果之前未申请过该权限 shouldShowRequestPermissionRationale 也返回 false
             if (!mMmkv.decodeBool(STORAGE_APPLIED, false)) { // 表示第一次申请该权限
                 requestStorage()

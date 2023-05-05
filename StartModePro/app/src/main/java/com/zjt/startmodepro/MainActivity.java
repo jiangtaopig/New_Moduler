@@ -1,9 +1,12 @@
 package com.zjt.startmodepro;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +18,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -24,6 +29,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tinet.janussdk.utils.TiPhoneSpObjectUtils;
 import com.zjt.base.BaseActivity;
 import com.zjt.base.user.User;
 import com.zjt.base.user.UserNavigator;
@@ -37,6 +48,7 @@ import com.zjt.startmodepro.pagerSnapHelper.TestPagerSnapHelperActivity;
 import com.zjt.startmodepro.scroll_conflict.TestInnerInterceptActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.soloader.TestLoadSoActivity;
+import com.zjt.startmodepro.utils.MISmsPermission;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.startmodepro.widget.TestDefineViewActivity;
@@ -45,7 +57,9 @@ import com.zjt.user_api.UserInfo;
 import com.zjt.user_api.UserProvider;
 import com.zjt.user_api.UserProxy;
 
+import java.io.ByteArrayOutputStream;
 import java.math.RoundingMode;
+import java.nio.ByteBuffer;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +76,7 @@ import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
 import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.tinet.janussdk.JanusServer;
 
 public class MainActivity extends BaseActivity {
 
@@ -73,6 +88,7 @@ public class MainActivity extends BaseActivity {
     private ImageView img;
     private AlertDialog mDialog;
     private NameViewModel mNameViewModel;
+    private IWXAPI api;
 
     public void applyPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -89,14 +105,62 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    private int mTargetScene = SendMessageToWX.Req.WXSceneTimeline;
+    private void sendMsgToWx() {
+        WXTextObject textObj = new WXTextObject();
+        textObj.text = "xxxx11111";
+
+        JanusServer server;
+        TiPhoneSpObjectUtils utils;
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = textObj;
+         msg.title = "Will be ignored";
+        msg.description = "oooooooo";
+        msg.mediaTagName = "我是mediaTagName啊";
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = "微信分享";
+        req.message = msg;
+        req.scene = mTargetScene;
+
+        api.sendReq(req);
+
+        ByteBuffer byteBuffer;
+        Bitmap bitmap;
+        ByteArrayOutputStream stream;
+    }
+
+
+    private String getAppInfo() {
+        try {
+            String pkName = this.getPackageName();
+            String versionName = this.getPackageManager().getPackageInfo(
+                    pkName, 0).versionName;
+            int versionCode = this.getPackageManager()
+                    .getPackageInfo(pkName, 0).versionCode;
+            Log.e("xxxx", "pkName = "+pkName);
+            return pkName ;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private SMSobserver smSobserver;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // 表示的是系统开机到现在的具体时间，单位为毫秒，不算系统休眠时间即息屏等
         Log.e("xxxx", "time = >> " + SystemClock.uptimeMillis());
+
+        smSobserver = new SMSobserver(this);
+        getContentResolver().registerContentObserver(Uri.parse("content://sms"),true, smSobserver);
+
+
+        api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
+        api.registerApp(Constants.APP_ID);
 
         HandlerThread handlerThread = new HandlerThread("DownLoadResource");
 
@@ -142,6 +206,8 @@ public class MainActivity extends BaseActivity {
 //            test1();
 //            test2();
 //            JetPackActivity.enter(this);
+//            getAppInfo();
+            sendMsgToWx();
 
             mNameViewModel.setActivityEntranceList(Arrays.asList("1", "2", "3", "4", "5"));
             mNameViewModel.innerEntranceList.observe(this, new androidx.lifecycle.Observer<List<String>>() {
@@ -246,9 +312,23 @@ public class MainActivity extends BaseActivity {
         mShowDialog.setOnClickListener(v -> {
 //            NoticeDialog noticeDialog = NoticeDialog.getInstance("哈哈哈哈");
 //            noticeDialog.show(getSupportFragmentManager(), "Notice_Dialog");
-            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("编辑对话框");
-            myKotlinDialog.setTitle("123456");
-            myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
+//            MyKotlinDialog myKotlinDialog = MyKotlinDialog.Companion.getInstance("编辑对话框");
+//            myKotlinDialog.setTitle("123456");
+//            myKotlinDialog.show(getSupportFragmentManager(), "MyKotlin_Dialog");
+
+            /**
+             * 米 UI 申请短信权限不会弹对话框，但是会返回已同意权限，你去查看对应应用的短信权限发现还是 ‘询问’
+             */
+
+//            if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED)) {
+//                Log.e("xxxx", "MainActivity 有短信读取权限");
+//            } else {
+//                Log.e("xxxx", "MainActivity 申请短信权限");
+//                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_SMS}, 1111);
+//            }
+
+//            MISmsPermission.goPermissionSettings(this);
+            MISmsPermission.goSetting(this);
 
         });
 
@@ -302,7 +382,7 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_thread_pool)
                 .setOnClickListener(v -> {
-                    Intent intent = new Intent(this, TestThreadPoolActivity.class);
+                    Intent intent = new Intent(this, B1Activity.class);
                     startActivity(intent);
                 });
 
@@ -600,5 +680,20 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         Log.e("MainActivity", " ----- onDestroy --------");
 //        TestExceptionActivity.Companion.setMydata(null);
+
+        getContentResolver().unregisterContentObserver(smSobserver);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @androidx.annotation.NonNull String[] permissions, @androidx.annotation.NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1111) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == 0) {
+                Log.e("MainActivity", " ----- 短信权限成功 --------");
+            } else {
+                Toast.makeText(this, "请去设置中打开读取短信权限", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

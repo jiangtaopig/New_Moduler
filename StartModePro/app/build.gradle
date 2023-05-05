@@ -13,17 +13,44 @@ apply plugin: 'com.zjt.zrouter'
 
 def isNeedZhujt = true
 
+
+def releaseTime() {
+    return new Date().format("MM_dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 30
+    ndkVersion '21.4.7075529'
+
+    signingConfigs {
+        debug {
+            storeFile file('../keystore/inxxsxaic.jks')//签名文件路径
+            storePassword "saic1234"
+            keyAlias "insxaxic_dim"
+            keyPassword "saxic1234"  //签名密码
+            println("====== signingConfigs.debug ======")
+        }
+        release {
+            storeFile file('../keystore/inxxsxaic.jks')//签名文件路径
+            storePassword "saxic1234"
+            keyAlias "insxaxic_dim"
+            keyPassword "saic1234"  //签名密码
+            println("====== signingConfigs.release ======")
+        }
+    }
 
     defaultConfig {
         applicationId "com.zjt.startmodepro"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 10011
+        versionName "1.1"
+
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -35,13 +62,39 @@ android {
         buildConfigField "Boolean", "IS_RUNALONE", "${isRunAlone}"
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a'
+            if (isReleaseBuildType()) {
+                println("====== ndk release ======")
+                abiFilters 'armeabi-v7a'
+            } else {
+                println("====== ndk debug ======")
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
+            }
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+//            // 名称_android_版本号.apk
+//            outputFileName = "startModePro_V${defaultConfig.versionCode}_${releaseTime()}.apk"
+            output ->
+                def outputFile = output.outputFile
+//                    注意：更改了versionCode的取值方式，所以versionCode就代表了全部版本信息！！
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    def fileName = outputFile.name.replace("app-release",
+                            "startModePro_pro_v${defaultConfig.versionCode}")
+                    outputFileName = fileName
+                }
         }
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -71,14 +124,27 @@ android {
     }
 }
 
+boolean isReleaseBuildType(){
+    for(String s : gradle.startParameter.taskNames) {
+        if (s.contains("Release") | s.contains("release")) {
+            return true
+        }
+    }
+    return false
+}
+
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.arr"])
+//    implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 //    implementation files('libs/17.jar') // arouter 插件后的代码
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation files('libs/tiphone_sdk_java_CTICloudDefault_10.2.7.2_release.aar')
 
     if (!isRunAlone.toBoolean()) {
         // 全量模式
@@ -105,9 +171,13 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.4.0-rc-95"
+    implementation "com.android.support:multidex:1.0.3"
 
     // leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+
+    // 微信分享用的
+    api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
 
 
 }

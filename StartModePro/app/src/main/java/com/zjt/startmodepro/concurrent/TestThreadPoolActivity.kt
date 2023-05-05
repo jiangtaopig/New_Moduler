@@ -72,12 +72,12 @@ class TestThreadPoolActivity : AppCompatActivity() {
                     )
 
 //                for (i in 1..5) {
-                    executorService.execute {
-                        Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 1 开始执行")
-                        Thread.sleep(1000)
-                        Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 1 执行结束")
-                    }
-                    executorService.taskCount
+                executorService.execute {
+                    Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 1 开始执行")
+                    Thread.sleep(1000)
+                    Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 1 执行结束")
+                }
+                executorService.taskCount
 //                }
 
 
@@ -116,5 +116,27 @@ class TestThreadPoolActivity : AppCompatActivity() {
             }
         }
 
+        findViewById<Button>(R.id.btn_add_task3).setOnClickListener {
+            val executorService =
+                ThreadPoolExecutor(
+                    1,
+                    2,
+                    60_000,
+                    TimeUnit.MILLISECONDS,
+                    LinkedBlockingQueue(), //
+                    ZjtThreadFactory()
+                )
+
+            for (i in 1..3) { // 超过最大线程数3的直接reject了
+                executorService.execute {
+                    Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 开始执行")
+                    Thread.sleep(1000)
+                    Log.e("zzzzz", "${Thread.currentThread().name} >> 任务 $i 执行结束")
+                }
+            }
+        }
+
     }
+
+
 }

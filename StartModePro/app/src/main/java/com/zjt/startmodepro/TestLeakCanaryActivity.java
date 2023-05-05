@@ -3,14 +3,10 @@ package com.zjt.startmodepro;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import leakcanary.AppWatcher;
 
 public class TestLeakCanaryActivity extends AppCompatActivity {
 

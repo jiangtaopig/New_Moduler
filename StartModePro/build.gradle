@@ -46,8 +46,14 @@ allprojects {
 //        maven {
 //            url 'https://jitpack.io'
 //        }
+        flatDir {
 
+            dirs project(':base').file('libs') //base_lib为引入aar文件的module名
+
+        }
     }
+
+
 }
 
 task clean(type: Delete) {

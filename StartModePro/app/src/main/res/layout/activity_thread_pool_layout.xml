@@ -17,4 +17,10 @@
         android:layout_height="wrap_content"
         android:text="添加任务"/>
 
+    <Button
+        android:id="@+id/btn_add_task3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="测试定时任务"/>
+
 </LinearLayout>

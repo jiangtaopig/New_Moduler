@@ -4,6 +4,7 @@
     package="com.zjt.startmodepro">
 
 
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission
@@ -17,10 +18,18 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+
     <!--android:resizeableActivity="false" 不支持小屏 只能在 application 或者 MainActivity -->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="false"
@@ -29,6 +38,7 @@
         android:theme="@style/AppThemeWelcome"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
+
 
 <!--        <meta-data android:value="ApplicationDelegate" android:name=".MainActivity"/>-->
         <meta-data android:value="ApplicationDelegate" android:name="com.zjt.startmodepro.HomeApplicationDelegate"/>
@@ -42,6 +52,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:label="一车通保"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true"
+            android:taskAffinity="com.zjt.startmodepro"
+            android:launchMode="singleTask">
         </activity>
 
         <activity android:name=".B1Activity">
@@ -96,6 +115,34 @@
         <activity android:name=".soloader.TestLoadSoActivity" />
         <activity android:name=".TestGestureDetectorActivity" />
         <activity android:name=".pagerSnapHelper.TestPagerSnapHelperActivity"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.zjt.startmodepro.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.zjt.startmodepro.test.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <receiver android:name="com.zjt.startmodepro.apk_download.DownLoadManagerReceiver">
+            <intent-filter>
+                <!-- 配置 点击通知 和 下载完成 两个 action -->
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

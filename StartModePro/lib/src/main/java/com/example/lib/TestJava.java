@@ -1,11 +1,15 @@
 package com.example.lib;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -14,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author : zhujiangtao01
- * @Time : On 2021/4/8 10:09 涓婂崍
+ * @Time : On 2021/4/8 10:09 上午
  * @Description : TestJava
  */
 
@@ -25,11 +29,30 @@ public class TestJava {
         int[] b = new int[10];
 //        System.arraycopy(a, 0, b, 0, b.length);
 
+        CopyOnWriteArrayList<String> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
+        copyOnWriteArrayList.add("1");
+
+        Object[] objects = new Object[0];
+        System.out.println("size = " + objects.length);
+
+        objects = Arrays.copyOf(objects, 1);
+
+        String[] strings = {"1", "2","3"};
+        String[] destStrings = new String[4];
+
+        System.arraycopy(strings, 0, destStrings, 0, 3);
+
         String url = "rtmpsrt://live-push";
         URI uri = URI.create(url);
 
+
+//        Observer;
+//        Observable
+
         String host = uri.getHost();
         String scheme = uri.getScheme();
+
+
         int am = 1;
 
         url.subSequence(0, 2);
@@ -75,7 +98,7 @@ public class TestJava {
     }
 
     /**
-     * 娴嬭瘯鏂规硶鐨勮�楁椂
+     * 测试方法的耗时
      */
     private static void testTime() {
         time -= System.currentTimeMillis();
