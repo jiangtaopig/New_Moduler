@@ -147,7 +147,7 @@ public class B1Activity extends AppCompatActivity {
         new Thread() {
             public void run() {
                 try {
-                    URL url = new URL("http://dimappsit.com:8050/dim-app/app/business/appErrSave");
+                    URL url = new URL("http://xxx/app/business/appErrSave");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     connection.setRequestMethod("POST");
@@ -323,9 +323,8 @@ public class B1Activity extends AppCompatActivity {
         new Thread() {
             public void run() {
                 try {
-                    // "https://dimapp.com:18443/dim-app/app/version/checkVersion"
-                    // "http://dimappsit.com:8050/dim-app/app/version/checkVersion"
-                    URL url = new URL("https://dimapp.com:18443/dim-app/app/version/checkVersion");
+
+                    URL url = new URL("");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     connection.setRequestMethod("POST");
