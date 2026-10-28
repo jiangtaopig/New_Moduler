@@ -7,9 +7,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.zjt.base.BaseActivity;
 import com.zjt.startmodepro.R;
 
-public class TestDefineViewActivity extends AppCompatActivity {
+public class TestDefineViewActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

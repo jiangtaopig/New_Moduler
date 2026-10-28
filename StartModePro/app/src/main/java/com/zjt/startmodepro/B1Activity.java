@@ -1,27 +1,43 @@
 package com.zjt.startmodepro;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.zjt.base.BaseActivity;
 import com.zjt.startmodepro.apk_download.DownLoadUtil;
 import com.zjt.startmodepro.apk_download.FileDownloadThread;
+import com.zjt.startmodepro.utils.BitmapUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +49,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,6 +66,7 @@ import java.util.stream.Collectors;
 public class B1Activity extends AppCompatActivity {
 
     private static final String TAG = "APP_INSTALL";
+    private ImageView imageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +77,6 @@ public class B1Activity extends AppCompatActivity {
         File apkFile = new File(getBaseContext().getExternalFilesDir(null), "ydgjApp_pro_v3330105_temp.apk");
         findViewById(R.id.tttx).setOnClickListener(v -> {
 //            sendErrMsg("测试的华为报错");
-
             File file = getBaseContext().getExternalFilesDir(null);
 //            if (file.exists()) {
 //                File[] files = file.listFiles();
@@ -104,14 +121,148 @@ public class B1Activity extends AppCompatActivity {
 //                boolean connected = connectionNetwork();
 //                Log.e(TAG, "connected  >>> " + connected);
 //            }).start();
-
-
         });
 
 
         findViewById(R.id.download_continue).setOnClickListener(v -> {
             downloadByContinue();
         });
+
+        ImageView view = findViewById(R.id.image_v2);
+
+        Bitmap srcBm = BitmapFactory.decodeResource(getResources(), R.drawable.single_business_card);
+
+        Bitmap bm = clipBitmap(srcBm, 20, 0);
+        bm = drawBitmapWithBg(bm);
+        view.setImageBitmap(bm);
+
+        imageView = findViewById(R.id.image_v);
+        imageView.setImageBitmap(clipBitmap2(srcBm));
+
+        ImageView img3 = findViewById(R.id.img3);
+        img3.setImageResource(R.drawable.test);
+
+        ImageView img4 = findViewById(R.id.img4);
+        // 质量压缩，质量压缩不会改变图片的宽和高，但是 压缩后的额字节数组长度会变小
+        byte [] img4Byte = bmpToByteArray(BitmapFactory.decodeResource(getResources(), R.drawable.test), 5);
+        Bitmap afterCompressBm = BitmapFactory.decodeByteArray(img4Byte, 0, img4Byte.length);
+        byte [] noCompressByte = bmpToByteArray(BitmapFactory.decodeResource(getResources(), R.drawable.test), 100);
+        Log.e("afterCompressBm >> ", " noCompressByte size = " + noCompressByte.length+" , img4Byte length = " + img4Byte.length);
+        img4.setImageBitmap(afterCompressBm);
+
+
+
+        findViewById(R.id.add_text_to_bm).setOnClickListener(v -> {
+            Glide.with(B1Activity.this).asBitmap()
+                    .load("https://img2.baidu.com/it/u=1361506290,4036378790&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500")
+//                        .apply(options)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            Bitmap thumbBmp = Bitmap.createScaledBitmap(
+                                    resource,
+                                    500,
+                                    500,
+                                    true
+                            );
+
+                            int size = resource.getByteCount();
+
+                            Bitmap waterMakerBm = BitmapFactory.decodeResource(B1Activity.this.getResources(), R.drawable.seek_button);
+
+                            // 在图片上添加文字
+                            Bitmap bm = BitmapUtils.drawTextToRightTop(B1Activity.this, thumbBmp, "朱建军", 18, Color.RED, 0, 0);
+                            int size2 = bm.getByteCount();
+
+                            Bitmap bm2 = BitmapUtils.createWaterMaskLeftTop(B1Activity.this, bm, waterMakerBm, 0, 0);
+                            byte[] bb = bmpToByteArray(bm2, 100);
+                            Log.e("压缩前", "length = " + (bb.length / 1024) + "kb");
+                            byte[] a = bmpToByteArray2(bm2);
+                            Log.e("压缩后", "length = " + (a.length / 1024) + "kb");
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(a, 0, a.length);
+//                            Bitmap bitmap = BitmapUtils.bitmapInSampleSize(bm2, 140);
+                            Log.e("xxxxxxxxxxxxx", "size = " + size + ", size2 = " + size2 + ", size3 = " + bm2.getByteCount() + " , size4 = " + bitmap.getByteCount());
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    });
+
+
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.test);
+            Log.e("xxxxxxxxxxxxx", "size = " + bitmap.getByteCount());
+        });
+    }
+
+    /**
+     * 图片裁减
+     * @param x 从原图片宽的开始截取的位置
+     * @param y 从原图片高的开始截取的位置
+     */
+    private Bitmap clipBitmap(Bitmap srcBitmap, int x, int y) {
+        // 表示从 x,y 开始，截取 srcBitmap.getWidth() - x 和 srcBitmap.getHeight() - y
+        Bitmap bm = Bitmap.createBitmap(srcBitmap, x, y, srcBitmap.getWidth() - x, srcBitmap.getHeight() - y);
+        return bm;
+    }
+
+    /**
+     * 给 Bitmap 加背景颜色
+     */
+    private Bitmap drawBitmapWithBg(Bitmap srcBitmap) {
+        Bitmap newBitmap = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(newBitmap);
+        canvas.drawColor(getResources().getColor(R.color.color_ff6600));
+        Paint paint = new Paint();
+        canvas.drawBitmap(srcBitmap, 0, 0, paint);
+        return newBitmap;
+    }
+
+    private Bitmap clipBitmap2(Bitmap srcBm) {
+        // 新的图片大小是老的图片的2倍
+        Bitmap newBitmap = Bitmap.createBitmap(srcBm.getWidth()*2, srcBm.getHeight()*2, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(newBitmap);
+        canvas.drawColor(getResources().getColor(R.color.color_ff6600));
+        Paint paint = new Paint();
+        // 将老的图片宽为高的2倍，下面这个是缩放原始图片的作用，跟  canvas.drawBitmap(srcBitmap, 0, 0, paint) 的作用不一样
+        canvas.drawBitmap(srcBm, null, new Rect(0, 0, srcBm.getHeight()*2, srcBm.getHeight()), paint);
+        return newBitmap;
+    }
+
+    private byte[] bmpToByteArray(final Bitmap bmp, int quality) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, quality, output);
+
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private byte[] bmpToByteArray2(final Bitmap bmp) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        int quality = 98;
+        bmp.compress(Bitmap.CompressFormat.WEBP, quality, output); // 注意：png 格式是无损图片，无法压缩
+        byte[] result = output.toByteArray();
+        Log.e("压缩中", "size = " + result.length / 1024 + " kb");
+
+        while (result.length / 1024 > 128) {
+            Log.e("压缩中", "size = " + result.length / 1024 + " kb");
+            quality -= 4;
+            bmp.compress(Bitmap.CompressFormat.WEBP, quality, output);
+            result = output.toByteArray();
+        }
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
 

@@ -32,6 +32,8 @@ public class TestThreadLocalActivity extends BaseActivity {
 
     private void initData() {
 
+
+
         threadLocal = new ThreadLocal<>();
         threadLocal.set("我是在主线程中设置的值");
         mRecycleThreadLocalTv.setOnClickListener(v -> {

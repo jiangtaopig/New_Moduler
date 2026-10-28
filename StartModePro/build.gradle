@@ -18,10 +18,14 @@ buildscript {
         maven {
             url uri('zjt_repo')
         }
+        // 荣耀推送1
+        maven {url 'https://developer.hihonor.com/repo'}
     }
     dependencies {
+        // // 荣耀推送2 -- 增加asplugin插件配置，推荐您使用最新版本。
+        classpath 'com.hihonor.mcs:asplugin:2.0.1.300'
         classpath "com.android.tools.build:gradle:4.0.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0"
         // 插件需要加上的第2步
         classpath "com.zjt:autotrack.android:1.0.0"
 //        classpath "com.zjt.plugin:asm.android:1.0.6"
@@ -43,6 +47,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+
+        // 荣耀推送3
+        maven {url 'https://developer.hihonor.com/repo'}
 //        maven {
 //            url 'https://jitpack.io'
 //        }

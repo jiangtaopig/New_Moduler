@@ -16,4 +16,27 @@
         <attr name="seek_height" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="TestView">
+        <attr name="android:text" />
+        <attr name="android:textSize" />
+    </declare-styleable>
+
+    <declare-styleable name="PigImgWithText">
+        <attr name="pig_text_size" format="dimension" />
+        <attr name="pig_text" format="string" />
+        <attr name="pig_text_color" format="color" />
+        <attr name="pig_imgSrc" format="reference" />
+        <attr name="pig_text_background_color" format="color" />
+        <attr name="pig_icon_top_margin" format="dimension" />
+
+        <!--属性枚举值-->
+        <attr name="pig_position">
+            <enum name="pig_position_left" value="0"/>
+            <enum name="pig_position_center" value="1"/>
+            <enum name="pig_position_right" value="2"/>
+        </attr>
+    </declare-styleable>
+
+
+
 </resources>

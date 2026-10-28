@@ -3,6 +3,7 @@ package com.zjt.startmodepro;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,27 +11,34 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.WorkManager;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -43,12 +51,17 @@ import com.zjt.startmodepro.concurrent.TestThreadPoolActivity;
 import com.zjt.startmodepro.cpu_info.BlinkCpuInfo;
 import com.zjt.startmodepro.cpu_info.MemoryMeter;
 import com.zjt.startmodepro.cpu_info.Unit;
+import com.zjt.startmodepro.define_view.DefineViewActivity;
 import com.zjt.startmodepro.float_window.FloatWindowView;
+import com.zjt.startmodepro.img_ex.BitmapUtil;
 import com.zjt.startmodepro.pagerSnapHelper.TestPagerSnapHelperActivity;
 import com.zjt.startmodepro.scroll_conflict.TestInnerInterceptActivity;
 import com.zjt.startmodepro.singleinstance.DataManager;
 import com.zjt.startmodepro.soloader.TestLoadSoActivity;
+import com.zjt.startmodepro.utils.AppListUtil;
+import com.zjt.startmodepro.utils.LocalNotificationUtils;
 import com.zjt.startmodepro.utils.MISmsPermission;
+import com.zjt.startmodepro.view_dispatch.TestViewDispatchActivity;
 import com.zjt.startmodepro.viewmodel.NameViewModel;
 import com.zjt.startmodepro.widget.RangeSeekBar;
 import com.zjt.startmodepro.widget.TestDefineViewActivity;
@@ -126,6 +139,8 @@ public class MainActivity extends BaseActivity {
 
         api.sendReq(req);
 
+        WXMiniProgramObject wxMiniProgramObject = new WXMiniProgramObject();
+
         ByteBuffer byteBuffer;
         Bitmap bitmap;
         ByteArrayOutputStream stream;
@@ -151,6 +166,12 @@ public class MainActivity extends BaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        // 由于Android12 默认使用了 SplashScreen，在 AndroidManifest.xml 中使用的主题是 ZjtAppTheme，此主题继承了 Theme.SplashScreen，
+        // 如果不在 super.onCreate 之前调用 SplashScreen.installSplashScreen 就会报错
+//        SplashScreen.installSplashScreen(this);
+
         super.onCreate(savedInstanceState);
         // 表示的是系统开机到现在的具体时间，单位为毫秒，不算系统休眠时间即息屏等
         Log.e("xxxx", "time = >> " + SystemClock.uptimeMillis());
@@ -186,21 +207,23 @@ public class MainActivity extends BaseActivity {
         });
 
         mJump2FileActivity.setOnClickListener(v -> {
-            if (checkFloatWindowPermission(this)) {
-                FloatWindowView floatWindowView = new FloatWindowView(this);
-                floatWindowView.show();
-            } else {
-                applyPermission(this);
-            }
+//            if (checkFloatWindowPermission(this)) {
+//                FloatWindowView floatWindowView = new FloatWindowView(this);
+//                floatWindowView.show();
+//            } else {
+//                applyPermission(this);
+//            }
+
+
 
 //            FileActivity.Companion.enter(this);
         });
 
-
-        SingleModel.INSTANCE.getTestVal().observe(this, stringStringPair -> {
-            String v1 = stringStringPair.component1();
-            String v2 = stringStringPair.component2();
-        });
+//
+//        SingleModel.INSTANCE.getTestVal().observe(this, stringStringPair -> {
+//            String v1 = stringStringPair.component1();
+//            String v2 = stringStringPair.component2();
+//        });
 
         mTv.setOnClickListener(v -> {
 //            test1();
@@ -411,8 +434,8 @@ public class MainActivity extends BaseActivity {
 //                    semaphore.release();
 //                    Log.e("xxxxx", "num = " +semaphore.availablePermits());
 
-                    String brand = android.os.Build.BRAND;
-                    String model = android.os.Build.MODEL;
+                    String brand = Build.BRAND;
+                    String model = Build.MODEL;
                     int cores = Runtime.getRuntime().availableProcessors();
                     BlinkCpuInfo blinkCpuInfo = BlinkCpuInfo.parseCpuInfo();
                     if (blinkCpuInfo != null && blinkCpuInfo.mRawInfoMap != null && !blinkCpuInfo.mRawInfoMap.isEmpty()) {
@@ -475,8 +498,10 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_canvas)
                 .setOnClickListener(v -> {
-                    Intent intent = new Intent(this, TestDefineViewActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(this, DefineViewActivity.class); // TestDefineViewActivity
+//                    startActivity(intent);
+
+                    TestViewDispatchActivity.enter(this);
 
 //                    new Thread("thread_zhu") {
 //                        @Override
@@ -490,19 +515,161 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.btn_pop_window)
                 .setOnClickListener(v -> {
-                    Intent intent = new Intent(this, TestPopWindowActivity.class);
-                    startActivity(intent);
+
+                    openWeCom();
+//                    Intent intent = new Intent(this, TestPopWindowActivity.class);
+//                    startActivity(intent);
+
+//                    LocalNotificationUtils.getInstance().cancelWork(getApplicationContext());
 
                 });
+        EditText editText = findViewById(R.id.ed111);
+
 
         findViewById(R.id.btn_pager_snap_helper)
                 .setOnClickListener(v -> {
-                    TestPagerSnapHelperActivity.enter(this);
+//                    TestPagerSnapHelperActivity.enter(this);
+//                    TraceActivity.enter(this);
+//                    String code = editText.getText().toString();
+                    MyWebViewActivity.enter(this, "xxxx");
 
+//                    openAppSettings();
+//
+
+//                    BitmapUtil.getImageLatitude("/data/user/0/com.example.flutter_demo/cache/OutputFile_1702272457739.jpeg");
+//                   List<String> appNames = AppListUtil.getInstalledAppNames(MainActivity.this);
+//                   appNames.forEach(name -> {
+//                       Log.e("xxxxxx111xxx", "appName --->" + name);
+//                   });
+
+
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        if (checkPermissions()) {
+//                            getPhoneNumber();
+//
+//                        } else {
+//                            requestPermissions();
+//                        }
+//                    }
+
+
+//                    LocalNotificationUtils.getInstance().showNotification(getApplicationContext());
+
+//                    WorkManager manager;
+
+                    // 10s 后的通知
+//                    LocalNotificationUtils.getInstance().scheduleNotification(getApplicationContext());
+//                    LocalNotificationUtils.getInstance().scheduleNotification(getApplicationContext(), System.currentTimeMillis() + 10 * 1000);
+
+
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        if (!Environment.isExternalStorageManager()) {
+                            Intent intent = new Intent(
+                                    Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                            intent.setData(Uri.parse("package:" + this.getPackageName()));
+                            this.startActivity(intent);
+                        }
+                    }
+
+                    if (checkFilePermission()) {
+                        Log.e("MainActivity", " ----- 111 同意文件读取权限 --------");
+                    } else {
+                        requestFilePermissions();
+                    }
                 });
-
     }
 
+
+    public void openWeCom() {
+//        PackageManager packageManager = getPackageManager();
+//        boolean isWeComInstalled;
+//        try {
+//            // 检查企业微信是否已安装
+//            packageManager.getPackageInfo("com.tencent.wework", PackageManager.GET_ACTIVITIES);
+//            isWeComInstalled = true;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            isWeComInstalled = false;
+//        }
+//        if (!isWeComInstalled) {
+//            Intent intent = new Intent();
+//            intent.setAction(Intent.ACTION_VIEW);
+//            intent.setPackage("com.tencent.wework");
+//            try {
+//                startActivity(intent);
+//            } catch (ActivityNotFoundException e) {
+//                // 企业微信未安装的异常处理
+//                Toast.makeText(this, "企业微信未安装，请下载安装", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            Toast.makeText(this, "企业微信未安装，请下载安装", Toast.LENGTH_SHORT).show();
+//        }
+
+        // 通过 scheme 打开企业微信
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("wxwork://"));
+        startActivity(intent);
+    }
+
+    private static final int REQUEST_CODE_READ_PHONE_STATE = 1;
+    private static final int REQUEST_CODE_FILE_STATE = 2;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void getPhoneNumber() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String phoneNumber = null;
+
+        if (checkPermissions()) {
+            phoneNumber = telephonyManager.getLine1Number();
+        }
+
+        if (phoneNumber != null) {
+            // 使用手机号码
+            Log.d("PhoneNumber", "Phone Number: " + phoneNumber);
+        } else {
+            // 电话号码不可用
+            Log.d("PhoneNumber", "Phone number not available.");
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean checkPermissions() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean checkFilePermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void requestFilePermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.MANAGE_EXTERNAL_STORAGE},
+                REQUEST_CODE_READ_PHONE_STATE);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_SMS,
+                        Manifest.permission.READ_PHONE_NUMBERS
+                },
+                REQUEST_CODE_READ_PHONE_STATE);
+    }
+
+
+
+
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+        intent.setData(uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
     private void testPost() {
         TestPostByMultiThread postByMultiThread = new TestPostByMultiThread();
@@ -540,6 +707,14 @@ public class MainActivity extends BaseActivity {
 //                mTv.setText("我是在onResume生命周期的子线程中更新的UI");
 //            }
 //        }.start();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle bundle = intent.getExtras();
+        Log.e("onNewIntent", "bundle = "+bundle.toString());
     }
 
     @Override
@@ -693,6 +868,27 @@ public class MainActivity extends BaseActivity {
                 Log.e("MainActivity", " ----- 短信权限成功 --------");
             } else {
                 Toast.makeText(this, "请去设置中打开读取短信权限", Toast.LENGTH_LONG).show();
+            }
+        } else if(requestCode == REQUEST_CODE_READ_PHONE_STATE) {
+            // 如果请求被取消，那么result数组将是空的
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    getPhoneNumber();
+                }
+            } else {
+                // 用户拒绝了权限请求
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == REQUEST_CODE_FILE_STATE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.e("MainActivity", " ----- 同意文件读取权限 --------");
+
+
+            } else {
+                // 用户拒绝了权限请求
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", " ----- 拒绝文件读取权限 --------");
             }
         }
     }

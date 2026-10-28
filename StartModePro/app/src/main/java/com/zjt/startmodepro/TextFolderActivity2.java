@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TextFolderActivity2 extends AppCompatActivity {
+import com.zjt.base.BaseActivity;
+
+public class TextFolderActivity2 extends BaseActivity {
 
     private final static int LIMIT_LINE = 3; //TextView默认最大展示行数
 

@@ -212,6 +212,13 @@
                 android:text="test so"
                 android:textSize="@dimen/dimen_18sp" />
 
+            <EditText
+                android:id="@+id/ed111"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_40dp"
+                android:hint="输入 dealerCode"/>
+
+
             <Button
                 android:id="@+id/btn_pager_snap_helper"
                 android:layout_width="wrap_content"

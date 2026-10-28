@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.refactor.PushClientManager
 import com.zjt.startmodepro.singleinstance.DataManager
 
@@ -20,7 +21,7 @@ import com.zjt.startmodepro.singleinstance.DataManager
  */
 
 
-class TestRefactorActivity : AppCompatActivity() {
+class TestRefactorActivity : BaseActivity() {
 
     private val mPushClientManager by lazy {
         PushClientManager()

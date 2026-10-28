@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.viewmodel.ArticleViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit
  */
 
 
-class TestCoroutineActivity : AppCompatActivity() {
+class TestCoroutineActivity : BaseActivity() {
 
     val scope = CoroutineScope(Job() + Dispatchers.Main)
 

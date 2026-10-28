@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.utils.DisplayUtil
 
 /**
@@ -20,7 +21,7 @@ import com.zjt.startmodepro.utils.DisplayUtil
  */
 
 
-class TestEditActivity : AppCompatActivity() {
+class TestEditActivity : BaseActivity() {
 
     private lateinit var mTitleEditText: EditText
 

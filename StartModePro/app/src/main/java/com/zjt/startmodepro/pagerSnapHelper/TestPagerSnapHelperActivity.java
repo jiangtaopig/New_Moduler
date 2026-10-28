@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.zjt.base.BaseActivity;
 import com.zjt.startmodepro.R;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * PagerSnapHelper 加上 RecycleView 实现类似 ViewPager 的效果
  */
-public class TestPagerSnapHelperActivity extends AppCompatActivity {
+public class TestPagerSnapHelperActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private TestAdapter testAdapter;

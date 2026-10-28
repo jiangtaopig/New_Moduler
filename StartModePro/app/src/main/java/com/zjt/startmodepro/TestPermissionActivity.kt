@@ -24,6 +24,7 @@ import bolts.Task
 import bolts.Task.UI_THREAD_EXECUTOR
 import bolts.Task.create
 import com.tencent.mmkv.MMKV
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.utils.DisplayUtil
 import com.zjt.startmodepro.utils.PermissionsChecker
 import com.zjt.startmodepro.utils.PermissionsHelper
@@ -39,7 +40,7 @@ import com.zjt.startmodepro.utils.PermissionsHelper
  */
 
 
-class TestPermissionActivity : AppCompatActivity() {
+class TestPermissionActivity : BaseActivity() {
 
     private var mDialog: AlertDialog? = null
     private lateinit var mMmkv: MMKV

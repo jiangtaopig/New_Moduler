@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.widget.MyPopWindow
 
-class TestPopWindowActivity : AppCompatActivity() {
+class TestPopWindowActivity : BaseActivity() {
 
     private var tv: TextView? = null
     private lateinit var popWindowHelper: PopWindowHelper

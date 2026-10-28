@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zjt.base.BaseActivity;
 import com.zjt.startmodepro.MyApplication;
 import com.zjt.startmodepro.R;
 
@@ -40,7 +41,7 @@ import java.io.File;
  * @author 杜小菜 Created on 2019-05-07 - 11:03.
  * E-mail:duqian2010@gmail.com
  */
-public class TestLoadSoActivity extends AppCompatActivity {
+public class TestLoadSoActivity extends BaseActivity {
 
     private static final int REQUEST_CODE = 1000;
     private final String sdcardLibDir = MyApplication.getContext().getFilesDir().getAbsolutePath();// + "/libs";

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+
+    <com.zjt.startmodepro.define_view.TestViewGroup
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:background="@color/cal_color_green">
+
+        <com.zjt.startmodepro.define_view.TestView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hello world"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_20dp"
+            android:textSize="@dimen/dimen_20sp"/>
+
+        <com.zjt.startmodepro.define_view.PigImgWithText
+            android:layout_marginTop="@dimen/dimen_4dp"
+            app:pig_text="I am Jacky, I'M a good boy !"
+            app:pig_text_color="@color/color_1c9eea"
+            app:pig_text_size="@dimen/dimen_18sp"
+            app:pig_text_background_color="@color/color_ff8066"
+            app:pig_imgSrc="@drawable/tag"
+            app:pig_icon_top_margin="@dimen/dimen_6dp"
+            app:pig_position="pig_position_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dimen_5dp"
+            android:paddingRight="@dimen/dimen_5dp"
+            android:background="@color/white"
+            android:visibility="gone"/>
+
+        <com.zjt.startmodepro.define_view.TestCanvasView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_150dp"
+            android:background="@color/color_1c9eea"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/dimen_6dp"/>
+
+        <com.zjt.startmodepro.define_view.GuaguaLeView
+            android:layout_marginTop="@dimen/dimen_6dp"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="@dimen/dimen_200dp"/>
+
+        <com.zjt.startmodepro.define_view.TestXfermodeView
+            android:layout_marginTop="@dimen/dimen_6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+
+    </com.zjt.startmodepro.define_view.TestViewGroup>
+
+</LinearLayout>

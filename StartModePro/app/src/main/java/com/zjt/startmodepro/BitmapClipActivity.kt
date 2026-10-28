@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.test_compileonly.CompileOnlyUtils
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.utils.BitmapUtils
 
 /**
@@ -23,7 +24,7 @@ import com.zjt.startmodepro.utils.BitmapUtils
  */
 
 
-class BitmapClipActivity : AppCompatActivity() {
+class BitmapClipActivity : BaseActivity() {
 
     companion object {
         fun enter(context: Context) {

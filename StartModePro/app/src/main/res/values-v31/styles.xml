@@ -36,11 +36,11 @@
         <item name="android:buttonStyle">@android:style/Widget.Button.Small</item>
     </style>
 
-    <style name="AppTheme" parent="BaseTheme">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_249fe6</item>
         <item name="colorPrimaryDark">@color/light_gray</item>
         <item name="colorAccent">@color/color_249fe6</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/color_249fe6</item>
     </style>
 
     <style name="AppThemeWelcome" parent="Theme.AppCompat.NoActionBar">
@@ -49,6 +49,25 @@
         <item name="colorAccent">@color/color_249fe6</item>
         <item name="android:windowBackground">@drawable/a2</item>
     </style>
+
+    <style name="AppSplashScreenTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/holo_red_dark</item>
+<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/anim_ai_loading</item>-->
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+        <item name="android:windowSplashScreenAnimationDuration">50</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@android:color/holo_purple</item>
+
+<!--        <item name="android:windowSplashScreenBrandingImage">@drawable/a2</item>-->
+    </style>
+
+<!--    <style name="SplashScreenTheme" parent="Theme.SplashScreen">-->
+<!--        <item name="windowSplashScreenBackground">@color/splash_screen_background</item>-->
+<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/cat</item>-->
+<!--        <item name="postSplashScreenTheme">@style/Theme.SplashScreenDemo</item>-->
+<!--    </style>-->
+
 
     <style name="font_15dp_black">
         <item name="android:textColor">@android:color/black</item>

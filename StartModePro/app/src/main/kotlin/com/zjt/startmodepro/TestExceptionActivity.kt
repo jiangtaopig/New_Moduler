@@ -5,6 +5,8 @@ import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Observer
 import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.viewmodel.NameViewModel
@@ -34,6 +36,8 @@ class TestExceptionActivity : BaseActivity() {
     private lateinit var titleTv: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+//        val mSplashScreen = installSplashScreen();
         super.onCreate(savedInstanceState)
         Log.e("TestExceptionActivity", "onCreate mydata = $mydata")
         setContentView(R.layout.activity_exception_layout)

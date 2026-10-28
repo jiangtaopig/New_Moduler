@@ -2,9 +2,12 @@ package com.zjt.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,6 +19,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 public class BaseActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        SplashScreen.installSplashScreen(this);
+        super.onCreate(savedInstanceState);
+    }
 
     private ViewModelProvider mActivityProvider;
     private ViewModelProvider mApplicationProvider;

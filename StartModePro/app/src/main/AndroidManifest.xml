@@ -6,6 +6,9 @@
 
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
@@ -21,8 +24,19 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+
+    <!--获取手机号码的权限-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+
+    <!--android13 访问文件要求-->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
 
 
     <!--android:resizeableActivity="false" 不支持小屏 只能在 application 或者 MainActivity -->
@@ -33,18 +47,20 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="false"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeWelcome"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
-        tools:targetApi="n">
+        tools:targetApi="n"
+        tools:ignore="HardcodedDebugMode">
 
 
 <!--        <meta-data android:value="ApplicationDelegate" android:name=".MainActivity"/>-->
         <meta-data android:value="ApplicationDelegate" android:name="com.zjt.startmodepro.HomeApplicationDelegate"/>
-
+        <!--            android:theme="@style/AppSplashScreenTheme"-->
         <activity
             android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="orientation|keyboard|screenSize|smallestScreenSize|screenLayout"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
@@ -63,7 +79,8 @@
             android:launchMode="singleTask">
         </activity>
 
-        <activity android:name=".B1Activity">
+        <activity android:name=".B1Activity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -85,7 +102,8 @@
         <activity android:name=".TestEditActivity" />
         <activity android:name=".schedule.ScheduleActivity" />
         <activity android:name=".widget.TestDefineViewActivity" />
-        <activity android:name=".TestPopWindowActivity">
+        <activity android:name=".TestPopWindowActivity"/>
+        <activity android:name=".MyWebViewActivity">
 
         </activity>
 
@@ -95,14 +113,13 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
                     android:host="zjt"
                     android:port="8888"
-                    android:scheme="aron" />
+                    android:scheme="mecsit.yinxxgketech.com" />
             </intent-filter>
         </activity>
 
@@ -115,6 +132,9 @@
         <activity android:name=".soloader.TestLoadSoActivity" />
         <activity android:name=".TestGestureDetectorActivity" />
         <activity android:name=".pagerSnapHelper.TestPagerSnapHelperActivity"/>
+        <activity android:name=".TraceActivity"/>
+        <activity android:name=".define_view.DefineViewActivity"/>
+        <activity android:name=".view_dispatch.TestViewDispatchActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -136,13 +156,24 @@
                 android:resource="@xml/file_path" />
         </provider>
 
-        <receiver android:name="com.zjt.startmodepro.apk_download.DownLoadManagerReceiver">
+        <receiver android:name="com.zjt.startmodepro.apk_download.DownLoadManagerReceiver"
+            android:exported="true">
             <intent-filter>
                 <!-- 配置 点击通知 和 下载完成 两个 action -->
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".LocalNotificationReceiver">
+<!--            <intent-filter>-->
+<!--                <action android:name="com.zjt.startmodepro.local_notification_clear"/>-->
+<!--                <action android:name="com.zjt.startmodepro.local_notification"/>-->
+<!--            </intent-filter>-->
+        </receiver>
+
+
+
 
     </application>
 

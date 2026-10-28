@@ -5,48 +5,86 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
-
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="#330088"
-        android:text="我是B1的activity"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tttx"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="#330088"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="下载">
+        <TextView
+            android:id="@+id/tttx"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="#330088"
+            android:padding="@dimen/dimen_3dp"
+            android:gravity="center"
+            android:text="下载"
+            android:textColor="@color/white" />
 
-    </TextView>
+        <TextView
+            android:id="@+id/tttx2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="#330088"
+            android:layout_marginLeft="@dimen/dimen_2dp"
+            android:gravity="center"
+            android:padding="@dimen/dimen_3dp"
+            android:text="安装"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/tttx2"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="#330088"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="安装">
-    </TextView>
+        <TextView
+            android:id="@+id/download_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:padding="@dimen/dimen_3dp"
+            android:background="#330088"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/dimen_2dp"
+            android:text="断点下载"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/download_continue"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="#330088"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="断点下载">
+        <TextView
+            android:id="@+id/add_text_to_bm"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="#330088"
+            android:padding="@dimen/dimen_3dp"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/dimen_2dp"
+            android:text="图片加文字"
+            android:textColor="@color/white" />
 
-    </TextView>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:background="@color/red" />
+
+    <ImageView
+        android:id="@+id/image_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/dimen_2dp" />
+
+    <View
+        android:layout_width="200px"
+        android:layout_height="1dp"
+        android:background="@color/red"
+        android:layout_margin="@dimen/dimen_2dp"/>
+
+    <ImageView
+        android:id="@+id/img3"
+        android:layout_margin="@dimen/dimen_2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/img4"
+        android:layout_margin="@dimen/dimen_2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

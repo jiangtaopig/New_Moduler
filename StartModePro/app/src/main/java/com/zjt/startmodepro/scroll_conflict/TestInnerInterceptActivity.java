@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zjt.base.BaseActivity;
 import com.zjt.startmodepro.R;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.concurrent.Executors;
  * 测试 ScrollView 中嵌套 RecycleView 同向滑动的滑动冲突；
  * ScrollView 默认是拦截 MOVE 事件的
  */
-public class TestInnerInterceptActivity extends AppCompatActivity {
+public class TestInnerInterceptActivity extends BaseActivity {
 
     RecyclerView recyclerView;
 

@@ -8,13 +8,14 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.zjt.base.BaseActivity
 import com.zjt.startmodepro.JavaInterface
 import com.zjt.startmodepro.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlin.system.measureTimeMillis
 
-class TestCoroutineActivity : AppCompatActivity() {
+class TestCoroutineActivity : BaseActivity() {
 
     companion object {
         fun enter(context: Context) {
@@ -25,9 +26,9 @@ class TestCoroutineActivity : AppCompatActivity() {
         }
     }
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
-    @InternalCoroutinesApi
+//    @ExperimentalCoroutinesApi
+//    @FlowPreview
+//    @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_coroutine_layout)

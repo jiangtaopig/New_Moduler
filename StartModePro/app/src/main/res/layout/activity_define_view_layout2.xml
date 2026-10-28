@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+
+    <com.zjt.startmodepro.define_view.TestViewGroup
+        android:layout_width="@dimen/dimen_50dp"
+        android:layout_height="200dp"
+        android:background="@color/cal_color_green">
+
+        <com.zjt.startmodepro.define_view.TestView
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:paddingRight="@dimen/dimen_20dp"
+            android:text="hello world"
+            android:textSize="@dimen/dimen_20sp" />
+
+    </com.zjt.startmodepro.define_view.TestViewGroup>
+
+    <Button
+        android:id="@+id/tt_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="testxxx"/>
+
+    <TextView
+        android:id="@+id/sss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

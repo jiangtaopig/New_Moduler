@@ -10,6 +10,8 @@ apply plugin: 'com.zjt.android'
 apply plugin: 'com.zjt.zrouter'
 //apply plugin: 'com.didiglobal.booster'
 
+// 荣耀推送5
+//apply plugin: 'com.hihonor.mcs.asplugin'
 
 def isNeedZhujt = true
 
@@ -19,15 +21,15 @@ def releaseTime() {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     ndkVersion '21.4.7075529'
 
     signingConfigs {
         debug {
-            storeFile file('../keystore/inxxsxaic.jks')//签名文件路径
+            storeFile file('../keystore/insaic.jks')//签名文件路径
             storePassword "saic1234"
-            keyAlias "insxaxic_dim"
-            keyPassword "saxic1234"  //签名密码
+            keyAlias "insaic_dim"
+            keyPassword "saic1234"  //签名密码
             println("====== signingConfigs.debug ======")
         }
         release {
@@ -145,7 +147,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation files('libs/tiphone_sdk_java_CTICloudDefault_10.2.7.2_release.aar')
-
     if (!isRunAlone.toBoolean()) {
         // 全量模式
         runtimeOnly project(path: ':user')
@@ -172,12 +173,29 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.4.0-rc-95"
     implementation "com.android.support:multidex:1.0.3"
+    implementation "androidx.work:work-runtime:2.7.1"
+
 
     // leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 
     // 微信分享用的
     api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+
+
+
+//    // android12 对应的 启动页
+//    implementation 'androidx.core:core-splashscreen:1.0.0'
+
+
+
+    // 图片压缩，暂未用到
+//    implementation 'id.zelory:compressor:3.0.1'
+
+
+
+    // 荣耀推送4
+    implementation 'com.hihonor.mcs:push:8.0.12.307'
 
 
 }
